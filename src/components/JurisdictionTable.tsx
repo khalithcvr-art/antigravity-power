@@ -13,11 +13,34 @@ import { ScrollReveal } from './motion/MotionPrimitives';
 interface JurisdictionTableProps {
   onOpenEstimator: () => void;
   isArabic?: boolean;
+  onNavigateSlug?: (slug: string) => void;
 }
 
-export const JurisdictionTable: React.FC<JurisdictionTableProps> = ({ onOpenEstimator, isArabic = false }) => {
+export const JurisdictionTable: React.FC<JurisdictionTableProps> = ({ 
+  onOpenEstimator, 
+  isArabic = false,
+  onNavigateSlug 
+}) => {
   const [selectedCity, setSelectedCity] = useState<'All' | 'Abu Dhabi' | 'Dubai' | 'Ajman'>('All');
   const t = isArabic ? TRANSLATIONS.ar.jurisdictions : TRANSLATIONS.en.jurisdictions;
+
+  const getSlugForJurisdiction = (id: string, name: string): string => {
+    if (id.includes('meydan') || name.toLowerCase().includes('meydan')) return 'meydan-free-zone';
+    if (id.includes('masdar') || name.toLowerCase().includes('masdar')) return 'masdar-city-free-zone';
+    if (id.includes('ifza') || name.toLowerCase().includes('ifza')) return 'ifza';
+    if (id.includes('ajman') || name.toLowerCase().includes('ajman')) return 'ajman-free-zone';
+    if (id.includes('mainland') || name.toLowerCase().includes('mainland') || id.includes('ded') || id.includes('added')) return 'mainland-business-setup';
+    return 'meydan-free-zone';
+  };
+
+  const handleRowClick = (j: any) => {
+    const slug = getSlugForJurisdiction(j.id, j.name);
+    if (onNavigateSlug) {
+      onNavigateSlug(slug);
+    } else {
+      window.location.href = `/${slug}`;
+    }
+  };
 
   const filtered = selectedCity === 'All' 
     ? JURISDICTIONS 
@@ -147,15 +170,23 @@ export const JurisdictionTable: React.FC<JurisdictionTableProps> = ({ onOpenEsti
                           {corporateTaxStatus}
                         </td>
                         <td className="p-5 text-right rtl:text-left">
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            onClick={() => handleInquire(name)}
-                            className="px-3.5 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500 hover:text-obsidian-950 border border-emerald-500/30 text-emerald-300 text-xs font-semibold transition-all inline-flex items-center space-x-1 rtl:space-x-reverse shadow-sm"
-                          >
-                            <span>{t.inquireBtn}</span>
-                            <ArrowIcon className="w-3 h-3" />
-                          </motion.button>
+                          <div className="flex items-center justify-end rtl:justify-start gap-2">
+                            <button
+                              onClick={() => handleRowClick(j)}
+                              className="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 text-xs font-medium transition-all"
+                            >
+                              {t.learnMore}
+                            </button>
+                            <motion.button
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => handleInquire(name)}
+                              className="px-3.5 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500 hover:text-obsidian-950 border border-emerald-500/30 text-emerald-300 text-xs font-semibold transition-all inline-flex items-center space-x-1 rtl:space-x-reverse shadow-sm"
+                            >
+                              <span>{t.inquireBtn}</span>
+                              <ArrowIcon className="w-3 h-3" />
+                            </motion.button>
+                          </div>
                         </td>
                       </motion.tr>
                     );

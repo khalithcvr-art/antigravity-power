@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.expediaservices.ae/</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.expediaservices.ae/" />
+    <xhtml:link rel="alternate" hreflang="ar" href="https://www.expediaservices.ae/?lang=ar" />
+  </url>
+
+  <!-- Meydan Free Zone Dubai -->
+  <url>
+    <loc>https://www.expediaservices.ae/meydan-free-zone</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Masdar City Free Zone Abu Dhabi -->
+  <url>
+    <loc>https://www.expediaservices.ae/masdar-city-free-zone</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- IFZA Dubai Free Zone -->
+  <url>
+    <loc>https://www.expediaservices.ae/ifza</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Ajman Free Zone (AFZ) -->
+  <url>
+    <loc>https://www.expediaservices.ae/ajman-free-zone</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- UAE Mainland Setup (ADDED / DED) -->
+  <url>
+    <loc>https://www.expediaservices.ae/mainland-business-setup</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- IFZA vs Meydan Comparison Engine -->
+  <url>
+    <loc>https://www.expediaservices.ae/ifza-vs-meydan</loc>
+    <lastmod>2026-08-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+</urlset>

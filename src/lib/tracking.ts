@@ -7,7 +7,9 @@ export type TrackingEvent =
   | 'call_click'
   | 'dual_engine_switch'
   | 'status_tracker_search'
-  | 'jurisdiction_select';
+  | 'jurisdiction_select'
+  | 'page_view_dedicated'
+  | 'dedicated_page_whatsapp';
 
 export function trackConversion(event: TrackingEvent, params?: Record<string, any>) {
   console.log(`[Expedia Analytics] Event Triggered: ${event}`, params || {});

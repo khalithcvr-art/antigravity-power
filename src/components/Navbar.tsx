@@ -26,6 +26,8 @@ interface NavbarProps {
   onOpenTracker: () => void;
   isArabic: boolean;
   onToggleArabic: () => void;
+  onNavigateSlug?: (slug: string) => void;
+  onNavigateHome?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -35,10 +37,13 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenTracker,
   isArabic,
   onToggleArabic,
+  onNavigateSlug,
+  onNavigateHome,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+  const [jurisdictionsDropdownOpen, setJurisdictionsDropdownOpen] = useState(false);
 
   const t = isArabic ? TRANSLATIONS.ar.navbar : TRANSLATIONS.en.navbar;
 
@@ -60,9 +65,37 @@ export const Navbar: React.FC<NavbarProps> = ({
     window.location.href = generateCallUrl();
   };
 
+  const handleHomeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (onNavigateHome) {
+      onNavigateHome();
+    } else {
+      window.location.href = '/';
+    }
+  };
+
+  const handleSlugClick = (e: React.MouseEvent, slug: string) => {
+    e.preventDefault();
+    setJurisdictionsDropdownOpen(false);
+    setMobileMenuOpen(false);
+    if (onNavigateSlug) {
+      onNavigateSlug(slug);
+    } else {
+      window.location.href = `/${slug}`;
+    }
+  };
+
   const handleServiceClick = (e: React.MouseEvent, targetId: string) => {
     e.preventDefault();
     setServicesDropdownOpen(false);
+    if (window.location.pathname !== '/' && onNavigateHome) {
+      onNavigateHome();
+      setTimeout(() => {
+        const element = document.getElementById(targetId);
+        element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+      return;
+    }
     const element = document.getElementById(targetId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -83,7 +116,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           
           {/* Logo & Single Legal License Badge */}
           <div className="flex items-center space-x-3.5 rtl:space-x-reverse">
-            <a href="#" className="group flex items-center space-x-3 rtl:space-x-reverse text-left rtl:text-right">
+            <a href="/" onClick={handleHomeClick} className="group flex items-center space-x-3 rtl:space-x-reverse text-left rtl:text-right">
               <div className="relative p-1.5 rounded-2xl bg-obsidian-900/90 border border-white/10 shadow-xl group-hover:border-emerald-500/50 group-hover:shadow-emerald-500/10 transition-all duration-300">
                 <img 
                   src="/expedia-latest-logo.png" 
@@ -220,10 +253,70 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            <a href="#how-it-works" className="hover:text-white transition-colors">{t.journey}</a>
-            <a href="#jurisdictions" className="hover:text-white transition-colors">{t.jurisdictions}</a>
-            <a href="#faq" className="hover:text-white transition-colors">{t.faq}</a>
-            <a href="#contact" className="hover:text-white transition-colors">{t.contact}</a>
+            {/* Free Zones & Comparison Dropdown */}
+            <div className="relative group" onMouseEnter={() => setJurisdictionsDropdownOpen(true)} onMouseLeave={() => setJurisdictionsDropdownOpen(false)}>
+              <button 
+                className="flex items-center space-x-1 rtl:space-x-reverse hover:text-white transition-colors py-2"
+                onClick={(e) => {
+                  e.preventDefault();
+                  const el = document.getElementById('jurisdictions');
+                  el?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                <span>{t.jurisdictions}</span>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:rotate-180 transition-transform" />
+              </button>
+
+              {jurisdictionsDropdownOpen && (
+                <div className="absolute top-full left-0 rtl:left-auto rtl:right-0 w-80 p-3 bg-obsidian-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-black/80 animate-in fade-in slide-in-from-top-2 duration-200">
+                  <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-3 py-1 mb-1">
+                    {isArabic ? 'المناطق الحرة والرخص المعتمدة' : 'Official Free Zones & DED Hubs'}
+                  </div>
+                  <div className="space-y-1">
+                    {[
+                      { slug: 'meydan-free-zone', titleEn: 'Meydan Free Zone (Dubai)', titleAr: 'منطقة ميدان الحرة (دبي)', tag: 'From 12.5k' },
+                      { slug: 'masdar-city-free-zone', titleEn: 'Masdar City Free Zone (Abu Dhabi)', titleAr: 'مدينة مصدر الحرة (أبوظبي)', tag: 'AI & Tech' },
+                      { slug: 'ifza', titleEn: 'IFZA Dubai Free Zone', titleAr: 'سلطة إيفزا دبي الحرة', tag: '1500+ Act' },
+                      { slug: 'ajman-free-zone', titleEn: 'Ajman Free Zone (AFZ)', titleAr: 'منطقة عجمان الحرة', tag: 'From 5.9k' },
+                      { slug: 'mainland-business-setup', titleEn: 'UAE Mainland Setup (ADDED/DED)', titleAr: 'البر الرئيسي (أبوظبي ودبي)', tag: '100% Own' },
+                      { slug: 'ifza-vs-meydan', titleEn: 'IFZA vs. Meydan Comparison', titleAr: 'مقارنة إيفزا وميدان', tag: 'AEO Guide' },
+                    ].map(j => (
+                      <a
+                        key={j.slug}
+                        href={`/${j.slug}`}
+                        onClick={(e) => handleSlugClick(e, j.slug)}
+                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-emerald-400 text-xs transition-colors"
+                      >
+                        <span className="font-semibold">{isArabic ? j.titleAr : j.titleEn}</span>
+                        <span className="text-[10px] text-emerald-400/80 font-mono">{j.tag}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <a href="#how-it-works" onClick={(e) => {
+              if (window.location.pathname !== '/' && onNavigateHome) {
+                e.preventDefault();
+                onNavigateHome();
+                setTimeout(() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' }), 100);
+              }
+            }} className="hover:text-white transition-colors">{t.journey}</a>
+            <a href="#faq" onClick={(e) => {
+              if (window.location.pathname !== '/' && onNavigateHome) {
+                e.preventDefault();
+                onNavigateHome();
+                setTimeout(() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' }), 100);
+              }
+            }} className="hover:text-white transition-colors">{t.faq}</a>
+            <a href="#contact" onClick={(e) => {
+              if (window.location.pathname !== '/' && onNavigateHome) {
+                e.preventDefault();
+                onNavigateHome();
+                setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 100);
+              }
+            }} className="hover:text-white transition-colors">{t.contact}</a>
           </nav>
 
           {/* Quick Actions (Calculator, Status Tracker, Arabic, WhatsApp) */}

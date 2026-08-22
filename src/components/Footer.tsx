@@ -19,9 +19,10 @@ interface FooterProps {
   onOpenEstimator: () => void;
   onOpenTracker: () => void;
   isArabic?: boolean;
+  onNavigateSlug?: (slug: string) => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenEstimator, onOpenTracker, isArabic = false }) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenEstimator, onOpenTracker, isArabic = false, onNavigateSlug }) => {
   const t = isArabic ? TRANSLATIONS.ar.footer : TRANSLATIONS.en.footer;
   const navT = isArabic ? TRANSLATIONS.ar.navbar : TRANSLATIONS.en.navbar;
 
@@ -32,6 +33,15 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEstimator, onOpenTracker, 
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleSlugClick = (e: React.MouseEvent, slug: string) => {
+    e.preventDefault();
+    if (onNavigateSlug) {
+      onNavigateSlug(slug);
+    } else {
+      window.location.href = `/${slug}`;
+    }
   };
 
   return (
@@ -130,14 +140,25 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEstimator, onOpenTracker, 
             </ul>
           </div>
 
-          {/* Col 3: Free Zones & Mainland */}
+          {/* Col 3: Free Zones & Mainland Dedicated Pages */}
           <div className="space-y-3">
             <h4 className="font-display font-bold text-sm text-white">{t.jurisdictionsTitle}</h4>
             <ul className="space-y-2">
-              {CHANNEL_PARTNERS.slice(0, 5).map(p => (
-                <li key={p.id}>
-                  <a href="#jurisdictions" className="hover:text-emerald-400 transition-colors">
-                    {isArabic && p.nameAr ? p.nameAr : p.name}
+              {[
+                { slug: 'meydan-free-zone', labelEn: 'Meydan Free Zone (Dubai)', labelAr: 'منطقة ميدان الحرة (دبي)' },
+                { slug: 'masdar-city-free-zone', labelEn: 'Masdar City Free Zone (Abu Dhabi)', labelAr: 'مدينة مصدر الحرة (أبوظبي)' },
+                { slug: 'ifza', labelEn: 'IFZA Dubai Free Zone', labelAr: 'سلطة إيفزا دبي' },
+                { slug: 'ajman-free-zone', labelEn: 'Ajman Free Zone (AFZ)', labelAr: 'منطقة عجمان الحرة' },
+                { slug: 'mainland-business-setup', labelEn: 'Mainland Business Setup (DED)', labelAr: 'البر الرئيسي (أبوظبي ودبي)' },
+                { slug: 'ifza-vs-meydan', labelEn: 'IFZA vs Meydan Comparison', labelAr: 'مقارنة إيفزا وميدان' },
+              ].map(p => (
+                <li key={p.slug}>
+                  <a 
+                    href={`/${p.slug}`} 
+                    onClick={(e) => handleSlugClick(e, p.slug)}
+                    className="hover:text-emerald-400 transition-colors"
+                  >
+                    {isArabic ? p.labelAr : p.labelEn}
                   </a>
                 </li>
               ))}

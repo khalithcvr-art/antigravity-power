@@ -13,6 +13,8 @@ import { FloatingDock } from './components/FloatingDock';
 import { Footer } from './components/Footer';
 import { CostEstimatorModal } from './components/CostEstimatorModal';
 import { StatusTrackerModal } from './components/StatusTrackerModal';
+import { DedicatedJurisdictionPage } from './components/DedicatedJurisdictionPage';
+import { DEDICATED_PAGES } from './data/jurisdictionPages';
 import { trackConversion } from './lib/tracking';
 
 export function App() {
@@ -20,6 +22,42 @@ export function App() {
   const [isEstimatorOpen, setIsEstimatorOpen] = useState<boolean>(false);
   const [isTrackerOpen, setIsTrackerOpen] = useState<boolean>(false);
   const [isArabic, setIsArabic] = useState<boolean>(false);
+  const [currentSlug, setCurrentSlug] = useState<string>('');
+
+  // Initial path detection
+  useEffect(() => {
+    const cleanPath = window.location.pathname.replace(/^\/+|\/+$/g, '');
+    if (cleanPath && DEDICATED_PAGES[cleanPath]) {
+      setCurrentSlug(cleanPath);
+    } else {
+      setCurrentSlug('');
+    }
+
+    const handlePopState = () => {
+      const p = window.location.pathname.replace(/^\/+|\/+$/g, '');
+      if (p && DEDICATED_PAGES[p]) {
+        setCurrentSlug(p);
+      } else {
+        setCurrentSlug('');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const handleNavigateSlug = (slug: string) => {
+    window.history.pushState({}, '', `/${slug}`);
+    setCurrentSlug(slug);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    trackConversion('page_view_dedicated', { slug });
+  };
+
+  const handleNavigateHome = () => {
+    window.history.pushState({}, '', '/');
+    setCurrentSlug('');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const handleToggleMode = (newMode: DualEngineMode) => {
     setMode(newMode);
@@ -39,6 +77,8 @@ export function App() {
       document.documentElement.setAttribute('lang', 'en');
     }
   }, [isArabic]);
+
+  const isDedicatedPage = Boolean(currentSlug && DEDICATED_PAGES[currentSlug]);
 
   return (
     <div className={`min-h-screen bg-obsidian-950 text-slate-100 relative selection:bg-emerald-500/30 selection:text-emerald-300 ${
@@ -61,46 +101,62 @@ export function App() {
           onOpenTracker={() => setIsTrackerOpen(true)}
           isArabic={isArabic}
           onToggleArabic={handleToggleArabic}
+          onNavigateSlug={handleNavigateSlug}
+          onNavigateHome={handleNavigateHome}
         />
 
-        {/* Main Content Sections */}
+        {/* Main Content View (Dedicated Page vs Full Homepage) */}
         <main className="flex-grow">
-          <HeroSection
-            mode={mode}
-            onOpenEstimator={() => setIsEstimatorOpen(true)}
-            onOpenTracker={() => setIsTrackerOpen(true)}
-            onToggleMode={handleToggleMode}
-            isArabic={isArabic}
-          />
+          {isDedicatedPage ? (
+            <DedicatedJurisdictionPage
+              slug={currentSlug}
+              isArabic={isArabic}
+              onOpenEstimator={() => setIsEstimatorOpen(true)}
+              onOpenTracker={() => setIsTrackerOpen(true)}
+              onNavigateHome={handleNavigateHome}
+              onNavigateSlug={handleNavigateSlug}
+            />
+          ) : (
+            <>
+              <HeroSection
+                mode={mode}
+                onOpenEstimator={() => setIsEstimatorOpen(true)}
+                onOpenTracker={() => setIsTrackerOpen(true)}
+                onToggleMode={handleToggleMode}
+                isArabic={isArabic}
+              />
 
-          <BentoServices
-            mode={mode}
-            onOpenEstimator={() => setIsEstimatorOpen(true)}
-            isArabic={isArabic}
-          />
+              <BentoServices
+                mode={mode}
+                onOpenEstimator={() => setIsEstimatorOpen(true)}
+                isArabic={isArabic}
+              />
 
-          <SetupJourney
-            mode={mode}
-            onOpenEstimator={() => setIsEstimatorOpen(true)}
-            isArabic={isArabic}
-          />
+              <SetupJourney
+                mode={mode}
+                onOpenEstimator={() => setIsEstimatorOpen(true)}
+                isArabic={isArabic}
+              />
 
-          <JurisdictionTable
-            onOpenEstimator={() => setIsEstimatorOpen(true)}
-            isArabic={isArabic}
-          />
+              <JurisdictionTable
+                onOpenEstimator={() => setIsEstimatorOpen(true)}
+                isArabic={isArabic}
+                onNavigateSlug={handleNavigateSlug}
+              />
 
-          <TrustPartners 
-            isArabic={isArabic}
-          />
+              <TrustPartners 
+                isArabic={isArabic}
+              />
 
-          <FaqSection
-            isArabic={isArabic}
-          />
+              <FaqSection
+                isArabic={isArabic}
+              />
 
-          <ContactSection 
-            isArabic={isArabic}
-          />
+              <ContactSection 
+                isArabic={isArabic}
+              />
+            </>
+          )}
         </main>
 
         {/* Global Footer */}
@@ -108,6 +164,7 @@ export function App() {
           onOpenEstimator={() => setIsEstimatorOpen(true)}
           onOpenTracker={() => setIsTrackerOpen(true)}
           isArabic={isArabic}
+          onNavigateSlug={handleNavigateSlug}
         />
 
         {/* Floating Dynamic Dock */}
@@ -137,4 +194,5 @@ export function App() {
     </div>
   );
 }
+
 
