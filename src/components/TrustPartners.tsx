@@ -12,12 +12,31 @@ import { TiltCard, ScrollReveal } from './motion/MotionPrimitives';
 
 interface TrustPartnersProps {
   isArabic?: boolean;
+  onNavigateSlug?: (slug: string) => void;
 }
 
-export const TrustPartners: React.FC<TrustPartnersProps> = ({ isArabic = false }) => {
+export const TrustPartners: React.FC<TrustPartnersProps> = ({ isArabic = false, onNavigateSlug }) => {
   const t = isArabic ? TRANSLATIONS.ar.trustPartners : TRANSLATIONS.en.trustPartners;
 
-  const handlePartnerInquiry = (name: string) => {
+  const getSlugForPartner = (id: string, name: string): string => {
+    if (id.includes('meydan') || name.toLowerCase().includes('meydan')) return 'meydan-free-zone';
+    if (id.includes('masdar') || name.toLowerCase().includes('masdar')) return 'masdar-city-free-zone';
+    if (id.includes('ifza') || name.toLowerCase().includes('ifza')) return 'ifza';
+    if (id.includes('ajman') || name.toLowerCase().includes('ajman')) return 'ajman-free-zone';
+    return 'meydan-free-zone';
+  };
+
+  const handlePartnerClick = (partner: any) => {
+    const slug = getSlugForPartner(partner.id, partner.name);
+    if (onNavigateSlug) {
+      onNavigateSlug(slug);
+    } else {
+      window.location.href = `/${slug}`;
+    }
+  };
+
+  const handlePartnerInquiry = (e: React.MouseEvent, name: string) => {
+    e.stopPropagation();
     trackConversion('whatsapp_click', { partner: name });
     const msg = isArabic 
       ? `مرحباً إكسبيديا، أود تأسيس شركتي في *${name}*. أرجو تزويدي بالأنشطة المتاحة وعرض الأسعار.`
@@ -57,15 +76,16 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({ isArabic = false }
             const desc = isArabic && partner.descAr ? partner.descAr : partner.desc;
             const startingPrice = isArabic && partner.startingPriceAr ? partner.startingPriceAr : partner.startingPrice;
             const popularFor = isArabic && partner.popularForAr ? partner.popularForAr : partner.popularFor;
+            const slug = getSlugForPartner(partner.id, partner.name);
 
             return (
               <TiltCard
                 key={partner.id}
                 maxTilt={6}
                 glowColor="rgba(16, 185, 129, 0.15)"
-                className="p-6 rounded-3xl glass-panel glass-panel-hover flex flex-col justify-between group"
+                className="p-6 rounded-3xl glass-panel glass-panel-hover flex flex-col justify-between group cursor-pointer"
               >
-                <div>
+                <div onClick={() => handlePartnerClick(partner)}>
                   <div className="flex items-center justify-between mb-4">
                     <span className="px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-slate-300">
                       {city}
@@ -75,8 +95,9 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({ isArabic = false }
                     </span>
                   </div>
 
-                  <h3 className="text-xl font-display font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors">
-                    {name}
+                  <h3 className="text-xl font-display font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors flex items-center justify-between">
+                    <span>{name}</span>
+                    <ArrowIcon className="w-4 h-4 text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-all" />
                   </h3>
                   <div className="text-[11px] text-goldMuted font-medium mb-3">
                     {badge}
@@ -91,15 +112,24 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({ isArabic = false }
                   </div>
                 </div>
 
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => handlePartnerInquiry(name)}
-                  className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-emerald-500 hover:text-obsidian-950 border border-white/10 text-xs font-semibold text-slate-200 transition-all flex items-center justify-center space-x-1.5 rtl:space-x-reverse shadow-sm"
-                >
-                  <span>{isArabic ? `تأسيس في ${name}` : `Setup in ${name.split(' ')[0]}`}</span>
-                  <ArrowIcon className="w-3 h-3" />
-                </motion.button>
+                <div className="space-y-2">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handlePartnerClick(partner)}
+                    className="w-full py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-display font-bold text-xs flex items-center justify-center space-x-1.5 rtl:space-x-reverse shadow-md shadow-emerald-500/20 transition-all"
+                  >
+                    <span>{isArabic ? 'عرض التفاصيل والأسعار الكاملة' : 'View Setup Details & Costs'}</span>
+                    <ArrowIcon className="w-3.5 h-3.5" />
+                  </motion.button>
+
+                  <button
+                    onClick={(e) => handlePartnerInquiry(e, name)}
+                    className="w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border border-white/5 text-[11px] font-mono transition-all flex items-center justify-center gap-1.5"
+                  >
+                    <span>{isArabic ? 'استفسار فوري عبر واتساب' : 'Quick WhatsApp Inquire'}</span>
+                  </button>
+                </div>
               </TiltCard>
             );
           })}

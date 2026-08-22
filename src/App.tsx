@@ -130,6 +130,7 @@ export function App() {
                 mode={mode}
                 onOpenEstimator={() => setIsEstimatorOpen(true)}
                 isArabic={isArabic}
+                onNavigateSlug={handleNavigateSlug}
               />
 
               <SetupJourney
@@ -146,6 +147,7 @@ export function App() {
 
               <TrustPartners 
                 isArabic={isArabic}
+                onNavigateSlug={handleNavigateSlug}
               />
 
               <FaqSection

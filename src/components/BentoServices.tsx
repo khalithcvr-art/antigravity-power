@@ -32,6 +32,7 @@ interface BentoServicesProps {
   mode: DualEngineMode;
   onOpenEstimator: () => void;
   isArabic: boolean;
+  onNavigateSlug?: (slug: string) => void;
 }
 
 const ICON_MAP: Record<string, React.ElementType> = {
