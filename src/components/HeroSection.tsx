@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   Building2, 
   Sparkles, 
@@ -19,6 +20,7 @@ import { DualEngineMode } from '../types';
 import { COMPANY_INFO } from '../data/siteData';
 import { trackConversion, generateWhatsAppUrl } from '../lib/tracking';
 import { TRANSLATIONS } from '../data/translations';
+import { BorderBeam, AnimatedCounter } from './motion/MotionPrimitives';
 
 interface HeroSectionProps {
   mode: DualEngineMode;
@@ -120,14 +122,20 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Eyebrow badge */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-6 animate-in fade-in slide-in-from-bottom-2 duration-500">
-          <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3.5 py-1.5 rounded-full bg-obsidian-900/90 border border-white/10 text-xs backdrop-blur-md shadow-lg shadow-black/40">
+        {/* Eyebrow badge with glowing border beam */}
+        <motion.div 
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-wrap items-center justify-center gap-3 mb-6"
+        >
+          <div className="relative inline-flex items-center space-x-2 rtl:space-x-reverse px-4 py-1.5 rounded-full bg-obsidian-900/95 border border-white/15 text-xs backdrop-blur-md shadow-2xl overflow-hidden">
+            <BorderBeam size={180} duration={8} colorFrom="#10b981" colorTo="#06b6d4" />
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
             </span>
-            <span className="text-slate-300 font-medium tracking-wide">
+            <span className="text-slate-200 font-medium tracking-wide">
               {mode === 'corporate' ? tHero.corporate.badge : tHero.digital.badge}
             </span>
             <span className="text-slate-600">|</span>
@@ -136,37 +144,54 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </span>
           </div>
 
-          <div className="hidden sm:inline-flex items-center space-x-1.5 rtl:space-x-reverse px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-slate-400">
+          <div className="hidden sm:inline-flex items-center space-x-1.5 rtl:space-x-reverse px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-slate-300">
             <MapPin className="w-3 h-3 text-goldMuted" />
             <span>{isArabic ? 'هايبو، أبوظبي مول' : 'Haibu, Abu Dhabi Mall'}</span>
           </div>
-        </div>
+        </motion.div>
 
         {/* Hero Title & Kinetic Rotating Line */}
-        <div className="text-center max-w-4xl mx-auto mb-8">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
+          className="text-center max-w-4xl mx-auto mb-8"
+        >
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-white leading-[1.15] mb-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]">
             {mode === 'corporate' ? (
               <>
                 {tHero.corporate.titleMain}{' '}
                 <span className="block h-[1.3em] relative overflow-hidden">
-                  <span 
-                    key={rotatingIndex}
-                    className="absolute inset-0 text-gradient-emerald animate-in fade-in slide-in-from-bottom-6 duration-500 font-extrabold drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
-                  >
-                    {corporateHeadlines[rotatingIndex]}
-                  </span>
+                  <AnimatePresence mode="wait">
+                    <motion.span 
+                      key={rotatingIndex}
+                      initial={{ y: 30, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -30, opacity: 0 }}
+                      transition={{ duration: 0.45, ease: [0.21, 0.47, 0.32, 0.98] }}
+                      className="absolute inset-0 text-gradient-emerald font-extrabold drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]"
+                    >
+                      {corporateHeadlines[rotatingIndex]}
+                    </motion.span>
+                  </AnimatePresence>
                 </span>
               </>
             ) : (
               <>
                 {tHero.digital.titleMain}{' '}
                 <span className="block h-[1.3em] relative overflow-hidden">
-                  <span 
-                    key={rotatingIndex}
-                    className="absolute inset-0 text-gradient-digital animate-in fade-in slide-in-from-bottom-6 duration-500 font-extrabold"
-                  >
-                    {digitalHeadlines[rotatingIndex]}
-                  </span>
+                  <AnimatePresence mode="wait">
+                    <motion.span 
+                      key={rotatingIndex}
+                      initial={{ y: 30, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      exit={{ y: -30, opacity: 0 }}
+                      transition={{ duration: 0.45, ease: [0.21, 0.47, 0.32, 0.98] }}
+                      className="absolute inset-0 text-gradient-digital font-extrabold"
+                    >
+                      {digitalHeadlines[rotatingIndex]}
+                    </motion.span>
+                  </AnimatePresence>
                 </span>
               </>
             )}
@@ -175,125 +200,164 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <p className="text-base sm:text-xl text-slate-200 max-w-3xl mx-auto font-normal leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
             {mode === 'corporate' ? tHero.corporate.subtitle : tHero.digital.subtitle}
           </p>
-        </div>
+        </motion.div>
 
         {/* Dual-Engine Mode Switcher Banner (Interactive Middle Card) */}
-        <div className="max-w-2xl mx-auto mb-10 p-2 rounded-2xl bg-obsidian-900/90 border border-white/10 backdrop-blur-xl shadow-2xl">
-          <div className="flex items-center justify-between gap-2 p-1">
-            <button
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="max-w-2xl mx-auto mb-10 p-2 rounded-2xl bg-obsidian-900/90 border border-white/10 backdrop-blur-xl shadow-2xl relative overflow-hidden"
+        >
+          <BorderBeam size={220} duration={10} colorFrom={mode === 'corporate' ? '#10b981' : '#06b6d4'} colorTo={mode === 'corporate' ? '#059669' : '#6366f1'} />
+          <div className="flex items-center justify-between gap-2 p-1 relative z-10">
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.01 }}
               onClick={() => onToggleMode('corporate')}
               className={`flex-1 flex items-center justify-center space-x-2 rtl:space-x-reverse py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 ${
                 mode === 'corporate'
-                  ? 'bg-emerald-500 text-obsidian-950 shadow-lg shadow-emerald-500/25 scale-[1.01]'
+                  ? 'bg-emerald-500 text-obsidian-950 shadow-lg shadow-emerald-500/25'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               }`}
             >
               <Building2 className="w-4 h-4" />
               <span>{tNav.corporateMode}</span>
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
+              whileTap={{ scale: 0.97 }}
+              whileHover={{ scale: 1.01 }}
               onClick={() => onToggleMode('digital')}
               className={`flex-1 flex items-center justify-center space-x-2 rtl:space-x-reverse py-3 px-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300 ${
                 mode === 'digital'
-                  ? 'bg-gradient-to-r from-cyan-400 to-indigo-500 text-obsidian-950 shadow-lg shadow-cyan-500/25 scale-[1.01]'
+                  ? 'bg-gradient-to-r from-cyan-400 to-indigo-500 text-obsidian-950 shadow-lg shadow-cyan-500/25'
                   : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
               }`}
             >
               <Sparkles className="w-4 h-4" />
               <span>{tNav.digitalMode}</span>
-            </button>
+            </motion.button>
           </div>
-        </div>
+        </motion.div>
 
         {/* Primary Call to Action Bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
-          <button
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+        >
+          <motion.button
+            whileHover={{ scale: 1.03, y: -2 }}
+            whileTap={{ scale: 0.97 }}
             onClick={onOpenEstimator}
             className={`w-full sm:w-auto px-8 py-4 rounded-2xl font-display font-bold text-sm sm:text-base flex items-center justify-center space-x-3 rtl:space-x-reverse transition-all duration-300 shadow-xl ${
               mode === 'corporate'
-                ? 'bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 shadow-emerald-500/30 hover:shadow-emerald-500/50 hover:scale-[1.02]'
-                : 'bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-obsidian-950 shadow-cyan-500/30 hover:shadow-cyan-500/50 hover:scale-[1.02]'
+                ? 'bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 shadow-emerald-500/30 hover:shadow-emerald-500/50'
+                : 'bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-obsidian-950 shadow-cyan-500/30 hover:shadow-cyan-500/50'
             }`}
           >
             <Calculator className="w-5 h-5" />
             <span>{mode === 'corporate' ? tHero.corporate.ctaEstimator : tHero.digital.ctaStudio}</span>
             <ArrowRight className="w-4 h-4 rtl:rotate-180" />
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.97 }}
             onClick={handleWhatsAppHero}
             className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-obsidian-900 hover:bg-obsidian-850 border border-white/15 text-white font-display font-semibold text-sm sm:text-base flex items-center justify-center space-x-3 rtl:space-x-reverse transition-all duration-300 hover:border-emerald-500/50 shadow-lg shadow-black/50"
           >
             <MessageSquare className="w-5 h-5 text-emerald-400" />
             <span>{tNav.whatsappDirect}</span>
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02, y: -1 }}
+            whileTap={{ scale: 0.97 }}
             onClick={onOpenTracker}
             className="w-full sm:w-auto px-5 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-sm font-semibold flex items-center justify-center space-x-2 rtl:space-x-reverse transition-all"
           >
             <Zap className="w-4 h-4 text-cyan-400" />
             <span>{mode === 'corporate' ? tHero.corporate.ctaTracker : tHero.digital.ctaPortfolio}</span>
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
 
-        {/* Live Authority Metrics Grid (4 Key Counters) */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+        {/* Live Authority Metrics Grid (4 Key Counters with Odometer rolling) */}
+        <motion.div 
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto"
+        >
           
-          <div className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group">
+          <motion.div 
+            whileHover={{ y: -4, scale: 1.02 }}
+            className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
+          >
             <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
-              {COMPANY_INFO.stats.foreignOwnership}
+              <AnimatedCounter value={COMPANY_INFO.stats.foreignOwnership} />
             </div>
             <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
               {tHero.corporate.stats.ownership.label}
             </div>
-            <div className="text-[11px] text-slate-500">
+            <div className="text-[11px] text-slate-400">
               {isArabic ? 'بدون اشتراط كفيل محلي' : 'No UAE local sponsor required'}
             </div>
-          </div>
+          </motion.div>
 
-          <div className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group">
+          <motion.div 
+            whileHover={{ y: -4, scale: 1.02 }}
+            className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
+          >
             <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
-              {COMPANY_INFO.stats.licenseTurnaround}
+              <AnimatedCounter value={COMPANY_INFO.stats.licenseTurnaround} />
             </div>
             <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
               {tHero.corporate.stats.turnaround.label}
             </div>
-            <div className="text-[11px] text-slate-500">
+            <div className="text-[11px] text-slate-400">
               {isArabic ? 'إصدار رقمي سريع ومباشر' : 'Fast-track digital clearance'}
             </div>
-          </div>
+          </motion.div>
 
-          <div className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group">
+          <motion.div 
+            whileHover={{ y: -4, scale: 1.02 }}
+            className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
+          >
             <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
-              {COMPANY_INFO.stats.businessesLaunched}
+              <AnimatedCounter value={COMPANY_INFO.stats.businessesLaunched} />
             </div>
             <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
               {isArabic ? 'الشركات المؤسسة' : 'Companies Formed'}
             </div>
-            <div className="text-[11px] text-slate-500">
+            <div className="text-[11px] text-slate-400">
               {isArabic ? 'في أبوظبي ودبي' : 'Across Abu Dhabi & Dubai'}
             </div>
-          </div>
+          </motion.div>
 
-          <div className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group">
+          <motion.div 
+            whileHover={{ y: -4, scale: 1.02 }}
+            className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
+          >
             <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
-              {COMPANY_INFO.stats.experienceYears}
+              <AnimatedCounter value={COMPANY_INFO.stats.experienceYears} />
             </div>
             <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
               {tHero.corporate.stats.experience.label}
             </div>
-            <div className="text-[11px] text-slate-500">
+            <div className="text-[11px] text-slate-400">
               {isArabic ? 'اعتماد 7 دوائر وهيئات حكومية' : '7 UAE Government Ministries'}
             </div>
-          </div>
+          </motion.div>
 
-        </div>
+        </motion.div>
 
       </div>
     </section>
   );
 };
+
 
 

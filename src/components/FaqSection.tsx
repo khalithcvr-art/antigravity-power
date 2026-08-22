@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { 
   ChevronDown, 
   MessageSquare, 
@@ -6,6 +7,7 @@ import {
 } from 'lucide-react';
 import { FAQS } from '../data/siteData';
 import { generateWhatsAppUrl, trackConversion } from '../lib/tracking';
+import { ScrollReveal } from './motion/MotionPrimitives';
 
 interface FaqSectionProps {
   isArabic: boolean;
@@ -41,56 +43,65 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ isArabic }) => {
   };
 
   return (
-    <section id="faq" className={`py-24 relative bg-obsidian-950/95 border-t border-white/5 ${isArabic ? 'font-arabic' : ''}`}>
+    <section id="faq" className={`py-24 relative bg-obsidian-950/95 border-t border-white/5 overflow-hidden ${isArabic ? 'font-arabic' : ''}`}>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-wider text-slate-300 mb-3">
-            <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
-            <span>{isArabic ? 'مستودع المعرفة واللوائح التنظيمية المعتمدة' : 'AEO Direct Knowledge Repository'}</span>
+        <ScrollReveal>
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-wider text-slate-300 mb-3">
+              <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
+              <span>{isArabic ? 'مستودع المعرفة واللوائح التنظيمية المعتمدة' : 'AEO Direct Knowledge Repository'}</span>
+            </div>
+            
+            <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
+              {isArabic ? (
+                <>
+                  الأسئلة الشائعة حول <br className="hidden sm:inline" />
+                  <span className="text-gradient-emerald">تأسيس الشركات والأنظمة الحكومية</span>
+                </>
+              ) : (
+                <>
+                  Frequently Answered <br className="hidden sm:inline" />
+                  <span className="text-gradient-emerald">Regulatory & Setup Inquiries</span>
+                </>
+              )}
+            </h2>
+            
+            <p className="text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed">
+              {isArabic 
+                ? 'إجابات قانونية وتنظيمية مباشرة مستندة إلى قانون الشركات التجارية الإماراتي لعام 2026، وضوابط وزارة الموارد البشرية، ومعايير الهيئة الاتحادية للضرائب.'
+                : 'Direct statutory answers reflecting current 2026 UAE Commercial Companies Law, MoHRE labour codes, and Federal Tax Authority standards.'
+              }
+            </p>
           </div>
-          
-          <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
-            {isArabic ? (
-              <>
-                الأسئلة الشائعة حول <br className="hidden sm:inline" />
-                <span className="text-gradient-emerald">تأسيس الشركات والأنظمة الحكومية</span>
-              </>
-            ) : (
-              <>
-                Frequently Answered <br className="hidden sm:inline" />
-                <span className="text-gradient-emerald">Regulatory & Setup Inquiries</span>
-              </>
-            )}
-          </h2>
-          
-          <p className="text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed">
-            {isArabic 
-              ? 'إجابات قانونية وتنظيمية مباشرة مستندة إلى قانون الشركات التجارية الإماراتي لعام 2026، وضوابط وزارة الموارد البشرية، ومعايير الهيئة الاتحادية للضرائب.'
-              : 'Direct statutory answers reflecting current 2026 UAE Commercial Companies Law, MoHRE labour codes, and Federal Tax Authority standards.'
-            }
-          </p>
-        </div>
+        </ScrollReveal>
 
-        {/* Category Filter Pills */}
+        {/* Category Filter Pills with Animated Pill */}
         <div className="flex items-center justify-center flex-wrap gap-2 mb-10">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setActiveCategory(cat.id)}
-              className={`px-4 py-2 rounded-xl text-xs font-semibold transition-all ${
+              className={`relative px-4 py-2 rounded-xl text-xs font-semibold transition-all z-10 ${
                 activeCategory === cat.id
-                  ? 'bg-emerald-500 text-obsidian-950 shadow-md shadow-emerald-500/20 font-bold'
-                  : 'bg-obsidian-900 border border-white/10 text-slate-400 hover:text-white hover:bg-white/5'
+                  ? 'text-obsidian-950 font-bold'
+                  : 'text-slate-400 hover:text-white bg-obsidian-900 border border-white/10'
               }`}
             >
+              {activeCategory === cat.id && (
+                <motion.div
+                  layoutId="activeFaqTab"
+                  className="absolute inset-0 bg-emerald-500 rounded-xl shadow-md shadow-emerald-500/20 -z-10"
+                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                />
+              )}
               {cat.label}
             </button>
           ))}
         </div>
 
-        {/* Accordion List */}
+        {/* Accordion List with Spring Height Physics */}
         <div className="space-y-4 mb-12">
           {filteredFaqs.map((faq) => {
             const isOpen = openId === faq.id;
@@ -100,8 +111,9 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ isArabic }) => {
             const directAnswerText = isArabic && faq.directAnswerAEOAr ? faq.directAnswerAEOAr : faq.directAnswerAEO;
 
             return (
-              <div
+              <motion.div
                 key={faq.id}
+                layout
                 className={`rounded-2xl border transition-all duration-200 overflow-hidden ${
                   isOpen
                     ? 'bg-obsidian-900 border-emerald-500/40 shadow-xl shadow-black/40'
@@ -122,57 +134,77 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ isArabic }) => {
                     </span>
                   </div>
 
-                  <div className={`p-1.5 rounded-full bg-white/5 text-slate-400 transition-transform duration-200 shrink-0 ${
-                    isOpen ? 'rotate-180 text-emerald-400 bg-emerald-500/10' : ''
-                  }`}>
+                  <motion.div 
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ duration: 0.25 }}
+                    className={`p-1.5 rounded-full bg-white/5 text-slate-400 shrink-0 ${
+                      isOpen ? 'text-emerald-400 bg-emerald-500/10' : ''
+                    }`}
+                  >
                     <ChevronDown className="w-4 h-4" />
-                  </div>
+                  </motion.div>
                 </button>
 
-                {isOpen && (
-                  <div className="px-6 pb-6 pt-2 text-sm text-slate-300 leading-relaxed border-t border-white/5 space-y-4 animate-in fade-in duration-200">
-                    {/* Direct Answer AEO Box */}
-                    <div className="p-3.5 rounded-xl bg-obsidian-950/90 border border-emerald-500/20 text-xs font-mono text-slate-300">
-                      <span className="text-emerald-400 font-bold uppercase tracking-wider block mb-1 text-[10px]">
-                        {isArabic ? 'ملخص تنفيذي معتمد' : 'AEO Concise Snippet'}
-                      </span>
-                      {directAnswerText}
-                    </div>
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="content"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 pb-6 pt-2 text-sm text-slate-300 leading-relaxed border-t border-white/5 space-y-4">
+                        {/* Direct Answer AEO Box */}
+                        <div className="p-3.5 rounded-xl bg-obsidian-950/90 border border-emerald-500/20 text-xs font-mono text-slate-300">
+                          <span className="text-emerald-400 font-bold uppercase tracking-wider block mb-1 text-[10px]">
+                            {isArabic ? 'ملخص تنفيذي معتمد' : 'AEO Concise Snippet'}
+                          </span>
+                          {directAnswerText}
+                        </div>
 
-                    <p>
-                      {answerText}
-                    </p>
-                  </div>
-                )}
-              </div>
+                        <p>
+                          {answerText}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             );
           })}
         </div>
 
         {/* Custom Question Banner */}
-        <div className="p-8 rounded-3xl glass-panel border border-white/10 text-center sm:text-left rtl:sm:text-right flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div>
-            <h3 className="text-xl font-display font-bold text-white mb-1">
-              {isArabic ? 'هل لديك استفسار تنظيمي خاص أو هيكلة أعمال مخصصة؟' : 'Have a specific corporate structure or custom query?'}
-            </h3>
-            <p className="text-xs text-slate-400">
-              {isArabic 
-                ? 'يجيب كبار مستشاري العلاقات العامة لدينا على كافة الاستفسارات المؤسسية بسرية تامة وخلال أقل من 15 دقيقة.'
-                : 'Our senior PRO advisors respond to confidential corporate inquiries in under 15 minutes.'
-              }
-            </p>
-          </div>
+        <ScrollReveal>
+          <div className="p-8 rounded-3xl glass-panel border border-white/10 text-center sm:text-left rtl:sm:text-right flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <h3 className="text-xl font-display font-bold text-white mb-1">
+                {isArabic ? 'هل لديك استفسار تنظيمي خاص أو هيكلة أعمال مخصصة؟' : 'Have a specific corporate structure or custom query?'}
+              </h3>
+              <p className="text-xs text-slate-400">
+                {isArabic 
+                  ? 'يجيب كبار مستشاري العلاقات العامة لدينا على كافة الاستفسارات المؤسسية بسرية تامة وخلال أقل من 15 دقيقة.'
+                  : 'Our senior PRO advisors respond to confidential corporate inquiries in under 15 minutes.'
+                }
+              </p>
+            </div>
 
-          <button
-            onClick={handleAskCustom}
-            className="shrink-0 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-bold text-xs flex items-center space-x-2 rtl:space-x-reverse transition-all shadow-lg shadow-emerald-500/20"
-          >
-            <MessageSquare className="w-4 h-4 fill-obsidian-950" />
-            <span>{isArabic ? 'استشر مسؤول علاقات عامة عبر واتساب' : 'Ask a Senior PRO via WhatsApp'}</span>
-          </button>
-        </div>
+            <motion.button
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              onClick={handleAskCustom}
+              className="shrink-0 px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-bold text-xs flex items-center space-x-2 rtl:space-x-reverse transition-all shadow-lg shadow-emerald-500/20"
+            >
+              <MessageSquare className="w-4 h-4 fill-obsidian-950" />
+              <span>{isArabic ? 'استشر مسؤول علاقات عامة عبر واتساب' : 'Ask a Senior PRO via WhatsApp'}</span>
+            </motion.button>
+          </div>
+        </ScrollReveal>
 
       </div>
     </section>
   );
 };
+

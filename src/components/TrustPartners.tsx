@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import { 
   Award, 
   ArrowRight, 
@@ -7,6 +8,7 @@ import {
 import { CHANNEL_PARTNERS, UAE_AUTHORITIES } from '../data/siteData';
 import { generateWhatsAppUrl, trackConversion } from '../lib/tracking';
 import { TRANSLATIONS } from '../data/translations';
+import { TiltCard, ScrollReveal } from './motion/MotionPrimitives';
 
 interface TrustPartnersProps {
   isArabic?: boolean;
@@ -30,21 +32,23 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({ isArabic = false }
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-14">
-          <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-wider text-slate-300 mb-3">
-            <Award className="w-3.5 h-3.5 text-goldMuted" />
-            <span>{t.badge}</span>
+        <ScrollReveal>
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-wider text-slate-300 mb-3">
+              <Award className="w-3.5 h-3.5 text-goldMuted" />
+              <span>{t.badge}</span>
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
+              {t.title} <br className="hidden sm:inline" />
+              <span className="text-gradient-emerald">{t.titleHighlight}</span>
+            </h2>
+            <p className="text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto">
+              {t.subtitle}
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
-            {t.title} <br className="hidden sm:inline" />
-            <span className="text-gradient-emerald">{t.titleHighlight}</span>
-          </h2>
-          <p className="text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto">
-            {t.subtitle}
-          </p>
-        </div>
+        </ScrollReveal>
 
-        {/* 4 Main Partner Zone Cards */}
+        {/* 4 Main Partner Zone Cards with 3D Tilt */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
           {CHANNEL_PARTNERS.slice(0, 4).map((partner) => {
             const name = isArabic && partner.nameAr ? partner.nameAr : partner.name;
@@ -55,8 +59,10 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({ isArabic = false }
             const popularFor = isArabic && partner.popularForAr ? partner.popularForAr : partner.popularFor;
 
             return (
-              <div
+              <TiltCard
                 key={partner.id}
+                maxTilt={6}
+                glowColor="rgba(16, 185, 129, 0.15)"
                 className="p-6 rounded-3xl glass-panel glass-panel-hover flex flex-col justify-between group"
               >
                 <div>
@@ -85,50 +91,56 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({ isArabic = false }
                   </div>
                 </div>
 
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={() => handlePartnerInquiry(name)}
-                  className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-emerald-500 hover:text-obsidian-950 border border-white/10 text-xs font-semibold text-slate-200 transition-all flex items-center justify-center space-x-1.5 rtl:space-x-reverse"
+                  className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-emerald-500 hover:text-obsidian-950 border border-white/10 text-xs font-semibold text-slate-200 transition-all flex items-center justify-center space-x-1.5 rtl:space-x-reverse shadow-sm"
                 >
                   <span>{isArabic ? `تأسيس في ${name}` : `Setup in ${name.split(' ')[0]}`}</span>
                   <ArrowIcon className="w-3 h-3" />
-                </button>
-              </div>
+                </motion.button>
+              </TiltCard>
             );
           })}
         </div>
 
         {/* UAE Government Authorities Marquee / Grid */}
-        <div className="p-8 rounded-3xl bg-obsidian-900/60 border border-white/10">
-          <div className="text-center text-xs font-mono uppercase tracking-widest text-slate-400 mb-6">
-            {isArabic ? 'الربط الرقمي المباشر مع المنظومة الحكومية والمصرفية' : 'Direct Regulatory Integration & Electronic Portals'}
-          </div>
+        <ScrollReveal>
+          <div className="p-8 rounded-3xl bg-obsidian-900/60 border border-white/10">
+            <div className="text-center text-xs font-mono uppercase tracking-widest text-slate-400 mb-6">
+              {isArabic ? 'الربط الرقمي المباشر مع المنظومة الحكومية والمصرفية' : 'Direct Regulatory Integration & Electronic Portals'}
+            </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
-            {UAE_AUTHORITIES.map((auth, idx) => {
-              const badge = isArabic && auth.badgeAr ? auth.badgeAr : auth.badge;
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+              {UAE_AUTHORITIES.map((auth, idx) => {
+                const badge = isArabic && auth.badgeAr ? auth.badgeAr : auth.badge;
 
-              return (
-                <div 
-                  key={idx}
-                  className="p-3 rounded-2xl bg-obsidian-950/80 border border-white/5 text-center flex flex-col items-center justify-center hover:border-emerald-500/30 transition-colors group"
-                >
-                  <span className="font-display font-bold text-sm text-white group-hover:text-emerald-400 transition-colors">
-                    {auth.name}
-                  </span>
-                  <span className="text-[10px] text-slate-400 mt-0.5 line-clamp-1">
-                    {badge}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
+                return (
+                  <motion.div 
+                    key={idx}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    className="p-3 rounded-2xl bg-obsidian-950/80 border border-white/5 text-center flex flex-col items-center justify-center hover:border-emerald-500/30 transition-colors group cursor-default"
+                  >
+                    <span className="font-display font-bold text-sm text-white group-hover:text-emerald-400 transition-colors">
+                      {auth.name}
+                    </span>
+                    <span className="text-[10px] text-slate-400 mt-0.5 line-clamp-1">
+                      {badge}
+                    </span>
+                  </motion.div>
+                );
+              })}
+            </div>
 
-          <div className="text-center text-[11px] text-slate-400 mt-6 font-mono">
-            {t.complianceNote}
+            <div className="text-center text-[11px] text-slate-400 mt-6 font-mono">
+              {t.complianceNote}
+            </div>
           </div>
-        </div>
+        </ScrollReveal>
 
       </div>
     </section>
   );
 };
+
