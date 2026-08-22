@@ -114,25 +114,15 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           
-          {/* Logo & Single Legal License Badge */}
-          <div className="flex items-center space-x-3.5 rtl:space-x-reverse">
-            <a href="/" onClick={handleHomeClick} className="group flex items-center space-x-3 rtl:space-x-reverse text-left rtl:text-right">
-              <div className="relative p-1.5 rounded-2xl bg-obsidian-900/90 border border-white/10 shadow-xl group-hover:border-emerald-500/50 group-hover:shadow-emerald-500/10 transition-all duration-300">
-                <img 
-                  src="/expedia-latest-logo.png" 
-                  alt="Expedia Business Services" 
-                  className="h-10 sm:h-11 md:h-12 w-auto max-w-[180px] sm:max-w-[220px] object-contain brightness-110 drop-shadow-md transition-transform duration-300 group-hover:scale-[1.02]"
-                />
-              </div>
+          {/* Clean Prominent Logo (No background shade box, enlarged visibility) */}
+          <div className="flex items-center">
+            <a href="/" onClick={handleHomeClick} className="group flex items-center text-left rtl:text-right py-1">
+              <img 
+                src="/expedia-latest-logo.png" 
+                alt="Expedia Business Services" 
+                className="h-12 sm:h-14 md:h-16 w-auto max-w-[220px] sm:max-w-[270px] md:max-w-[320px] object-contain brightness-110 drop-shadow-xl transition-transform duration-300 group-hover:scale-105"
+              />
             </a>
-
-            {/* Single Clean Verified License Badge */}
-            <div className="hidden sm:flex items-center space-x-1.5 rtl:space-x-reverse px-3 py-1.5 rounded-full bg-obsidian-900/80 border border-white/10 text-xs text-slate-300">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
-              <span className="text-[11px] font-mono">
-                {isArabic ? 'الترخيص: ' : 'Lic: '}<strong className="text-slate-200 font-bold">CN-6307408</strong>
-              </span>
-            </div>
           </div>
 
           {/* Desktop Dual-Engine Switcher (Fintech Center Capsule) */}
