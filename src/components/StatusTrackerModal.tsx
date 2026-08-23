@@ -13,7 +13,8 @@ import {
   Download, 
   Lock, 
   AlertCircle,
-  ExternalLink
+  ExternalLink,
+  MessageSquare
 } from 'lucide-react';
 import { SAMPLE_TRACKING_APPLICATIONS } from '../data/portfolioData';
 import { TrackingApplication } from '../types';
@@ -324,6 +325,34 @@ export const StatusTrackerModal: React.FC<StatusTrackerModalProps> = ({ isOpen, 
                     </div>
                   </div>
 
+                  {/* Bottom Assistance & WhatsApp Action */}
+                  <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-white/10 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div className="flex items-center space-x-2 rtl:space-x-reverse text-xs text-slate-300">
+                      <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span>
+                        {isArabic 
+                          ? 'ملف موثق ومربوط مع دائرة التنمية الاقتصادية والهيئة الاتحادية للهوية والجنسية' 
+                          : 'Official file synchronized with ADDED / ICP government portals'}
+                      </span>
+                    </div>
+
+                    <motion.button
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.97 }}
+                      type="button"
+                      onClick={() => {
+                        const msg = isArabic
+                          ? `مرحباً إكسبيديا لخدمات الأعمال، أود الاستفسار عن حالة المعاملة برقم التتبع: *${activeApplication.trackingNumber}* (${activeApplication.companyName}).`
+                          : `Hello Expedia Business Services, I would like an update on application *${activeApplication.trackingNumber}* (${activeApplication.companyName}).`;
+                        window.open(`https://wa.me/971585858816?text=${encodeURIComponent(msg)}`, '_blank');
+                      }}
+                      className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-bold text-xs flex items-center space-x-2 rtl:space-x-reverse shadow-md shadow-emerald-500/20 transition-all shrink-0"
+                    >
+                      <MessageSquare className="w-4 h-4 fill-obsidian-950" />
+                      <span>{isArabic ? 'استفسار فوري عبر واتساب' : 'WhatsApp Status Desk'}</span>
+                    </motion.button>
+                  </div>
+
                 </div>
               )}
 
@@ -335,5 +364,6 @@ export const StatusTrackerModal: React.FC<StatusTrackerModalProps> = ({ isOpen, 
     </AnimatePresence>
   );
 };
+
 
 

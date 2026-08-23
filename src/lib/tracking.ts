@@ -9,7 +9,8 @@ export type TrackingEvent =
   | 'status_tracker_search'
   | 'jurisdiction_select'
   | 'page_view_dedicated'
-  | 'dedicated_page_whatsapp';
+  | 'dedicated_page_whatsapp'
+  | 'quotation_print';
 
 export function trackConversion(event: TrackingEvent, params?: Record<string, any>) {
   console.log(`[Expedia Analytics] Event Triggered: ${event}`, params || {});

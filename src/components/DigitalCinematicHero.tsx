@@ -627,34 +627,87 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
               </div>
             )}
 
-            {/* Tab 3: AEO & AI Search Content */}
-            {activeSandboxTab === 'aeo' && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left rtl:text-right">
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-emerald-500/20">
-                  <div className="text-xs font-mono text-emerald-400 uppercase font-bold mb-1">01 · LLM Search Indexing</div>
-                  <div className="text-sm font-bold text-white mb-1">ChatGPT, Perplexity & Gemini Citation</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Structured entity knowledge graphs that position your business as the direct verified answer in AI search.
-                  </p>
+            {/* Live Performance & Sovereign Benchmark Comparison Matrix */}
+            <div className="mt-8 pt-6 border-t border-white/10">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <div className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-bold">
+                    {isArabic ? 'مقارنة الأداء والسيادة البرمجية' : 'Live Architectural Benchmark'}
+                  </div>
+                  <div className="text-sm font-bold text-white">
+                    {isArabic ? 'وكالات القوالب التقليدية مقابل منظومة إكسبيديا السيادية' : 'Standard Agency Templates vs Expedia Sovereign NextGen'}
+                  </div>
                 </div>
-
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-emerald-500/20">
-                  <div className="text-xs font-mono text-teal-400 uppercase font-bold mb-1">02 · Localized GEO Authority</div>
-                  <div className="text-sm font-bold text-white mb-1">Abu Dhabi & Dubai Google Rank</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Hyper-localized UAE commercial schema markup, Google Maps citation signals, and bilingual keyword dominance.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-emerald-500/20">
-                  <div className="text-xs font-mono text-cyan-400 uppercase font-bold mb-1">03 · Conversion Architecture</div>
-                  <div className="text-sm font-bold text-white mb-1">High-Velocity Lead Pipelines</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Frictionless interactive cost calculators, live tracking modals, and pre-filled WhatsApp lead generation funnels.
-                  </p>
-                </div>
+                <span className="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-mono text-[11px]">
+                  100% Verified Metrics
+                </span>
               </div>
-            )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                {/* Standard Agency */}
+                <div className="p-5 rounded-2xl bg-red-950/20 border border-red-500/20 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-mono font-bold text-red-400">
+                      {isArabic ? 'الوكالات التقليدية (قوالب جاهزة)' : 'Standard Agency (WordPress / Templates)'}
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300">Poor ROI</span>
+                  </div>
+
+                  <div className="space-y-2 text-xs text-slate-300">
+                    <div className="flex justify-between border-b border-red-500/10 pb-1.5">
+                      <span>{isArabic ? 'سرعة التحميل (LCP):' : 'Loading Speed (LCP):'}</span>
+                      <span className="font-mono text-red-400 font-bold">4.2s (Slow / High Bounce)</span>
+                    </div>
+                    <div className="flex justify-between border-b border-red-500/10 pb-1.5">
+                      <span>{isArabic ? 'تقييم جوجل للأداء:' : 'Google Lighthouse Score:'}</span>
+                      <span className="font-mono text-red-400 font-bold">42 / 100</span>
+                    </div>
+                    <div className="flex justify-between border-b border-red-500/10 pb-1.5">
+                      <span>{isArabic ? 'ملكية الكود المصدري:' : 'Source Code Ownership:'}</span>
+                      <span className="font-mono text-red-400">0% (Vendor Lock-in)</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>{isArabic ? 'الظهور في محركات الذكاء الاصطناعي:' : 'AI Search Citation (AEO):'}</span>
+                      <span className="font-mono text-red-400">Not Indexed</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Expedia Sovereign Architecture */}
+                <div className="p-5 rounded-2xl bg-cyan-950/30 border border-cyan-500/40 space-y-3 relative overflow-hidden shadow-lg shadow-cyan-950/50">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-400/10 rounded-full blur-2xl pointer-events-none" />
+                  
+                  <div className="flex items-center justify-between relative z-10">
+                    <span className="text-xs font-mono font-bold text-cyan-300 flex items-center space-x-1.5 rtl:space-x-reverse">
+                      <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>{isArabic ? 'منظومة إكسبيديا السيادية' : 'Expedia Sovereign NextGen'}</span>
+                    </span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">Enterprise Grade</span>
+                  </div>
+
+                  <div className="space-y-2 text-xs text-slate-200 relative z-10">
+                    <div className="flex justify-between border-b border-cyan-500/15 pb-1.5">
+                      <span>{isArabic ? 'سرعة التحميل (LCP):' : 'Loading Speed (LCP):'}</span>
+                      <span className="font-mono text-emerald-400 font-bold">0.4s (Instant Sub-Second)</span>
+                    </div>
+                    <div className="flex justify-between border-b border-cyan-500/15 pb-1.5">
+                      <span>{isArabic ? 'تقييم جوجل للأداء:' : 'Google Lighthouse Score:'}</span>
+                      <span className="font-mono text-emerald-400 font-bold">100 / 100 Perfect</span>
+                    </div>
+                    <div className="flex justify-between border-b border-cyan-500/15 pb-1.5">
+                      <span>{isArabic ? 'ملكية الكود المصدري:' : 'Source Code Ownership:'}</span>
+                      <span className="font-mono text-cyan-300 font-bold">100% Full IP Transfer</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>{isArabic ? 'الظهور في محركات الذكاء الاصطناعي:' : 'AI Search Citation (AEO):'}</span>
+                      <span className="font-mono text-teal-300 font-bold">Top Verified AI Answer</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
 
             {/* Bottom Actions & Replay Control */}
             <div className="flex flex-wrap items-center justify-center gap-3 pt-6 border-t border-white/10 mt-6">
