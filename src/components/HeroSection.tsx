@@ -171,44 +171,44 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Eyebrow badge with glowing border beam */}
-        <motion.div 
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-wrap items-center justify-center gap-3 mb-6"
-        >
-          <div className="relative inline-flex items-center space-x-2 rtl:space-x-reverse px-4 py-1.5 rounded-full bg-obsidian-900/95 border border-white/15 text-xs backdrop-blur-md shadow-2xl overflow-hidden">
-            <BorderBeam size={180} duration={8} colorFrom="#10b981" colorTo="#06b6d4" />
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span className="text-slate-200 font-medium tracking-wide">
-              {mode === 'corporate' ? tHero.corporate.badge : tHero.digital.badge}
-            </span>
-            <span className="text-slate-600">|</span>
-            <span className="text-emerald-400 font-mono font-semibold">
-              {isArabic ? 'رقم الترخيص: ' : 'Lic: '}CN-6307408
-            </span>
-          </div>
+        {/* Eyebrow badge & Title in Corporate Mode */}
+        {mode === 'corporate' && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="flex flex-wrap items-center justify-center gap-3 mb-6"
+            >
+              <div className="relative inline-flex items-center space-x-2 rtl:space-x-reverse px-4 py-1.5 rounded-full bg-obsidian-900/95 border border-white/15 text-xs backdrop-blur-md shadow-2xl overflow-hidden">
+                <BorderBeam size={180} duration={8} colorFrom="#10b981" colorTo="#06b6d4" />
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <span className="text-slate-200 font-medium tracking-wide">
+                  {tHero.corporate.badge}
+                </span>
+                <span className="text-slate-600">|</span>
+                <span className="text-emerald-400 font-mono font-semibold">
+                  {isArabic ? 'رقم الترخيص: ' : 'Lic: '}CN-6307408
+                </span>
+              </div>
 
-          <div className="hidden sm:inline-flex items-center space-x-1.5 rtl:space-x-reverse px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-slate-300">
-            <MapPin className="w-3 h-3 text-goldMuted" />
-            <span>{isArabic ? 'هايبو، أبوظبي مول' : 'Haibu, Abu Dhabi Mall'}</span>
-          </div>
-        </motion.div>
+              <div className="hidden sm:inline-flex items-center space-x-1.5 rtl:space-x-reverse px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs text-slate-300">
+                <MapPin className="w-3 h-3 text-goldMuted" />
+                <span>{isArabic ? 'هايبو، أبوظبي مول' : 'Haibu, Abu Dhabi Mall'}</span>
+              </div>
+            </motion.div>
 
-        {/* Hero Title & Kinetic Rotating Line */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-center max-w-4xl mx-auto mb-8"
-        >
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-white leading-[1.15] mb-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]">
-            {mode === 'corporate' ? (
-              <>
+            {/* Corporate Hero Title & Kinetic Rotating Line */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="text-center max-w-4xl mx-auto mb-8"
+            >
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-white leading-[1.15] mb-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]">
                 {tHero.corporate.titleMain}{' '}
                 <span className="block h-[1.3em] relative overflow-hidden">
                   <AnimatePresence mode="wait">
@@ -224,32 +224,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                     </motion.span>
                   </AnimatePresence>
                 </span>
-              </>
-            ) : (
-              <>
-                {tHero.digital.titleMain}{' '}
-                <span className="block h-[1.3em] relative overflow-hidden">
-                  <AnimatePresence mode="wait">
-                    <motion.span 
-                      key={rotatingIndex}
-                      initial={{ y: 30, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      exit={{ y: -30, opacity: 0 }}
-                      transition={{ duration: 0.45, ease: [0.21, 0.47, 0.32, 0.98] }}
-                      className="absolute inset-0 text-gradient-digital font-extrabold"
-                    >
-                      {digitalHeadlines[rotatingIndex]}
-                    </motion.span>
-                  </AnimatePresence>
-                </span>
-              </>
-            )}
-          </h1>
+              </h1>
 
-          <p className="text-base sm:text-xl text-slate-200 max-w-3xl mx-auto font-normal leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
-            {mode === 'corporate' ? tHero.corporate.subtitle : tHero.digital.subtitle}
-          </p>
-        </motion.div>
+              <p className="text-base sm:text-xl text-slate-200 max-w-3xl mx-auto font-normal leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+                {tHero.corporate.subtitle}
+              </p>
+            </motion.div>
+          </>
+        )}
 
         {/* Dual-Engine Mode Switcher Banner (Interactive Middle Card) */}
         <motion.div 
@@ -408,6 +390,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <DigitalCinematicHero 
               isArabic={isArabic}
               onLogoDocked={onLogoDocked}
+              onOpenEstimator={onOpenEstimator}
+              onOpenTracker={onOpenTracker}
               onExploreServices={() => {
                 const s = document.getElementById('services');
                 s?.scrollIntoView({ behavior: 'smooth' });
