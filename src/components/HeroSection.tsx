@@ -96,7 +96,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden min-h-[85vh] flex flex-col justify-center">
       
-      {/* Dual Cinematic Ambient Video Backgrounds */}
+      {/* Dual Background Engines */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 transition-opacity duration-1000">
         {mode === 'corporate' ? (
           <>
@@ -116,21 +116,45 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="absolute inset-0 bg-radial-at-c from-transparent via-obsidian-950/25 to-obsidian-950/70" />
           </>
         ) : (
-          <>
-            <video
-              key="digital-video"
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover opacity-60 sm:opacity-75 scale-105 filter contrast-[1.2] saturate-[1.3] brightness-105 animate-fade-in"
-            >
-              <source src="/digital-studio-hero.mp4" type="video/mp4" />
-            </video>
-            {/* Cybernetic Digital Transparency Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-obsidian-950/60 via-obsidian-950/30 to-obsidian-950" />
-            <div className="absolute inset-0 bg-radial-at-c from-cyan-950/20 via-obsidian-950/40 to-obsidian-950/85" />
-          </>
+          <div className="absolute inset-0 bg-obsidian-950 overflow-hidden">
+            {/* Cybernetic High-Tech Perspective Matrix Grid */}
+            <div 
+              className="absolute inset-0 opacity-25"
+              style={{
+                backgroundImage: `
+                  linear-gradient(to right, rgba(6, 182, 212, 0.15) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(6, 182, 212, 0.15) 1px, transparent 1px)
+                `,
+                backgroundSize: '48px 48px',
+                maskImage: 'radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 80%)',
+                WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 80%)'
+              }}
+            />
+
+            {/* Glowing Cyber Neural Streams */}
+            <motion.div 
+              animate={{ 
+                scale: [1, 1.15, 1],
+                opacity: [0.3, 0.5, 0.3],
+                rotate: [0, 45, 0]
+              }}
+              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-1/4 left-1/3 w-[550px] h-[550px] bg-gradient-to-tr from-cyan-500/20 via-indigo-500/15 to-transparent rounded-full blur-[100px]"
+            />
+            <motion.div 
+              animate={{ 
+                scale: [1.15, 1, 1.15],
+                opacity: [0.25, 0.45, 0.25],
+                rotate: [45, 0, 45]
+              }}
+              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-gradient-to-bl from-purple-500/20 via-cyan-500/15 to-transparent rounded-full blur-[120px]"
+            />
+
+            {/* Matrix Depth Vignette */}
+            <div className="absolute inset-0 bg-gradient-to-b from-obsidian-950/70 via-transparent to-obsidian-950" />
+            <div className="absolute inset-0 bg-radial-at-c from-transparent via-obsidian-950/40 to-obsidian-950/90" />
+          </div>
         )}
       </div>
 
