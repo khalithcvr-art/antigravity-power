@@ -96,24 +96,43 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden min-h-[85vh] flex flex-col justify-center">
       
-      {/* Dubai Skyline Ambient Video Background (Corporate Mode Only) */}
-      {mode === 'corporate' && (
-        <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 transition-opacity duration-1000">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            poster="/hero-skyline-1.jpg"
-            className="w-full h-full object-cover opacity-80 sm:opacity-90 scale-100 filter contrast-[1.15] saturate-[1.4] brightness-105 animate-fade-in"
-          >
-            <source src="/dubai-skyline-hero.mp4" type="video/mp4" />
-          </video>
-          {/* High Definition Transparency Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-obsidian-950/40 via-obsidian-950/20 to-obsidian-950" />
-          <div className="absolute inset-0 bg-radial-at-c from-transparent via-obsidian-950/25 to-obsidian-950/70" />
-        </div>
-      )}
+      {/* Dual Cinematic Ambient Video Backgrounds */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0 transition-opacity duration-1000">
+        {mode === 'corporate' ? (
+          <>
+            <video
+              key="corp-video"
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster="/hero-skyline-1.jpg"
+              className="w-full h-full object-cover opacity-80 sm:opacity-90 scale-100 filter contrast-[1.15] saturate-[1.4] brightness-105 animate-fade-in"
+            >
+              <source src="/dubai-skyline-hero.mp4" type="video/mp4" />
+            </video>
+            {/* High Definition Corporate Transparency Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-obsidian-950/40 via-obsidian-950/20 to-obsidian-950" />
+            <div className="absolute inset-0 bg-radial-at-c from-transparent via-obsidian-950/25 to-obsidian-950/70" />
+          </>
+        ) : (
+          <>
+            <video
+              key="digital-video"
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="w-full h-full object-cover opacity-60 sm:opacity-75 scale-105 filter contrast-[1.2] saturate-[1.3] brightness-105 animate-fade-in"
+            >
+              <source src="/digital-studio-hero.mp4" type="video/mp4" />
+            </video>
+            {/* Cybernetic Digital Transparency Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-obsidian-950/60 via-obsidian-950/30 to-obsidian-950" />
+            <div className="absolute inset-0 bg-radial-at-c from-cyan-950/20 via-obsidian-950/40 to-obsidian-950/85" />
+          </>
+        )}
+      </div>
 
       {/* Background radial glows */}
       <div className={`absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full blur-[120px] pointer-events-none transition-all duration-1000 z-0 ${
