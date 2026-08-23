@@ -107,7 +107,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               muted
               playsInline
               poster="/hero-skyline-1.jpg"
-              className="w-full h-full object-cover opacity-80 sm:opacity-90 scale-100 filter contrast-[1.15] saturate-[1.4] brightness-105 animate-fade-in"
+              className="w-full h-full object-cover opacity-85 sm:opacity-95 scale-100 filter contrast-[1.15] saturate-[1.4] brightness-105 animate-fade-in"
             >
               <source src="/dubai-skyline-hero.mp4" type="video/mp4" />
             </video>
@@ -117,50 +117,63 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </>
         ) : (
           <div className="absolute inset-0 bg-obsidian-950 overflow-hidden">
-            {/* Cybernetic High-Tech Perspective Matrix Grid */}
+            {/* Vivid High-Tech Cyber Skyline Video */}
+            <video
+              key="digital-video"
+              autoPlay
+              loop
+              muted
+              playsInline
+              poster="/hero-skyline-2.jpg"
+              className="w-full h-full object-cover opacity-85 sm:opacity-95 scale-100 filter contrast-[1.25] saturate-[1.5] brightness-110 hue-rotate-[185deg] animate-fade-in"
+            >
+              <source src="/dubai-skyline-hero.mp4" type="video/mp4" />
+            </video>
+
+            {/* Cybernetic High-Tech Perspective Matrix Grid Overlay */}
             <div 
-              className="absolute inset-0 opacity-25"
+              className="absolute inset-0 opacity-30 mix-blend-screen pointer-events-none"
               style={{
                 backgroundImage: `
-                  linear-gradient(to right, rgba(6, 182, 212, 0.15) 1px, transparent 1px),
-                  linear-gradient(to bottom, rgba(6, 182, 212, 0.15) 1px, transparent 1px)
+                  linear-gradient(to right, rgba(6, 182, 212, 0.25) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(6, 182, 212, 0.25) 1px, transparent 1px)
                 `,
                 backgroundSize: '48px 48px',
-                maskImage: 'radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 80%)',
-                WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 50% 40%, black 30%, transparent 80%)'
+                maskImage: 'radial-gradient(ellipse 85% 65% at 50% 40%, black 40%, transparent 85%)',
+                WebkitMaskImage: 'radial-gradient(ellipse 85% 65% at 50% 40%, black 40%, transparent 85%)'
               }}
             />
 
-            {/* Glowing Cyber Neural Streams */}
+            {/* Glowing Cyber Neural Streams & Laser Pulses */}
             <motion.div 
               animate={{ 
-                scale: [1, 1.15, 1],
-                opacity: [0.3, 0.5, 0.3],
+                scale: [1, 1.2, 1],
+                opacity: [0.35, 0.6, 0.35],
                 rotate: [0, 45, 0]
               }}
-              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-1/4 left-1/3 w-[550px] h-[550px] bg-gradient-to-tr from-cyan-500/20 via-indigo-500/15 to-transparent rounded-full blur-[100px]"
+              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-tr from-cyan-500/30 via-indigo-500/25 to-transparent rounded-full blur-[90px] mix-blend-screen pointer-events-none"
             />
             <motion.div 
               animate={{ 
-                scale: [1.15, 1, 1.15],
-                opacity: [0.25, 0.45, 0.25],
+                scale: [1.2, 1, 1.2],
+                opacity: [0.3, 0.55, 0.3],
                 rotate: [45, 0, 45]
               }}
-              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-gradient-to-bl from-purple-500/20 via-cyan-500/15 to-transparent rounded-full blur-[120px]"
+              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute bottom-1/4 right-1/4 w-[550px] h-[550px] bg-gradient-to-bl from-teal-400/25 via-cyan-500/25 to-purple-600/30 rounded-full blur-[100px] mix-blend-screen pointer-events-none"
             />
 
             {/* Matrix Depth Vignette */}
-            <div className="absolute inset-0 bg-gradient-to-b from-obsidian-950/70 via-transparent to-obsidian-950" />
-            <div className="absolute inset-0 bg-radial-at-c from-transparent via-obsidian-950/40 to-obsidian-950/90" />
+            <div className="absolute inset-0 bg-gradient-to-b from-obsidian-950/45 via-obsidian-950/15 to-obsidian-950" />
+            <div className="absolute inset-0 bg-radial-at-c from-transparent via-cyan-950/20 to-obsidian-950/70" />
           </div>
         )}
       </div>
 
       {/* Background radial glows */}
       <div className={`absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[650px] rounded-full blur-[120px] pointer-events-none transition-all duration-1000 z-0 ${
-        mode === 'corporate' ? 'bg-emerald-500/10' : 'bg-cyan-500/12'
+        mode === 'corporate' ? 'bg-emerald-500/10' : 'bg-cyan-500/15'
       }`} />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
