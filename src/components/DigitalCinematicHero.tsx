@@ -699,30 +699,30 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
                 {/* Standard Agency */}
-                <div className="p-5 rounded-2xl bg-red-950/20 border border-red-500/20 space-y-3">
+                <div className="p-5 rounded-2xl bg-obsidian-950/60 border border-white/10 space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono font-bold text-red-400">
+                    <span className="text-xs font-mono font-bold text-slate-400">
                       {isArabic ? 'الوكالات التقليدية (قوالب جاهزة)' : 'Standard Agency (WordPress / Templates)'}
                     </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-red-500/20 text-red-300">Poor ROI</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400/80 border border-amber-500/20">Limited ROI</span>
                   </div>
 
-                  <div className="space-y-2 text-xs text-slate-300">
-                    <div className="flex justify-between border-b border-red-500/10 pb-1.5">
+                  <div className="space-y-2 text-xs text-slate-400">
+                    <div className="flex justify-between border-b border-white/5 pb-1.5">
                       <span>{isArabic ? 'سرعة التحميل (LCP):' : 'Loading Speed (LCP):'}</span>
-                      <span className="font-mono text-red-400 font-bold">4.2s (Slow / High Bounce)</span>
+                      <span className="font-mono text-amber-400/80 font-semibold">4.2s (Slow)</span>
                     </div>
-                    <div className="flex justify-between border-b border-red-500/10 pb-1.5">
+                    <div className="flex justify-between border-b border-white/5 pb-1.5">
                       <span>{isArabic ? 'تقييم جوجل للأداء:' : 'Google Lighthouse Score:'}</span>
-                      <span className="font-mono text-red-400 font-bold">42 / 100</span>
+                      <span className="font-mono text-amber-400/80 font-semibold">42 / 100</span>
                     </div>
-                    <div className="flex justify-between border-b border-red-500/10 pb-1.5">
+                    <div className="flex justify-between border-b border-white/5 pb-1.5">
                       <span>{isArabic ? 'ملكية الكود المصدري:' : 'Source Code Ownership:'}</span>
-                      <span className="font-mono text-red-400">0% (Vendor Lock-in)</span>
+                      <span className="font-mono text-slate-500">0% (Vendor Lock-in)</span>
                     </div>
                     <div className="flex justify-between">
                       <span>{isArabic ? 'الظهور في محركات الذكاء الاصطناعي:' : 'AI Search Citation (AEO):'}</span>
-                      <span className="font-mono text-red-400">Not Indexed</span>
+                      <span className="font-mono text-slate-500">Not Indexed</span>
                     </div>
                   </div>
                 </div>
