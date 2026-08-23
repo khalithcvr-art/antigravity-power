@@ -120,56 +120,46 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </>
         ) : (
           <div className="absolute inset-0 bg-obsidian-950 overflow-hidden">
-            {/* Vivid High-Tech Cyber Skyline Video */}
-            <video
-              key="digital-video"
-              autoPlay
-              loop
-              muted
-              playsInline
-              poster="/hero-skyline-2.jpg"
-              className="w-full h-full object-cover opacity-85 sm:opacity-95 scale-100 filter contrast-[1.25] saturate-[1.5] brightness-110 hue-rotate-[185deg] animate-fade-in"
-            >
-              <source src="/dubai-skyline-hero.mp4" type="video/mp4" />
-            </video>
-
-            {/* Cybernetic High-Tech Perspective Matrix Grid Overlay */}
+            {/* Pure Code-Driven Cybernetic Matrix & Laser Grid (Zero Video) */}
             <div 
-              className="absolute inset-0 opacity-30 mix-blend-screen pointer-events-none"
+              className="absolute inset-0 opacity-45 mix-blend-screen pointer-events-none"
               style={{
                 backgroundImage: `
-                  linear-gradient(to right, rgba(6, 182, 212, 0.25) 1px, transparent 1px),
-                  linear-gradient(to bottom, rgba(6, 182, 212, 0.25) 1px, transparent 1px)
+                  linear-gradient(to right, rgba(6, 182, 212, 0.3) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(99, 102, 241, 0.25) 1px, transparent 1px)
                 `,
-                backgroundSize: '48px 48px',
-                maskImage: 'radial-gradient(ellipse 85% 65% at 50% 40%, black 40%, transparent 85%)',
-                WebkitMaskImage: 'radial-gradient(ellipse 85% 65% at 50% 40%, black 40%, transparent 85%)'
+                backgroundSize: '40px 40px',
+                maskImage: 'radial-gradient(ellipse 90% 70% at 50% 45%, black 40%, transparent 90%)',
+                WebkitMaskImage: 'radial-gradient(ellipse 90% 70% at 50% 45%, black 40%, transparent 90%)'
               }}
             />
 
             {/* Glowing Cyber Neural Streams & Laser Pulses */}
             <motion.div 
               animate={{ 
-                scale: [1, 1.2, 1],
-                opacity: [0.35, 0.6, 0.35],
-                rotate: [0, 45, 0]
+                scale: [1, 1.25, 1],
+                opacity: [0.4, 0.7, 0.4],
+                rotate: [0, 90, 0]
               }}
-              transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-gradient-to-tr from-cyan-500/30 via-indigo-500/25 to-transparent rounded-full blur-[90px] mix-blend-screen pointer-events-none"
+              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute top-1/6 left-1/5 w-[600px] h-[600px] bg-gradient-to-tr from-cyan-500/25 via-indigo-600/20 to-transparent rounded-full blur-[110px] mix-blend-screen pointer-events-none"
             />
             <motion.div 
               animate={{ 
                 scale: [1.2, 1, 1.2],
-                opacity: [0.3, 0.55, 0.3],
-                rotate: [45, 0, 45]
+                opacity: [0.35, 0.65, 0.35],
+                rotate: [90, 0, 90]
               }}
-              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute bottom-1/4 right-1/4 w-[550px] h-[550px] bg-gradient-to-bl from-teal-400/25 via-cyan-500/25 to-purple-600/30 rounded-full blur-[100px] mix-blend-screen pointer-events-none"
+              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute bottom-1/5 right-1/5 w-[650px] h-[650px] bg-gradient-to-bl from-teal-400/20 via-cyan-500/25 to-purple-600/25 rounded-full blur-[120px] mix-blend-screen pointer-events-none"
             />
 
+            {/* Hexagonal Tech Matrix Glow Points */}
+            <div className="absolute inset-0 bg-[radial-gradient(#06b6d4_1px,transparent_1px)] [background-size:32px_32px] opacity-25 pointer-events-none" />
+
             {/* Matrix Depth Vignette */}
-            <div className="absolute inset-0 bg-gradient-to-b from-obsidian-950/45 via-obsidian-950/15 to-obsidian-950" />
-            <div className="absolute inset-0 bg-radial-at-c from-transparent via-cyan-950/20 to-obsidian-950/70" />
+            <div className="absolute inset-0 bg-gradient-to-b from-obsidian-950/60 via-obsidian-950/20 to-obsidian-950" />
+            <div className="absolute inset-0 bg-radial-at-c from-transparent via-cyan-950/30 to-obsidian-950/90" />
           </div>
         )}
       </div>
