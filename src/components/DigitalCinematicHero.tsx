@@ -528,14 +528,17 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
               <span>{tNav.whatsappDirect}</span>
             </motion.button>
 
-            {/* Button 3: Sweeps in from RIGHT */}
+            {/* Button 3: Sweeps in from RIGHT — scrolls to Digital Tech Pillars */}
             <motion.button
               initial={{ opacity: 0, x: 70 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.97 }}
-              onClick={onOpenTracker}
+              onClick={() => {
+                const el = document.getElementById('services');
+                el?.scrollIntoView({ behavior: 'smooth' });
+              }}
               className="w-full sm:w-auto px-5 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-sm font-semibold flex items-center justify-center space-x-2 rtl:space-x-reverse transition-all"
             >
               <Zap className="w-4 h-4 text-cyan-400" />
