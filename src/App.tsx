@@ -140,17 +140,20 @@ export function App() {
               />
 
               <JurisdictionTable
+                mode={mode}
                 onOpenEstimator={() => setIsEstimatorOpen(true)}
                 isArabic={isArabic}
                 onNavigateSlug={handleNavigateSlug}
               />
 
               <TrustPartners 
+                mode={mode}
                 isArabic={isArabic}
                 onNavigateSlug={handleNavigateSlug}
               />
 
               <FaqSection
+                mode={mode}
                 isArabic={isArabic}
               />
 

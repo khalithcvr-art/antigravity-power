@@ -20,27 +20,111 @@ interface SetupJourneyProps {
   isArabic?: boolean;
 }
 
-export const SetupJourney: React.FC<SetupJourneyProps> = ({ onOpenEstimator, isArabic = false }) => {
+export const SetupJourney: React.FC<SetupJourneyProps> = ({ mode = 'corporate', onOpenEstimator, isArabic = false }) => {
   const [activeStep, setActiveStep] = useState(0);
-  const t = isArabic ? TRANSLATIONS.ar.journey : TRANSLATIONS.en.journey;
+  const tCorp = isArabic ? TRANSLATIONS.ar.journey : TRANSLATIONS.en.journey;
 
-  const steps = [
+  const corporateSteps = [
     {
-      ...t.steps[0],
+      ...tCorp.steps[0],
       icon: Building2,
       color: 'emerald',
     },
     {
-      ...t.steps[1],
+      ...tCorp.steps[1],
       icon: FileCheck2,
       color: 'cyan',
     },
     {
-      ...t.steps[2],
+      ...tCorp.steps[2],
       icon: Rocket,
       color: 'indigo',
     }
   ];
+
+  const digitalSteps = [
+    {
+      number: '01',
+      title: isArabic ? 'هندسة العلامة وتصميم واجهات المستخدم' : 'Brand Architecture & UI/UX Design System',
+      subtitle: isArabic ? 'تصميم تجربة مستخدم فاخرة وثنائية اللغة' : 'Bespoke Figma Prototypes & RTL Typography',
+      timeline: isArabic ? '1-3 أيام' : '1–3 Days',
+      authorityTag: isArabic ? 'معايير واجهات المستخدم 60fps' : '60FPS UI/UX Architecture',
+      summary: isArabic ? 'هندسة الهوية البصرية، واجهات تفاعلية 60fps، وخطوط عربية مخصصة تحاكي كبرى الشركات العالمية.' : 'High-fidelity interactive prototypes, responsive Arabic-English design tokens, and luxury UAE aesthetic.',
+      details: isArabic ? [
+        'نظام تصميم متكامل ومكونات تفاعلية في Figma',
+        'مواءمة طباعية احترافية للغتين العربية والإنجليزية',
+        'مسارات تحويل العملاء وحاسبات تفاعلية مخصصة',
+        'واجهات متوافقة 100% مع الهواتف الذكية والأجهزة اللوحية'
+      ] : [
+        'Design system & interactive Figma component library',
+        'Bilingual Arabic-English typographic hierarchy',
+        'Conversion-optimized user funnels & live calculation tools',
+        'Mobile-first responsive touch interfaces'
+      ],
+      icon: Building2,
+      color: 'cyan',
+    },
+    {
+      number: '02',
+      title: isArabic ? 'التطوير البرمجي والأتمتة الذكية' : 'Full-Stack Engineering & AI Automation',
+      subtitle: isArabic ? 'تطبيقات Next.js 15 وربط واتساب وقواعد البيانات' : 'Next.js 15, Supabase & WhatsApp Bots',
+      timeline: isArabic ? '3-7 أيام' : '3–7 Days',
+      authorityTag: isArabic ? 'هندسة السحابة الآمنة' : 'Sovereign Cloud & AI API',
+      summary: isArabic ? 'برمجة خادم سريعة، ربط بوابات الدفع الإماراتية (Stripe/Network)، وتفعيل روبوتات واتساب الآلية للرد على العملاء.' : 'High-performance React/TypeScript frontend, PostgreSQL database isolation, and automated WhatsApp CRM pipelines.',
+      details: isArabic ? [
+        'تطوير الواجهات بمحرك Next.js 15 فائق السرعة',
+        'عزل بيانات العملاء في قواعد بيانات Supabase PostgreSQL',
+        'ربط واتساب للأعمال لاستقبال وتوزيع العملاء آلياً',
+        'تكامل بوابات الدفع الإلكتروني المعتمدة في الإمارات'
+      ] : [
+        'Sub-second Next.js 15 Server Components architecture',
+        'Supabase PostgreSQL multi-tenant data isolation',
+        'WhatsApp Cloud API autonomous lead response & booking',
+        'Automated quotation, invoice, and payment gateway bridges'
+      ],
+      icon: FileCheck2,
+      color: 'indigo',
+    },
+    {
+      number: '03',
+      title: isArabic ? 'النشر السحابي والسيطرة على محركات البحث' : 'Sovereign Cloud & SEO/AEO Domination',
+      subtitle: isArabic ? 'سرعة فائقة وتصدر نتائج الذكاء الاصطناعي' : 'Edge Deployment & AI Search Optimization',
+      timeline: isArabic ? '1-2 يوم' : '1–2 Days',
+      authorityTag: isArabic ? 'الظهور في Google و ChatGPT' : 'Google & ChatGPT AEO Ready',
+      summary: isArabic ? 'استضافة سحابية على شبكة Cloudflare/Vercel بزمن استجابة أقل من 15ms، وتضمين مخططات Schema لضمان الظهور في ChatGPT وPerplexity.' : 'Edge CDN deployment across GCC nodes (<12ms latency), complete JSON-LD semantic graphs, and 100% Core Web Vitals score.',
+      details: isArabic ? [
+        'نشر على خوادم سريعة في الإمارات والخليج بزمن استجابة < 12ms',
+        'هيكلة بيانات Schema.org للتصدر في Google و ChatGPT و Perplexity',
+        'درجة 100% في مقاييس الأداء الأساسية (Core Web Vitals)',
+        'تسليم الشيفرة البرمجية والملكية الفكرية الكاملة 100% للعميل'
+      ] : [
+        'GCC Edge deployment with sub-12ms latency',
+        'Complete JSON-LD semantic schema for Google & AI search engines',
+        'Sub-second Largest Contentful Paint (LCP < 0.4s)',
+        '100% Full source code handover and client IP ownership'
+      ],
+      icon: Rocket,
+      color: 'purple',
+    }
+  ];
+
+  const steps = mode === 'corporate' ? corporateSteps : digitalSteps;
+
+  const headerBadge = mode === 'corporate' 
+    ? tCorp.badge 
+    : (isArabic ? 'دورة التطوير الهندسي السريع' : 'Agile Engineering & Deployment Sprint');
+  
+  const headerTitle = mode === 'corporate'
+    ? tCorp.title
+    : (isArabic ? 'خريطة الطريق لإطلاق' : '3-Phase Roadmap to');
+  
+  const headerTitleHighlight = mode === 'corporate'
+    ? tCorp.titleHighlight
+    : (isArabic ? 'منصتك الرقمية السيادية' : 'Your Sovereign Digital Platform');
+  
+  const headerSubtitle = mode === 'corporate'
+    ? tCorp.subtitle
+    : (isArabic ? 'من هيكلة الهوية والتصميم التفاعلي إلى الأتمتة السحابية والانتشار في محركات البحث.' : 'From bespoke architecture and UI/UX design to full-stack cloud automation and search engine domination.');
 
   const ArrowIcon = isArabic ? ArrowLeft : ArrowRight;
 
@@ -52,15 +136,17 @@ export const SetupJourney: React.FC<SetupJourneyProps> = ({ onOpenEstimator, isA
         <ScrollReveal>
           <div className="text-center max-w-3xl mx-auto mb-16">
             <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-wider text-slate-300 mb-3">
-              <Clock className="w-3.5 h-3.5 text-emerald-400" />
-              <span>{t.badge}</span>
+              <Clock className={`w-3.5 h-3.5 ${mode === 'corporate' ? 'text-emerald-400' : 'text-cyan-400'}`} />
+              <span>{headerBadge}</span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
-              {t.title} <br className="hidden sm:inline" />
-              <span className="text-gradient-emerald">{t.titleHighlight}</span>
+              {headerTitle} <br className="hidden sm:inline" />
+              <span className={mode === 'corporate' ? 'text-gradient-emerald' : 'bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400'}>
+                {headerTitleHighlight}
+              </span>
             </h2>
             <p className="text-slate-400 text-sm sm:text-base mt-4 max-w-2xl mx-auto leading-relaxed">
-              {t.subtitle}
+              {headerSubtitle}
             </p>
           </div>
         </ScrollReveal>
@@ -212,7 +298,7 @@ export const SetupJourney: React.FC<SetupJourneyProps> = ({ onOpenEstimator, isA
                   className="w-full py-3.5 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-display font-bold text-xs flex items-center justify-center space-x-2 rtl:space-x-reverse shadow-lg shadow-emerald-500/20 transition-colors"
                 >
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>{t.ctaButton}</span>
+                  <span>{tCorp.ctaButton}</span>
                   <ArrowIcon className="w-3.5 h-3.5" />
                 </motion.button>
               </div>

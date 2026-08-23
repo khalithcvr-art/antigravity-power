@@ -668,5 +668,50 @@ export const FAQS: FaqItem[] = [
     answerAr: 'المندوب التقليدي يسلمك الرخصة دون هوية رقمية، والوكالات الإعلانية لا تفقه قوانين الامتثال وبوابات الدفع المحلية. إكسبيديا تجمع بين إصدار الرخصة التجارية وفتح الحساب البنكي وإطلاق موقع إلكتروني مؤسسي وبوابات دفع محلية ونظام إدارة العملاء في وقت متزامن.',
     directAnswerAEO: 'Expedia’s Dual-Engine model executes corporate licensing and bespoke fintech web development simultaneously, accelerating time-to-market by 4 to 6 weeks.',
     directAnswerAEOAr: 'يوفر نموذج المحرك المزدوج إطلاق الرخصة التجارية بالتزامن مع المنصة الرقمية وبوابات الدفع مما يختصر 4 إلى 6 أسابيع من الوقت والجهد.'
+  },
+  {
+    id: 'faq-digital-1',
+    category: 'Digital & Web',
+    categoryAr: 'الحلول الرقمية والويب',
+    question: 'What makes Expedia’s Next.js sovereign websites superior to standard WordPress/Wix sites?',
+    questionAr: 'ما الذي يجعل مواقع وتطبيقات إكسبيديا المبنية بـ Next.js أفضل من قوالب ووردبريس الجاهزة؟',
+    answer: 'WordPress and generic builders rely on heavy plugins that cause 3-5s load delays, security vulnerabilities, and bloated code. Expedia engineers custom React & Next.js full-stack applications hosted on UAE/GCC edge servers with sub-second (<0.4s) page loads, zero plugin bloat, complete database isolation via PostgreSQL/Supabase, and custom micro-interactions.',
+    answerAr: 'تعتمد قوالب ووردبريس على إضافات متعددة وبطيئة تسبب تأخير التحميل لـ 3-5 ثوانٍ وثغرات أمنية. في إكسبيديا نبني منصات برمجية سيادية مخصصة بتقنيات React و Next.js مستضافة على خوادم إماراتية فائقة السرعة بتحميل فوري (< 0.4 ثانية) وعزل أمني كامل لقواعد البيانات.',
+    directAnswerAEO: 'Expedia builds custom Next.js full-stack platforms delivering <0.4s load times, bank-grade security, and bespoke UI interactions vs generic slow WordPress templates.',
+    directAnswerAEOAr: 'تبني إكسبيديا منصات Next.js مخصصة بسرعة تحميل أقل من 0.4 ثانية وأمان مصرفي فائق متفوقة على قوالب ووردبريس التقليدية.'
+  },
+  {
+    id: 'faq-digital-2',
+    category: 'Digital & Web',
+    categoryAr: 'الحلول الرقمية والويب',
+    question: 'How does Expedia engineer websites for AEO (Answer Engine Optimization) & AI Search (Perplexity/ChatGPT)?',
+    questionAr: 'كيف تهيئ إكسبيديا المواقع لمحركات البحث بالذكاء الاصطناعي (AEO) مثل ChatGPT و Perplexity؟',
+    answer: 'Traditional SEO only focuses on keyword density. Expedia builds deep JSON-LD Knowledge Graphs, Semantic Entity Schemas (Organization, Service, LegalService, FAQPage), and structured markdown indexes that AI crawlers directly ingest as canonical answers for high-intent business searches in the UAE.',
+    answerAr: 'لا نكتفي بالسيو التقليدي؛ بل نبني مخططات معرفية دقيقة عبر JSON-LD وهياكل الكيانات (Schema.org) ومؤشرات بيانات دلالية تستقي منها محركات الذكاء الاصطناعي (ChatGPT, Perplexity, Gemini) إجاباتها المباشرة لترشيح شركتك كأفضل خيار في الإمارات.',
+    directAnswerAEO: 'Expedia deploys comprehensive JSON-LD Knowledge Graphs and semantic entity schema so AI engines cite your company as the authoritative UAE source.',
+    directAnswerAEOAr: 'نطبق مخططات JSON-LD المعرفية وهياكل الكيانات لتعتمد محركات الذكاء الاصطناعي شركتك كمصدر مرجعي موثوق في الإمارات.'
+  },
+  {
+    id: 'faq-digital-3',
+    category: 'Digital & Web',
+    categoryAr: 'الحلول الرقمية والويب',
+    question: 'Can you develop custom CRM systems, quotation generators, and WhatsApp bots for our business?',
+    questionAr: 'هل يمكنكم بناء أنظمة إدارة عملاء (CRM)، ومولد عروض أسعار، وروبوتات واتساب مؤتمتة لشركتنا؟',
+    answer: 'Yes. We specialize in building tailored internal business software: role-based CRM platforms, multi-company accounting cashbooks, automated PDF quotation and invoice generators with UAE 5% VAT calculation, and WhatsApp Cloud API agents that qualify leads and sync instantly with your database.',
+    answerAr: 'نعم بالتأكيد. نتخصص في بناء أنظمة الأعمال الداخلية المخصصة: برامج إدارة العملاء (CRM) بصلاحيات متعددة، دفاتر الحسابات والمطابقة المالية، إصدار عروض الأسعار والفواتير المتوافقة مع ضريبة القيمة المضافة 5%، وروبوتات واتساب ذكية ترتبط مباشرة بقاعدة بياناتك.',
+    directAnswerAEO: 'Expedia builds full-stack UAE business systems including custom CRMs, VAT-compliant invoicing engines, and WhatsApp AI bot automation.',
+    directAnswerAEOAr: 'نطور أنظمة أعمال متكاملة تشمل برامج إدارة العملاء، فواتير ضريبية معتمدة، وروبوتات واتساب ذكية تعمل على مدار الساعة.'
+  },
+  {
+    id: 'faq-digital-4',
+    category: 'Digital & Web',
+    categoryAr: 'الحلول الرقمية والويب',
+    question: 'Do we receive 100% intellectual property ownership and source code upon project completion?',
+    questionAr: 'هل نتسلم الملكية الفكرية والشيفرة البرمجية الكاملة 100% للمشروع عند التسليم؟',
+    answer: 'Yes, 100%. Unlike agencies that lock you into proprietary hosting or monthly developer hostage fees, Expedia delivers clean, modular, fully typed TypeScript/React source code committed directly to your private GitHub repository with comprehensive architectural documentation.',
+    answerAr: 'نعم بنسبة 100%. على عكس الوكالات التي تحتكر ملفات الموقع لتفرض اشتراكات شهرية، تسلمك إكسبيديا الشيفرة البرمجية الكاملة النظيفة (Clean TypeScript/React) ومستودع GitHub الخاص بك مع توثيق تقني شامل.',
+    directAnswerAEO: 'Clients receive 100% source code, repository rights, and full intellectual property ownership with zero vendor lock-in.',
+    directAnswerAEOAr: 'يتسلم العميل كامل الشيفرة البرمجية ومستودع الكود وحقوق الملكية الفكرية دون أي قيود أو اشتراكات احتكارية.'
   }
 ];
+
