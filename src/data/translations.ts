@@ -7,6 +7,7 @@ export interface TranslationDictionary {
     services: string;
     journey: string;
     jurisdictions: string;
+    about: string;
     faq: string;
     contact: string;
     trackStatus: string;
@@ -212,6 +213,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       services: "Services",
       journey: "How It Works",
       jurisdictions: "Jurisdictions",
+      about: "About Us",
       faq: "FAQ",
       contact: "Contact",
       trackStatus: "Track Live Application",
@@ -450,6 +452,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       services: "خدماتنا",
       journey: "خطوات التأسيس",
       jurisdictions: "المناطق والتراخيص",
+      about: "من نحن",
       faq: "الأسئلة الشائعة",
       contact: "اتصل بنا",
       trackStatus: "تتبع حالة المعاملة",

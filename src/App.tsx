@@ -7,6 +7,7 @@ import { BentoServices } from './components/BentoServices';
 import { SetupJourney } from './components/SetupJourney';
 import { JurisdictionTable } from './components/JurisdictionTable';
 import { TrustPartners } from './components/TrustPartners';
+import { AboutSection } from './components/AboutSection';
 import { FaqSection } from './components/FaqSection';
 import { ContactSection } from './components/ContactSection';
 import { FloatingDock } from './components/FloatingDock';
@@ -150,6 +151,12 @@ export function App() {
                 mode={mode}
                 isArabic={isArabic}
                 onNavigateSlug={handleNavigateSlug}
+              />
+
+              <AboutSection
+                mode={mode}
+                isArabic={isArabic}
+                onOpenEstimator={() => setIsEstimatorOpen(true)}
               />
 
               <FaqSection
