@@ -704,7 +704,8 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
         '1-Visa Package: AED 16,900 turnkey',
         'Activity Flex: Combine up to 7 commercial & service activities',
         'Official Partner: Expedia Business and Services L.L.C (CN-6307408)',
-        'Direct Phone / WhatsApp: +971 58 5858 816'
+        'Direct Call Hotline: +971 56 4425 950',
+        'Direct WhatsApp Channel: +971 58 5858 816'
       ],
       bulletFactsAr: [
         'السلطة المانحة: سلطة المنطقة الحرة الدولية إيفزا (دبي، الإمارات)',
@@ -712,7 +713,8 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
         'باقة التأشيرة الواحدة: 16,900 درهم شاملة',
         'مرونة الأنشطة: دمج حتى 7 أنشطة تجارية وخدمية',
         'الشريك المعتمد: شركة إكسبيديا لخدمات الأعمال ذ.م.م (CN-6307408)',
-        'هاتف / واتساب مباشر: 816 5858 58 971+'
+        'هاتف الاتصال المباشر: 950 4425 56 971+',
+        'الواتساب المباشر: 816 5858 58 971+'
       ]
     },
     schemaJson: {

@@ -268,7 +268,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                   </div>
                   <div className="flex items-center space-x-1.5 rtl:space-x-reverse">
                     <span className="w-2 h-2 rounded-full bg-cyan-400" />
-                    <span>Hotline: <strong>+971 58 5858 816</strong></span>
+                    <span>{isArabic ? 'هاتف الاتصال: ' : 'Call: '}<strong>+971 56 4425 950</strong></span>
+                  </div>
+                  <div className="flex items-center space-x-1.5 rtl:space-x-reverse">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                    <span>WhatsApp: <strong>+971 58 5858 816</strong></span>
                   </div>
                   <div className="flex items-center space-x-1.5 rtl:space-x-reverse">
                     <span className="w-2 h-2 rounded-full bg-indigo-400" />
