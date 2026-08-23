@@ -350,17 +350,18 @@ export const Navbar: React.FC<NavbarProps> = ({
               <span className="font-arabic font-bold">{isArabic ? 'English' : 'عربي'}</span>
             </button>
 
-            {/* Direct WhatsApp Action */}
+            {/* Direct Phone Call & Contact Action (+971 56 4425 950) */}
             <button
-              onClick={handleWhatsApp}
+              onClick={handleCall}
+              title={isArabic ? 'اتصل بنا مباشرة: +971 56 4425 950' : 'Call Expedia Direct: +971 56 4425 950'}
               className={`flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 rounded-xl text-xs font-bold text-obsidian-950 transition-all duration-300 shadow-lg ${
                 mode === 'corporate'
                   ? 'bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.02]'
                   : 'bg-gradient-to-r from-cyan-400 to-indigo-400 hover:from-cyan-300 hover:to-indigo-300 shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02]'
               }`}
             >
-              <MessageSquare className="w-3.5 h-3.5 fill-obsidian-950" />
-              <span>{t.whatsappDirect}</span>
+              <PhoneCall className="w-3.5 h-3.5 fill-obsidian-950" />
+              <span className="font-mono">{COMPANY_INFO.phone}</span>
             </button>
           </div>
 
@@ -469,11 +470,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             <button
-              onClick={() => { handleWhatsApp(); setMobileMenuOpen(false); }}
-              className="w-full py-3 rounded-xl bg-emerald-500 font-bold text-obsidian-950 flex items-center justify-center space-x-2 rtl:space-x-reverse shadow-lg shadow-emerald-500/20"
+              onClick={() => { handleCall(); setMobileMenuOpen(false); }}
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 font-bold text-obsidian-950 flex items-center justify-center space-x-2 rtl:space-x-reverse shadow-lg shadow-emerald-500/20"
             >
-              <MessageSquare className="w-4 h-4 fill-obsidian-950" />
-              <span>{t.whatsappDirect}</span>
+              <PhoneCall className="w-4 h-4 fill-obsidian-950" />
+              <span className="font-mono">{isArabic ? 'اتصل بنا: ' : 'Call Us: '}{COMPANY_INFO.phone}</span>
             </button>
           </div>
         )}

@@ -133,6 +133,7 @@ export function App() {
                 onToggleMode={handleToggleMode}
                 isArabic={isArabic}
                 onLogoDocked={setIsLogoDocked}
+                onNavigateSlug={handleNavigateSlug}
               />
 
               <BentoServices

@@ -30,6 +30,7 @@ interface HeroSectionProps {
   onToggleMode: (newMode: DualEngineMode) => void;
   isArabic: boolean;
   onLogoDocked?: (docked: boolean) => void;
+  onNavigateSlug?: (slug: string) => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -38,7 +39,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenTracker,
   onToggleMode,
   isArabic,
-  onLogoDocked = () => {}
+  onLogoDocked = () => {},
+  onNavigateSlug
 }) => {
   const [rotatingIndex, setRotatingIndex] = useState(0);
 
@@ -344,6 +346,56 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <Zap className="w-4 h-4 text-cyan-400" />
                 <span>{tHero.corporate.ctaTracker}</span>
               </motion.button>
+            </motion.div>
+
+            {/* SEO Strong Keywords & Free Zone Fast-Track Quick Jump Pills */}
+            <motion.div 
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="mb-12 max-w-4xl mx-auto"
+            >
+              <div className="text-center mb-3">
+                <span className="text-[11px] font-mono uppercase tracking-widest text-emerald-400/90 font-bold flex items-center justify-center space-x-1.5 rtl:space-x-reverse">
+                  <Sparkles className="w-3 h-3 text-goldMuted" />
+                  <span>{isArabic ? 'اختصارات التأسيس والمناطق الحرة المعتمدة' : 'Fast-Track Setup Hubs & High-Yield Free Zones'}</span>
+                </span>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                {[
+                  { slug: 'meydan-free-zone', labelEn: 'Meydan Free Zone', labelAr: 'منطقة ميدان الحرة', tagEn: 'Dubai · From 12.5k', tagAr: 'دبي · 12.5 ألف', targetId: 'jurisdictions' },
+                  { slug: 'ifza', labelEn: 'IFZA Dubai', labelAr: 'سلطة إيفزا دبي', tagEn: '1,500+ Act', tagAr: '1500+ نشاط', targetId: 'jurisdictions' },
+                  { slug: 'masdar-city-free-zone', labelEn: 'Masdar City Hub', labelAr: 'مدينة مصدر الحرة', tagEn: 'Abu Dhabi AI', tagAr: 'أبوظبي للتقنية', targetId: 'jurisdictions' },
+                  { slug: 'mainland-business-setup', labelEn: 'UAE Mainland (ADDED/DED)', labelAr: 'البر الرئيسي (أبوظبي ودبي)', tagEn: '100% Foreign Own', tagAr: 'ملكية 100%', targetId: 'jurisdictions' },
+                  { slug: 'golden-visa', labelEn: '10-Yr Golden Visa', labelAr: 'الإقامة الذهبية 10 سنوات', tagEn: 'VIP Fast', tagAr: 'مسار سريع', targetId: 'golden-visa' },
+                  { slug: 'corporate-tax', labelEn: 'Corporate Tax 0%', labelAr: 'ضريبة الشركات 0%', tagEn: 'FTA TRN', tagAr: 'امتثال مالي', targetId: 'corporate-tax' },
+                ].map((pill) => (
+                  <button
+                    key={pill.slug}
+                    onClick={() => {
+                      trackConversion('jurisdiction_select', { slug: pill.slug });
+                      if (onNavigateSlug && (pill.slug === 'meydan-free-zone' || pill.slug === 'ifza' || pill.slug === 'masdar-city-free-zone' || pill.slug === 'mainland-business-setup')) {
+                        onNavigateSlug(pill.slug);
+                      } else {
+                        const el = document.getElementById(pill.targetId);
+                        if (el) {
+                          el.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                          const j = document.getElementById('jurisdictions');
+                          j?.scrollIntoView({ behavior: 'smooth' });
+                        }
+                      }
+                    }}
+                    className="group relative inline-flex items-center space-x-1.5 rtl:space-x-reverse px-3.5 py-1.5 rounded-xl bg-obsidian-900/80 hover:bg-emerald-500/15 border border-white/10 hover:border-emerald-500/40 text-xs text-slate-300 hover:text-white transition-all duration-300 shadow-md backdrop-blur-md"
+                  >
+                    <span className="font-semibold">{isArabic ? pill.labelAr : pill.labelEn}</span>
+                    <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 group-hover:bg-emerald-500/20 group-hover:text-emerald-300 transition-colors">
+                      {isArabic ? pill.tagAr : pill.tagEn}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </motion.div>
 
             {/* Live Authority Metrics Grid (4 Key Counters with Odometer rolling) */}
