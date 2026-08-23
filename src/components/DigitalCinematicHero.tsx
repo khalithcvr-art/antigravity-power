@@ -16,7 +16,11 @@ import {
   Gauge,
   Calculator,
   MessageSquare,
-  Sparkle
+  Sparkle,
+  ChevronDown,
+  Brain,
+  Rss,
+  Star
 } from 'lucide-react';
 import { BorderBeam } from './motion/MotionPrimitives';
 import { TRANSLATIONS } from '../data/translations';
@@ -87,6 +91,7 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
   const [activeTab, setActiveTab] = useState<string>('architecture');
   const [visibleLinesCount, setVisibleLinesCount] = useState<number>(2);
   const [progress, setProgress] = useState<number>(10);
+  const [compiledBytes, setCompiledBytes] = useState<number>(0);
   const [mouseTilt, setMouseTilt] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [activeSandboxTab, setActiveSandboxTab] = useState<'web' | 'crm' | 'aeo'>('web');
   const [targetCoords, setTargetCoords] = useState<{ x: number; y: number } | null>(null);
@@ -124,7 +129,17 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
     setActiveTab('architecture');
     setVisibleLinesCount(2);
     setProgress(15);
+    setCompiledBytes(0);
     updateTargetCoords();
+
+    // Live byte counter: simulates compiled bytes growing during typing
+    let bytesInterval: ReturnType<typeof setInterval>;
+    bytesInterval = setInterval(() => {
+      setCompiledBytes(prev => {
+        if (prev >= 48320) { clearInterval(bytesInterval); return 48320; }
+        return prev + Math.floor(Math.random() * 1200 + 400);
+      });
+    }, 120);
 
     // Stage 1: Paced, clear line-by-line typing in terminal
     const t1 = setTimeout(() => { setVisibleLinesCount(4); setProgress(30); }, 700);
@@ -135,6 +150,8 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
 
     // Stage 2: Transformation / 3D Hologram Materialization in center (4.5s)
     const matTimer = setTimeout(() => {
+      clearInterval(bytesInterval);
+      setCompiledBytes(48320);
       setAnimStage('materialize');
     }, 4500);
 
@@ -151,6 +168,7 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
     }, 11000);
 
     return () => {
+      clearInterval(bytesInterval);
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
@@ -228,6 +246,9 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
                   <div className="flex items-center space-x-3 text-xs">
                     <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-mono text-[11px]">
                       ⚡ Phase 1: Source Compilation
+                    </span>
+                    <span className="text-slate-400 font-mono text-[11px] hidden sm:inline">
+                      {compiledBytes.toLocaleString()} bytes
                     </span>
                     <span className="text-cyan-300 font-bold font-mono">
                       {progress}%
@@ -627,6 +648,35 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
               </div>
             )}
 
+            {/* Tab 3: AEO / GEO / AI Search Content */}
+            {activeSandboxTab === 'aeo' && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left rtl:text-right">
+                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-emerald-500/20">
+                  <div className="text-xs font-mono text-emerald-400 uppercase font-bold mb-1">01 · Answer Engine Optimization</div>
+                  <div className="text-sm font-bold text-white mb-1">AEO: AI Search Visibility</div>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Structured knowledge graphs and schema markup that make your business the cited answer in ChatGPT, Gemini, and Perplexity AI responses.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-emerald-500/20">
+                  <div className="text-xs font-mono text-teal-400 uppercase font-bold mb-1">02 · Generative Engine Optimization</div>
+                  <div className="text-sm font-bold text-white mb-1">GEO: LLM Knowledge Indexing</div>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Optimized content architecture and entity signals so large language models (LLMs) accurately cite your brand in AI-generated answers.
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-emerald-500/20">
+                  <div className="text-xs font-mono text-cyan-400 uppercase font-bold mb-1">03 · Sovereign Content Intelligence</div>
+                  <div className="text-sm font-bold text-white mb-1">Multi-Layer UAE SEO Dominance</div>
+                  <p className="text-xs text-slate-400 leading-relaxed">
+                    Bilingual Arabic/English semantic content strategy — ranked on Google, Bing, and cited inside AI assistant platforms simultaneously.
+                  </p>
+                </div>
+              </div>
+            )}
+
             {/* Live Performance & Sovereign Benchmark Comparison Matrix */}
             <div className="mt-8 pt-6 border-t border-white/10">
               <div className="flex items-center justify-between mb-4">
@@ -735,6 +785,28 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
                 <span>{isArabic ? 'إعادة تشغيل حركة التجميع 3D' : 'Replay 3D Intro'}</span>
               </button>
             </div>
+
+          {/* Scroll Down Indicator */}
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.2, duration: 0.6 }}
+            className="flex flex-col items-center pt-2 pb-6 cursor-pointer group"
+            onClick={() => {
+              const el = document.getElementById('services');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+          >
+            <span className="text-[11px] font-mono text-slate-500 group-hover:text-cyan-400 transition-colors tracking-widest uppercase mb-1">
+              {isArabic ? 'استعرض الخدمات' : 'Explore Services'}
+            </span>
+            <motion.div
+              animate={{ y: [0, 5, 0] }}
+              transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <ChevronDown className="w-5 h-5 text-slate-500 group-hover:text-cyan-400 transition-colors" />
+            </motion.div>
+          </motion.div>
 
           </motion.div>
         </motion.div>
