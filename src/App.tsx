@@ -24,6 +24,7 @@ export function App() {
   const [isTrackerOpen, setIsTrackerOpen] = useState<boolean>(false);
   const [isArabic, setIsArabic] = useState<boolean>(false);
   const [currentSlug, setCurrentSlug] = useState<string>('');
+  const [isLogoDocked, setIsLogoDocked] = useState<boolean>(true);
 
   // Initial path detection
   useEffect(() => {
@@ -62,6 +63,11 @@ export function App() {
 
   const handleToggleMode = (newMode: DualEngineMode) => {
     setMode(newMode);
+    if (newMode === 'digital') {
+      setIsLogoDocked(false);
+    } else {
+      setIsLogoDocked(true);
+    }
     trackConversion('dual_engine_switch', { newMode });
   };
 
@@ -104,6 +110,7 @@ export function App() {
           onToggleArabic={handleToggleArabic}
           onNavigateSlug={handleNavigateSlug}
           onNavigateHome={handleNavigateHome}
+          isLogoDocked={isLogoDocked}
         />
 
         {/* Main Content View (Dedicated Page vs Full Homepage) */}
@@ -125,6 +132,7 @@ export function App() {
                 onOpenTracker={() => setIsTrackerOpen(true)}
                 onToggleMode={handleToggleMode}
                 isArabic={isArabic}
+                onLogoDocked={setIsLogoDocked}
               />
 
               <BentoServices

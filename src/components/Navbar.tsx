@@ -28,6 +28,7 @@ interface NavbarProps {
   onToggleArabic: () => void;
   onNavigateSlug?: (slug: string) => void;
   onNavigateHome?: () => void;
+  isLogoDocked?: boolean;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -39,6 +40,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleArabic,
   onNavigateSlug,
   onNavigateHome,
+  isLogoDocked = true,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -114,9 +116,15 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           
-          {/* Clean Prominent Logo (No background shade box, enlarged visibility) */}
-          <div className="flex items-center">
-            <a href="/" onClick={handleHomeClick} className="group flex items-center text-left rtl:text-right py-1">
+          {/* Clean Prominent Logo (With Cinematic Landing Target in Digital Mode) */}
+          <div id="navbar-logo-target" className="flex items-center min-w-[160px] sm:min-w-[220px]">
+            <a 
+              href="/" 
+              onClick={handleHomeClick} 
+              className={`group flex items-center text-left rtl:text-right py-1 transition-all duration-500 ${
+                mode === 'digital' && !isLogoDocked ? 'opacity-0 pointer-events-none' : 'opacity-100'
+              }`}
+            >
               <img 
                 src="/expedia-latest-logo.png" 
                 alt="Expedia Business Services" 

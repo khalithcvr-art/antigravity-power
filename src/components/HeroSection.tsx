@@ -21,6 +21,7 @@ import { COMPANY_INFO } from '../data/siteData';
 import { trackConversion, generateWhatsAppUrl } from '../lib/tracking';
 import { TRANSLATIONS } from '../data/translations';
 import { BorderBeam, AnimatedCounter } from './motion/MotionPrimitives';
+import { DigitalCinematicHero } from './DigitalCinematicHero';
 
 interface HeroSectionProps {
   mode: DualEngineMode;
@@ -28,6 +29,7 @@ interface HeroSectionProps {
   onOpenTracker: () => void;
   onToggleMode: (newMode: DualEngineMode) => void;
   isArabic: boolean;
+  onLogoDocked?: (docked: boolean) => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
@@ -35,7 +37,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   onOpenEstimator,
   onOpenTracker,
   onToggleMode,
-  isArabic
+  isArabic,
+  onLogoDocked = () => {}
 }) => {
   const [rotatingIndex, setRotatingIndex] = useState(0);
 
@@ -297,118 +300,132 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
         </motion.div>
 
-        {/* Primary Call to Action Bar */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
-        >
-          <motion.button
-            whileHover={{ scale: 1.03, y: -2 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={onOpenEstimator}
-            className={`w-full sm:w-auto px-8 py-4 rounded-2xl font-display font-bold text-sm sm:text-base flex items-center justify-center space-x-3 rtl:space-x-reverse transition-all duration-300 shadow-xl ${
-              mode === 'corporate'
-                ? 'bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 shadow-emerald-500/30 hover:shadow-emerald-500/50'
-                : 'bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-obsidian-950 shadow-cyan-500/30 hover:shadow-cyan-500/50'
-            }`}
-          >
-            <Calculator className="w-5 h-5" />
-            <span>{mode === 'corporate' ? tHero.corporate.ctaEstimator : tHero.digital.ctaStudio}</span>
-            <ArrowRight className="w-4 h-4 rtl:rotate-180" />
-          </motion.button>
+        {/* Content Flow for Corporate vs Digital Studio */}
+        {mode === 'corporate' ? (
+          <>
+            {/* Primary Call to Action Bar */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+            >
+              <motion.button
+                whileHover={{ scale: 1.03, y: -2 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={onOpenEstimator}
+                className="w-full sm:w-auto px-8 py-4 rounded-2xl font-display font-bold text-sm sm:text-base flex items-center justify-center space-x-3 rtl:space-x-reverse transition-all duration-300 shadow-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 shadow-emerald-500/30 hover:shadow-emerald-500/50"
+              >
+                <Calculator className="w-5 h-5" />
+                <span>{tHero.corporate.ctaEstimator}</span>
+                <ArrowRight className="w-4 h-4 rtl:rotate-180" />
+              </motion.button>
 
-          <motion.button
-            whileHover={{ scale: 1.02, y: -1 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={handleWhatsAppHero}
-            className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-obsidian-900 hover:bg-obsidian-850 border border-white/15 text-white font-display font-semibold text-sm sm:text-base flex items-center justify-center space-x-3 rtl:space-x-reverse transition-all duration-300 hover:border-emerald-500/50 shadow-lg shadow-black/50"
-          >
-            <MessageSquare className="w-5 h-5 text-emerald-400" />
-            <span>{tNav.whatsappDirect}</span>
-          </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={handleWhatsAppHero}
+                className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-obsidian-900 hover:bg-obsidian-850 border border-white/15 text-white font-display font-semibold text-sm sm:text-base flex items-center justify-center space-x-3 rtl:space-x-reverse transition-all duration-300 hover:border-emerald-500/50 shadow-lg shadow-black/50"
+              >
+                <MessageSquare className="w-5 h-5 text-emerald-400" />
+                <span>{tNav.whatsappDirect}</span>
+              </motion.button>
 
-          <motion.button
-            whileHover={{ scale: 1.02, y: -1 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={onOpenTracker}
-            className="w-full sm:w-auto px-5 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-sm font-semibold flex items-center justify-center space-x-2 rtl:space-x-reverse transition-all"
-          >
-            <Zap className="w-4 h-4 text-cyan-400" />
-            <span>{mode === 'corporate' ? tHero.corporate.ctaTracker : tHero.digital.ctaPortfolio}</span>
-          </motion.button>
-        </motion.div>
+              <motion.button
+                whileHover={{ scale: 1.02, y: -1 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={onOpenTracker}
+                className="w-full sm:w-auto px-5 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-sm font-semibold flex items-center justify-center space-x-2 rtl:space-x-reverse transition-all"
+              >
+                <Zap className="w-4 h-4 text-cyan-400" />
+                <span>{tHero.corporate.ctaTracker}</span>
+              </motion.button>
+            </motion.div>
 
-        {/* Live Authority Metrics Grid (4 Key Counters with Odometer rolling) */}
-        <motion.div 
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto"
-        >
-          
-          <motion.div 
-            whileHover={{ y: -4, scale: 1.02 }}
-            className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
-          >
-            <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
-              <AnimatedCounter value={COMPANY_INFO.stats.foreignOwnership} />
-            </div>
-            <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
-              {tHero.corporate.stats.ownership.label}
-            </div>
-            <div className="text-[11px] text-slate-400">
-              {isArabic ? 'بدون اشتراط كفيل محلي' : 'No UAE local sponsor required'}
-            </div>
-          </motion.div>
+            {/* Live Authority Metrics Grid (4 Key Counters with Odometer rolling) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 25 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto"
+            >
+              
+              <motion.div 
+                whileHover={{ y: -4, scale: 1.02 }}
+                className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
+              >
+                <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
+                  <AnimatedCounter value={COMPANY_INFO.stats.foreignOwnership} />
+                </div>
+                <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
+                  {tHero.corporate.stats.ownership.label}
+                </div>
+                <div className="text-[11px] text-slate-400">
+                  {isArabic ? 'بدون اشتراط كفيل محلي' : 'No UAE local sponsor required'}
+                </div>
+              </motion.div>
 
-          <motion.div 
-            whileHover={{ y: -4, scale: 1.02 }}
-            className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
-          >
-            <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
-              <AnimatedCounter value={COMPANY_INFO.stats.licenseTurnaround} />
-            </div>
-            <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
-              {tHero.corporate.stats.turnaround.label}
-            </div>
-            <div className="text-[11px] text-slate-400">
-              {isArabic ? 'إصدار رقمي سريع ومباشر' : 'Fast-track digital clearance'}
-            </div>
-          </motion.div>
+              <motion.div 
+                whileHover={{ y: -4, scale: 1.02 }}
+                className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
+              >
+                <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
+                  <AnimatedCounter value={COMPANY_INFO.stats.licenseTurnaround} />
+                </div>
+                <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
+                  {tHero.corporate.stats.turnaround.label}
+                </div>
+                <div className="text-[11px] text-slate-400">
+                  {isArabic ? 'إصدار رقمي سريع ومباشر' : 'Fast-track digital clearance'}
+                </div>
+              </motion.div>
 
-          <motion.div 
-            whileHover={{ y: -4, scale: 1.02 }}
-            className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
-          >
-            <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
-              <AnimatedCounter value={COMPANY_INFO.stats.businessesLaunched} />
-            </div>
-            <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
-              {isArabic ? 'الشركات المؤسسة' : 'Companies Formed'}
-            </div>
-            <div className="text-[11px] text-slate-400">
-              {isArabic ? 'في أبوظبي ودبي' : 'Across Abu Dhabi & Dubai'}
-            </div>
-          </motion.div>
+              <motion.div 
+                whileHover={{ y: -4, scale: 1.02 }}
+                className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
+              >
+                <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
+                  <AnimatedCounter value={COMPANY_INFO.stats.businessesLaunched} />
+                </div>
+                <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
+                  {isArabic ? 'الشركات المؤسسة' : 'Companies Formed'}
+                </div>
+                <div className="text-[11px] text-slate-400">
+                  {isArabic ? 'في أبوظبي ودبي' : 'Across Abu Dhabi & Dubai'}
+                </div>
+              </motion.div>
 
-          <motion.div 
-            whileHover={{ y: -4, scale: 1.02 }}
-            className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
-          >
-            <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
-              <AnimatedCounter value={COMPANY_INFO.stats.experienceYears} />
-            </div>
-            <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
-              {tHero.corporate.stats.experience.label}
-            </div>
-            <div className="text-[11px] text-slate-400">
-              {isArabic ? 'اعتماد 7 دوائر وهيئات حكومية' : '7 UAE Government Ministries'}
-            </div>
-          </motion.div>
+              <motion.div 
+                whileHover={{ y: -4, scale: 1.02 }}
+                className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
+              >
+                <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
+                  <AnimatedCounter value={COMPANY_INFO.stats.experienceYears} />
+                </div>
+                <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
+                  {tHero.corporate.stats.experience.label}
+                </div>
+                <div className="text-[11px] text-slate-400">
+                  {isArabic ? 'اعتماد 7 دوائر وهيئات حكومية' : '7 UAE Government Ministries'}
+                </div>
+              </motion.div>
 
-        </motion.div>
+            </motion.div>
+          </>
+        ) : (
+          /* Digital Studio Mode: 3D Holographic Code Terminal & Flying Logo Sequence */
+          <div className="w-full">
+            <DigitalCinematicHero 
+              isArabic={isArabic}
+              onLogoDocked={onLogoDocked}
+              onExploreServices={() => {
+                const s = document.getElementById('services');
+                s?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              onBookConsultation={handleWhatsAppHero}
+            />
+          </div>
+        )}
 
       </div>
     </section>
