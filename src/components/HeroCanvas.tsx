@@ -57,8 +57,11 @@ export const HeroCanvas: React.FC<HeroCanvasProps> = ({ mode }) => {
     canvas.parentElement?.addEventListener('mousemove', handleMouseMove);
     canvas.parentElement?.addEventListener('mouseleave', handleMouseLeave);
 
-    // Particle count & generation
-    const particleCount = Math.min(Math.floor((width * height) / 12000), 75);
+    // Particle count & generation — richer network for corporate
+    const particleCount = Math.min(
+      Math.floor((width * height) / (mode === 'corporate' ? 9000 : 12000)), 
+      mode === 'corporate' ? 100 : 75
+    );
     const particles: Particle[] = [];
 
     const getColors = () => {
@@ -67,6 +70,7 @@ export const HeroCanvas: React.FC<HeroCanvasProps> = ({ mode }) => {
           'rgba(16, 185, 129, ', // emerald
           'rgba(52, 211, 153, ', // mint
           'rgba(212, 175, 55, ', // gold
+          'rgba(180, 160, 90, ', // warm gold
           'rgba(255, 255, 255, '  // pure light
         ];
       } else {
@@ -83,39 +87,41 @@ export const HeroCanvas: React.FC<HeroCanvasProps> = ({ mode }) => {
 
     for (let i = 0; i < particleCount; i++) {
       const colorBase = colors[Math.floor(Math.random() * colors.length)];
-      const baseRadius = Math.random() * 2 + 1;
+      const baseRadius = mode === 'corporate' 
+        ? Math.random() * 2.5 + 1.2 
+        : Math.random() * 2 + 1;
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.45,
-        vy: (Math.random() - 0.5) * 0.45,
+        vx: (Math.random() - 0.5) * (mode === 'corporate' ? 0.35 : 0.45),
+        vy: (Math.random() - 0.5) * (mode === 'corporate' ? 0.35 : 0.45),
         radius: baseRadius,
         baseRadius,
         color: colorBase,
-        alpha: Math.random() * 0.6 + 0.2
+        alpha: Math.random() * 0.6 + 0.25
       });
     }
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
 
-      // Draw connections
+      // Draw connections — wider range and richer lines for corporate
+      const maxDist = mode === 'corporate' ? 170 : 135;
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          const maxDist = 135;
           if (dist < maxDist) {
-            const lineAlpha = (1 - dist / maxDist) * 0.18;
+            const lineAlpha = (1 - dist / maxDist) * (mode === 'corporate' ? 0.22 : 0.18);
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.strokeStyle = mode === 'corporate' 
               ? `rgba(16, 185, 129, ${lineAlpha})` 
               : `rgba(6, 182, 212, ${lineAlpha})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = mode === 'corporate' ? 1.2 : 1;
             ctx.stroke();
           }
         }
@@ -150,7 +156,7 @@ export const HeroCanvas: React.FC<HeroCanvasProps> = ({ mode }) => {
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = `${p.color}${p.alpha})`;
         ctx.shadowColor = mode === 'corporate' ? '#10B981' : '#06B6D4';
-        ctx.shadowBlur = 8;
+        ctx.shadowBlur = mode === 'corporate' ? 12 : 8;
         ctx.fill();
         ctx.shadowBlur = 0;
       });

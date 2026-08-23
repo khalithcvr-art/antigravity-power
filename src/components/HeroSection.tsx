@@ -110,13 +110,45 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               muted
               playsInline
               poster="/hero-skyline-1.jpg"
-              className="w-full h-full object-cover opacity-85 sm:opacity-95 scale-100 filter contrast-[1.15] saturate-[1.4] brightness-105 animate-fade-in"
+              className="w-full h-full object-cover scale-105 animate-fade-in"
+              style={{
+                filter: 'contrast(1.2) saturate(1.5) brightness(1.08) hue-rotate(-3deg)',
+              }}
             >
               <source src="/dubai-skyline-hero.mp4" type="video/mp4" />
             </video>
-            {/* High Definition Corporate Transparency Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-obsidian-950/40 via-obsidian-950/20 to-obsidian-950" />
-            <div className="absolute inset-0 bg-radial-at-c from-transparent via-obsidian-950/25 to-obsidian-950/70" />
+
+            {/* Cinematic Color Grade — Amber/Teal Film LUT */}
+            <div 
+              className="absolute inset-0 mix-blend-color pointer-events-none"
+              style={{ background: 'linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(212,175,55,0.06) 50%, rgba(6,95,70,0.1) 100%)' }}
+            />
+
+            {/* Radial Spotlight — keeps central skyline luminous */}
+            <div className="absolute inset-0 bg-radial-at-c from-transparent via-transparent to-obsidian-950/50 pointer-events-none" />
+
+            {/* Top-Down Cinematic Letterbox Gradient */}
+            <div className="absolute inset-0 bg-gradient-to-b from-obsidian-950/60 via-obsidian-950/10 to-obsidian-950 pointer-events-none" />
+            
+            {/* Bottom Depth Fade — content readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-obsidian-950 via-obsidian-950/40 to-transparent pointer-events-none" />
+
+            {/* Edge Vignette — draws eye to center */}
+            <div 
+              className="absolute inset-0 pointer-events-none"
+              style={{ 
+                background: 'radial-gradient(ellipse 70% 60% at 50% 40%, transparent 50%, rgba(2,6,23,0.7) 100%)'
+              }}
+            />
+
+            {/* Subtle Film Grain Texture */}
+            <div 
+              className="absolute inset-0 opacity-[0.03] pointer-events-none mix-blend-overlay"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+                backgroundSize: '128px 128px'
+              }}
+            />
           </>
         ) : (
           <div className="absolute inset-0 bg-obsidian-950 overflow-hidden">
