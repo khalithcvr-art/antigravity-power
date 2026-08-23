@@ -286,20 +286,15 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            <a href="#how-it-works" onClick={(e) => {
-              if (window.location.pathname !== '/' && onNavigateHome) {
-                e.preventDefault();
-                onNavigateHome();
-                setTimeout(() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' }), 100);
-              }
-            }} className="hover:text-white transition-colors">{t.journey}</a>
-            <a href="#about" onClick={(e) => {
-              if (window.location.pathname !== '/' && onNavigateHome) {
-                e.preventDefault();
-                onNavigateHome();
-                setTimeout(() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }), 100);
-              }
-            }} className="hover:text-white transition-colors">{t.about}</a>
+            {mode === 'corporate' && (
+              <a href="#about" onClick={(e) => {
+                if (window.location.pathname !== '/' && onNavigateHome) {
+                  e.preventDefault();
+                  onNavigateHome();
+                  setTimeout(() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }), 100);
+                }
+              }} className="hover:text-white transition-colors">{t.about}</a>
+            )}
             <a href="#faq" onClick={(e) => {
               if (window.location.pathname !== '/' && onNavigateHome) {
                 e.preventDefault();
@@ -412,14 +407,6 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <ArrowRight className="w-4 h-4 text-slate-500 rtl:rotate-180" />
               </a>
               <a 
-                href="#how-it-works" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1.5 border-b border-white/5 flex items-center justify-between"
-              >
-                <span>{t.journey}</span>
-                <ArrowRight className="w-4 h-4 text-slate-500 rtl:rotate-180" />
-              </a>
-              <a 
                 href="#jurisdictions" 
                 onClick={() => setMobileMenuOpen(false)}
                 className="py-1.5 border-b border-white/5 flex items-center justify-between"
@@ -427,14 +414,16 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <span>{t.jurisdictions}</span>
                 <ArrowRight className="w-4 h-4 text-slate-500 rtl:rotate-180" />
               </a>
-              <a 
-                href="#about" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1.5 border-b border-white/5 flex items-center justify-between"
-              >
-                <span>{t.about}</span>
-                <ArrowRight className="w-4 h-4 text-slate-500 rtl:rotate-180" />
-              </a>
+              {mode === 'corporate' && (
+                <a 
+                  href="#about" 
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="py-1.5 border-b border-white/5 flex items-center justify-between"
+                >
+                  <span>{t.about}</span>
+                  <ArrowRight className="w-4 h-4 text-slate-500 rtl:rotate-180" />
+                </a>
+              )}
               <a 
                 href="#faq" 
                 onClick={() => setMobileMenuOpen(false)}

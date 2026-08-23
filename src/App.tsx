@@ -153,11 +153,13 @@ export function App() {
                 onNavigateSlug={handleNavigateSlug}
               />
 
-              <AboutSection
-                mode={mode}
-                isArabic={isArabic}
-                onOpenEstimator={() => setIsEstimatorOpen(true)}
-              />
+              {mode === 'corporate' && (
+                <AboutSection
+                  mode={mode}
+                  isArabic={isArabic}
+                  onOpenEstimator={() => setIsEstimatorOpen(true)}
+                />
+              )}
 
               <FaqSection
                 mode={mode}
