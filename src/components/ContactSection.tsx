@@ -20,6 +20,12 @@ interface ContactSectionProps {
   isArabic?: boolean;
 }
 
+// Supabase edge function. Public by design: a website visitor has no
+// session. It only ever INSERTs an enquiry - it cannot read leads back out,
+// so this URL being in a public repo exposes nothing.
+const ENQUIRY_ENDPOINT =
+  'https://juqweomhyevxyyspkwbk.supabase.co/functions/v1/website-enquiry';
+
 export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false }) => {
   const t = isArabic ? TRANSLATIONS.ar.contact : TRANSLATIONS.en.contact;
 
@@ -32,16 +38,36 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
   });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    trackConversion('generate_lead', formData);
-    
-    confetti({
-      particleCount: 60,
-      spread: 60,
-      origin: { y: 0.7 }
-    });
+  const [sending, setSending] = useState(false);
+  const [sendError, setSendError] = useState(false);
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (sending) return;
+    setSending(true);
+    setSendError(false);
+
+    // The enquiry MUST actually leave the browser before we celebrate.
+    // Previously this function only fired analytics and confetti, so every
+    // submission was silently lost - the visitor saw success and nobody was
+    // ever told. Await the POST, and only show success if it really landed.
+    try {
+      const res = await fetch(ENQUIRY_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...formData, source: 'expediaservices.ae' })
+      });
+      if (!res.ok) throw new Error('enquiry endpoint returned ' + res.status);
+    } catch (err) {
+      console.error('Enquiry submission failed:', err);
+      setSendError(true);
+      setSending(false);
+      return; // no confetti, no false success - the visitor can retry or WhatsApp
+    }
+
+    trackConversion('generate_lead', formData);
+    confetti({ particleCount: 60, spread: 60, origin: { y: 0.7 } });
+    setSending(false);
     setSubmitted(true);
   };
 
