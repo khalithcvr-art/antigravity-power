@@ -1,3 +1,4 @@
+import { ComfortHero } from './components/ComfortHero';
 import React, { useState, useEffect } from 'react';
 import { DualEngineMode } from './types';
 import { HeroCanvas } from './components/HeroCanvas';
@@ -94,7 +95,7 @@ export function App() {
       
       {/* Background Interactive Particle Canvas */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <HeroCanvas mode={mode} />
+        {mode === 'digital' && <HeroCanvas mode={mode} />}
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
       </div>
 
@@ -126,7 +127,7 @@ export function App() {
             />
           ) : (
             <>
-              <HeroSection
+              {mode === 'corporate' ? <ComfortHero isArabic={isArabic} /> : <HeroSection
                 mode={mode}
                 onOpenEstimator={() => setIsEstimatorOpen(true)}
                 onOpenTracker={() => setIsTrackerOpen(true)}
@@ -134,7 +135,7 @@ export function App() {
                 isArabic={isArabic}
                 onLogoDocked={setIsLogoDocked}
                 onNavigateSlug={handleNavigateSlug}
-              />
+              />}
 
               <BentoServices
                 mode={mode}
