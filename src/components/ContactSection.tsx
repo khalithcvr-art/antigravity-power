@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Building2, 
   MapPin, 
@@ -14,7 +14,7 @@ import {
 import { COMPANY_INFO } from '../data/siteData';
 import { generateWhatsAppUrl, generateCallUrl, trackConversion } from '../lib/tracking';
 import { TRANSLATIONS } from '../data/translations';
-import confetti from 'canvas-confetti';
+
 
 interface ContactSectionProps {
   isArabic?: boolean;
@@ -36,6 +36,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
     service: isArabic ? 'تأسيس الشركات بالبر الرئيسي (أبوظبي / دبي)' : 'Mainland Company Formation (Abu Dhabi / Dubai)',
     message: ''
   });
+  const [visaType, setVisaType] = useState('');
+  const visaService = isArabic ? 'تأشيرات الإقامة' : 'Residency visas';
   const [submitted, setSubmitted] = useState(false);
 
   const [sending, setSending] = useState(false);
@@ -55,7 +57,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
       const res = await fetch(ENQUIRY_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, source: 'expediaservices.ae' })
+        body: JSON.stringify({ ...formData, message: [formData.service === visaService && visaType ? 'Visa type: ' + visaType : '', formData.message].filter(Boolean).join('\n'), source: 'expediaservices.ae' })
       });
       if (!res.ok) throw new Error('enquiry endpoint returned ' + res.status);
     } catch (err) {
@@ -66,7 +68,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
     }
 
     trackConversion('generate_lead', formData);
-    confetti({ particleCount: 60, spread: 60, origin: { y: 0.7 } });
+
     setSending(false);
     setSubmitted(true);
   };
@@ -82,6 +84,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
   const serviceOptions = isArabic ? [
     'تأسيس الشركات بالبر الرئيسي (أبوظبي / دبي)',
     'تأسيس الشركات بالمناطق الحرة (ميدان / إفزا / مصدر)',
+    visaService,
     'معاملات الإقامة الذهبية لمدة 10 سنوات (VIP)',
     'خدمات العلاقات العامة المؤسسية (PRO) وملف العمل',
     'التسجيل في ضريبة الشركات والرقم الضريبي',
@@ -89,14 +92,25 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
   ] : [
     'Mainland Company Formation (Abu Dhabi / Dubai)',
     'Free Zone License Setup (Meydan / IFZA / Masdar)',
+    visaService,
     '10-Year UAE Golden Visa VIP Processing',
     'Corporate PRO Retainer & MoHRE File',
     'Corporate Tax Registration & TRN',
     'Bespoke Digital Web & Brand Engineering'
   ];
 
+  useEffect(() => {
+    const selectService = (event: Event) => {
+      const index = (event as CustomEvent<number>).detail;
+      const mapping = [0, 2, 4, 5, 6];
+      if (mapping[index] !== undefined) setFormData(prev => ({...prev, service: serviceOptions[mapping[index]]}));
+    };
+    window.addEventListener('enquiry-service', selectService);
+    return () => window.removeEventListener('enquiry-service', selectService);
+  }, [isArabic]);
+
   return (
-    <section id="contact" className="py-24 relative bg-obsidian-950 border-t border-white/5">
+    <section id="contact" className="comfort-contact py-24 relative bg-obsidian-950 border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -232,7 +246,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
                       <input
                         type="text"
                         required
-                        value={formData.name}
+                        id="enquiry-name" aria-label={t.nameLabel} value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder={t.namePlaceholder}
                         className="w-full px-4 py-3 rounded-xl bg-obsidian-950 border border-white/10 text-sm text-white focus:outline-none focus:border-emerald-500"
@@ -246,7 +260,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
                       <input
                         type="tel"
                         required
-                        value={formData.phone}
+                        id="enquiry-phone" aria-label={t.phoneLabel} value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder={t.phonePlaceholder}
                         className="w-full px-4 py-3 rounded-xl bg-obsidian-950 border border-white/10 text-sm text-white focus:outline-none focus:border-emerald-500 text-left rtl:text-right"
@@ -262,7 +276,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
                       <input
                         type="email"
                         required
-                        value={formData.email}
+                        id="enquiry-email" aria-label={t.emailLabel} value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         placeholder={t.emailPlaceholder}
                         className="w-full px-4 py-3 rounded-xl bg-obsidian-950 border border-white/10 text-sm text-white focus:outline-none focus:border-emerald-500"
@@ -274,7 +288,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
                         {t.serviceLabel} *
                       </label>
                       <select
-                        value={formData.service}
+                        id="enquiry-service" aria-label={t.serviceLabel} value={formData.service}
                         onChange={(e) => setFormData({ ...formData, service: e.target.value })}
                         className="w-full px-4 py-3 rounded-xl bg-obsidian-950 border border-white/10 text-sm text-white focus:outline-none focus:border-emerald-500"
                       >
@@ -285,25 +299,36 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
                     </div>
                   </div>
 
+                  {formData.service === visaService && <div>
+                    <label htmlFor="visa-type">{isArabic ? 'ما نوع الإقامة المطلوبة؟' : 'Which type of residency are you looking for?'}</label>
+                    <select id="visa-type" required value={visaType} onChange={e => setVisaType(e.target.value)}>
+                      <option value="">{isArabic ? 'اختر نوع الإقامة' : 'Choose a visa type'}</option>
+                      <option value="Employee">{isArabic ? 'موظف' : 'Employee'}</option>
+                      <option value="Owner / investor">{isArabic ? 'مالك / مستثمر' : 'Owner / investor'}</option>
+                      <option value="Dependent / family">{isArabic ? 'تابع / عائلة' : 'Dependent / family'}</option>
+                      <option value="Needs guidance">{isArabic ? 'أحتاج المساعدة في الاختيار' : 'I’m not sure yet'}</option>
+                    </select>
+                  </div>}
                   <div>
                     <label className="block text-xs font-mono uppercase text-slate-300 mb-2">
                       {t.messageLabel}
                     </label>
                     <textarea
                       rows={4}
-                      value={formData.message}
+                      id="enquiry-message" aria-label={t.messageLabel} value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder={t.messagePlaceholder}
                       className="w-full px-4 py-3 rounded-xl bg-obsidian-950 border border-white/10 text-sm text-white focus:outline-none focus:border-emerald-500 resize-none"
                     />
                   </div>
 
+                  {sendError && <p role="alert">{isArabic ? 'تعذر إرسال الاستفسار. بياناتك ما زالت موجودة؛ حاول مرة أخرى أو تواصل عبر واتساب.' : 'We couldn’t send your enquiry. Your details are still here—please retry or contact us on WhatsApp.'}</p>}
                   <button
-                    type="submit"
+                    type="submit" disabled={sending}
                     className="w-full py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-display font-bold text-sm flex items-center justify-center space-x-2 rtl:space-x-reverse transition-all shadow-xl shadow-emerald-500/25 hover:scale-[1.01]"
                   >
                     <Send className="w-4 h-4 rtl:rotate-180" />
-                    <span>{t.submitBtn}</span>
+                    <span>{sending ? (isArabic ? 'جارٍ الإرسال…' : 'Sending…') : t.submitBtn}</span>
                   </button>
 
                   <div className="flex items-center justify-center space-x-2 rtl:space-x-reverse text-[11px] text-slate-400 text-center pt-2">
