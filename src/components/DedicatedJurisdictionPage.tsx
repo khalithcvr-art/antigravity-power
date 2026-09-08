@@ -43,6 +43,11 @@ export function DedicatedJurisdictionPage({
     const description = isArabic ? pageData.meta.descriptionAr : pageData.meta.descriptionEn;
 
     document.title = title;
+    const canonical = document.querySelector('link[rel="canonical"]');
+    canonical?.setAttribute('href', `https://www.expediaservices.ae/${slug}`);
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', `https://www.expediaservices.ae/${slug}`);
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
 
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
