@@ -138,3 +138,6 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 .comfort-navbar{background:#121923!important;border-bottom:1px solid #706040;padding-top:10px!important;padding-bottom:10px!important}
+.comfort-navbar button,.comfort-navbar a{white-space:nowrap}
+@media(min-width:1024px) and (max-width:1535px){.comfort-navbar button[title^="Call Expedia"],.comfort-navbar button[title^="اتصل بنا"]{display:none}.comfort-navbar .max-w-7xl{max-width:100%}}
+#contact{scroll-margin-top:110px}
