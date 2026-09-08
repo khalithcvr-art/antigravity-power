@@ -86,6 +86,18 @@ export function App() {
     }
   }, [isArabic]);
 
+  useEffect(() => {
+    if (currentSlug) return;
+    const title = isArabic ? 'تأسيس الشركات وخدمات المعاملات في أبوظبي | إكسبيديا' : 'Business Setup & PRO Services Abu Dhabi | Expedia';
+    const description = isArabic ? 'تأسيس الشركات واستفسارات الإقامة وخدمات المعاملات والدعم الرقمي. تواصل مع إكسبيديا للحصول على عرض سعر حسب احتياجاتك.' : 'Company formation, residency enquiries, PRO services and digital support in Abu Dhabi and Dubai. Contact Expedia for a quotation tailored to your needs.';
+    document.title = title;
+    document.querySelector('meta[name="description"]')?.setAttribute('content', description);
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', 'https://www.expediaservices.ae/');
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', 'https://www.expediaservices.ae/');
+    document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
+    document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
+  }, [currentSlug, isArabic]);
+
   const isDedicatedPage = Boolean(currentSlug && DEDICATED_PAGES[currentSlug]);
 
   return (
