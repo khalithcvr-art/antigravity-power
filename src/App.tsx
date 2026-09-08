@@ -1,9 +1,9 @@
 import { ComfortHero } from './components/ComfortHero';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { DualEngineMode } from './types';
 import { HeroCanvas } from './components/HeroCanvas';
 import { Navbar } from './components/Navbar';
-import { HeroSection } from './components/HeroSection';
+const HeroSection = lazy(() => import('./components/HeroSection').then(m => ({default: m.HeroSection}))); 
 import { BentoServices } from './components/BentoServices';
 import { SetupJourney } from './components/SetupJourney';
 import { JurisdictionTable } from './components/JurisdictionTable';
@@ -13,23 +13,23 @@ import { FaqSection } from './components/FaqSection';
 import { ContactSection } from './components/ContactSection';
 import { FloatingDock } from './components/FloatingDock';
 import { Footer } from './components/Footer';
-import { CostEstimatorModal } from './components/CostEstimatorModal';
-import { StatusTrackerModal } from './components/StatusTrackerModal';
+const CostEstimatorModal = lazy(() => import('./components/CostEstimatorModal').then(m => ({default: m.CostEstimatorModal}))); 
+const StatusTrackerModal = lazy(() => import('./components/StatusTrackerModal').then(m => ({default: m.StatusTrackerModal}))); 
 import { DedicatedJurisdictionPage } from './components/DedicatedJurisdictionPage';
 import { DEDICATED_PAGES } from './data/jurisdictionPages';
 import { trackConversion } from './lib/tracking';
 
-export function App() {
+export function App({initialPath = typeof window === 'undefined' ? '/' : window.location.pathname}: {initialPath?: string} = {}) {
   const [mode, setMode] = useState<DualEngineMode>('corporate');
   const [isEstimatorOpen, setIsEstimatorOpen] = useState<boolean>(false);
   const [isTrackerOpen, setIsTrackerOpen] = useState<boolean>(false);
-  const [isArabic, setIsArabic] = useState<boolean>(false);
-  const [currentSlug, setCurrentSlug] = useState<string>('');
+  const [isArabic, setIsArabic] = useState<boolean>(initialPath === '/ar' || initialPath.startsWith('/ar/'));
+  const [currentSlug, setCurrentSlug] = useState<string>(initialPath.replace(/^\/ar(?=\/|$)/, '').replace(/^\/+|\/+$/g, ''));
   const [isLogoDocked, setIsLogoDocked] = useState<boolean>(true);
 
   // Initial path detection
   useEffect(() => {
-    const cleanPath = window.location.pathname.replace(/^\/+|\/+$/g, '');
+    const cleanPath = window.location.pathname.replace(/^\/ar(?=\/|$)/, '').replace(/^\/+|\/+$/g, '');
     if (cleanPath && DEDICATED_PAGES[cleanPath]) {
       setCurrentSlug(cleanPath);
     } else {
@@ -37,7 +37,8 @@ export function App() {
     }
 
     const handlePopState = () => {
-      const p = window.location.pathname.replace(/^\/+|\/+$/g, '');
+      setIsArabic(window.location.pathname === '/ar' || window.location.pathname.startsWith('/ar/'));
+      const p = window.location.pathname.replace(/^\/ar(?=\/|$)/, '').replace(/^\/+|\/+$/g, '');
       if (p && DEDICATED_PAGES[p]) {
         setCurrentSlug(p);
       } else {
@@ -50,14 +51,14 @@ export function App() {
   }, []);
 
   const handleNavigateSlug = (slug: string) => {
-    window.history.pushState({}, '', `/${slug}`);
+    window.history.pushState({}, '', `${isArabic ? '/ar' : ''}/${slug}`);
     setCurrentSlug(slug);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     trackConversion('page_view_dedicated', { slug });
   };
 
   const handleNavigateHome = () => {
-    window.history.pushState({}, '', '/');
+    window.history.pushState({}, '', isArabic ? '/ar' : '/');
     setCurrentSlug('');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -73,7 +74,7 @@ export function App() {
   };
 
   const handleToggleArabic = () => {
-    setIsArabic(prev => !prev);
+    window.location.assign(`${isArabic ? '' : '/ar'}${currentSlug ? '/' + currentSlug : '/'} ` .trim());
   };
 
   useEffect(() => {
@@ -92,8 +93,8 @@ export function App() {
     const description = isArabic ? 'تأسيس الشركات واستفسارات الإقامة وخدمات المعاملات والدعم الرقمي. تواصل مع إكسبيديا للحصول على عرض سعر حسب احتياجاتك.' : 'Company formation, residency enquiries, PRO services and digital support in Abu Dhabi and Dubai. Contact Expedia for a quotation tailored to your needs.';
     document.title = title;
     document.querySelector('meta[name="description"]')?.setAttribute('content', description);
-    document.querySelector('link[rel="canonical"]')?.setAttribute('href', 'https://www.expediaservices.ae/');
-    document.querySelector('meta[property="og:url"]')?.setAttribute('content', 'https://www.expediaservices.ae/');
+    document.querySelector('link[rel="canonical"]')?.setAttribute('href', `https://www.expediaservices.ae/${isArabic ? 'ar/' : ''}`);
+    document.querySelector('meta[property="og:url"]')?.setAttribute('content', `https://www.expediaservices.ae/${isArabic ? 'ar/' : ''}`);
     document.querySelector('meta[property="og:title"]')?.setAttribute('content', title);
     document.querySelector('meta[property="og:description"]')?.setAttribute('content', description);
   }, [currentSlug, isArabic]);
@@ -139,7 +140,7 @@ export function App() {
             />
           ) : (
             <>
-              {mode === 'corporate' ? <ComfortHero isArabic={isArabic} /> : <HeroSection
+              {mode === 'corporate' ? <ComfortHero isArabic={isArabic} /> : <Suspense fallback={<p>Loading…</p>}><HeroSection
                 mode={mode}
                 onOpenEstimator={() => setIsEstimatorOpen(true)}
                 onOpenTracker={() => setIsTrackerOpen(true)}
@@ -147,7 +148,7 @@ export function App() {
                 isArabic={isArabic}
                 onLogoDocked={setIsLogoDocked}
                 onNavigateSlug={handleNavigateSlug}
-              />}
+              /></Suspense>}
 
               <BentoServices
                 mode={mode}
@@ -213,17 +214,17 @@ export function App() {
         />
 
         {/* Interactive Modals */}
-        <CostEstimatorModal
+        <Suspense fallback={null}>{isEstimatorOpen && <CostEstimatorModal
           isOpen={isEstimatorOpen}
           onClose={() => setIsEstimatorOpen(false)}
           isArabic={isArabic}
-        />
+        />}</Suspense>
 
-        <StatusTrackerModal
+        <Suspense fallback={null}>{isTrackerOpen && <StatusTrackerModal
           isOpen={isTrackerOpen}
           onClose={() => setIsTrackerOpen(false)}
           isArabic={isArabic}
-        />
+        />}</Suspense>
 
       </div>
 

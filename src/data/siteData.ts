@@ -52,7 +52,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
       'Commercial, Professional, or Industrial Trade License',
       'Establishment Card for immigration file',
       '100% Foreign Ownership structure without local sponsor',
-      'Guaranteed corporate bank account introduction'
+      'Corporate bank application guidance; approval rests with the bank'
     ],
     deliverablesAr: [
       'حجز الاسم التجاري والحصول على الموافقة الأمنية',
@@ -283,7 +283,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
       'مقرات جاهزة ومطابقة لمعايير التفتيش والرقابة',
       'إدارة البريد والرد الهاتفي وحجز قاعات الاجتماعات'
     ],
-    highlightBadge: 'Inspection Guaranteed',
+    highlightBadge: 'Inspection Preparation',
     highlightBadgeAr: 'مطابقة للتفتيش 100%',
     iconName: 'Landmark',
     metric: 'Tawtheeq Ready',
@@ -382,7 +382,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
       'خدمة استلام وتسليم المستندات في أبوظبي ودبي',
       'تقرير امتثال شهري شامل وتدقيق دوري لملفات المنشأة'
     ],
-    highlightBadge: 'Zero Penalty Guarantee',
+    highlightBadge: 'Renewal Support',
     highlightBadgeAr: 'ضمان خلو المنشأة من الغرامات',
     iconName: 'Clock',
     metric: 'Fixed Retainer',
@@ -540,7 +540,7 @@ export const CHANNEL_PARTNERS: ChannelPartnerItem[] = [
     cityAr: 'دبي',
     badge: 'Premium Dubai Address',
     badgeAr: 'عنوان مرموق في دبي',
-    desc: 'Located at the heart of Dubai near Downtown, offering 100% digital setup, 1,500+ commercial activities, and guaranteed bank account facilitation.',
+    desc: 'Located at the heart of Dubai near Downtown, offering 100% digital setup, 1,500+ commercial activities, and bank application guidance.',
     descAr: 'تقع في قلب دبي بالقرب من وسط المدينة، وتتيح التأسيس الرقمي بنسبة 100%، وأكثر من 1500 نشاط تجاري، مع تسهيل فتح الحساب البنكي.',
     startingPrice: 'AED 12,500',
     startingPriceAr: '12,500 درهم',

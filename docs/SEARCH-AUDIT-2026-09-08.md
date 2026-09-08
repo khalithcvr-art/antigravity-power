@@ -25,3 +25,13 @@ AEO/GEO follow accurate, accessible, useful search content; no special AI schema
 - https://developers.google.com/search/docs/fundamentals/ai-optimization-guide
 
 No lead submissions, customer notifications, CRM changes or DNS changes in this audit.
+
+## Consolidated follow-through
+
+Implemented 14 build-generated English/Arabic HTML pages with persistent /ar paths, canonical addresses, alternate-language links and a generated sitemap. Removed catch-all homepage rewrite; unknown routes use the deployment's 404 handling and a custom noindex 404 page. Removed the generic site-wide FAQ schema so unsupported homepage answers are not repeated on every service page.
+
+Deferred estimator, tracker and digital hero JavaScript until needed. Main JS gzip reduced from 203.70 KB to 183.89 KB (~9.7%); this is not a real-user speed score. Build and intercepted mobile form tests pass; Arabic service preselection and 14 static H1/content checks pass. No test lead was sent.
+
+Softened specified response-time, inspection, penalty and banking guarantees. Remaining partnership claims, business counts, direct-government-API statements and the full price catalogue need documentary confirmation. This is an evidence limit, not confirmation of falsehood. No replacement prices were invented.
+
+Measurement limitations: public PageSpeed API returned quota exceeded. No authenticated Search Console connector is available, so indexed-page counts, search queries and rankings could not be verified. No fabricated SEO/AEO/GEO score is supplied. Further improvements should use verified Search Console data and owner-approved price/credential evidence.
