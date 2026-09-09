@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Building2, 
   MapPin, 
@@ -40,12 +40,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
   const visaService = isArabic ? 'تأشيرات الإقامة' : 'Residency visas';
   const [submitted, setSubmitted] = useState(false);
 
+  const pendingRequest = useRef<{payload: string; id: string} | null>(null);
+  const sendingRef = useRef(false);
   const [sending, setSending] = useState(false);
   const [sendError, setSendError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (sending) return;
+    if (sendingRef.current) return;
+    sendingRef.current = true;
     setSending(true);
     setSendError(false);
 
@@ -54,21 +57,27 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
     // submission was silently lost - the visitor saw success and nobody was
     // ever told. Await the POST, and only show success if it really landed.
     try {
+      const payload = JSON.stringify({ ...formData, message: [formData.service === visaService && visaType ? 'Visa type: ' + visaType : '', formData.message].filter(Boolean).join('\n') });
+      if (!pendingRequest.current || pendingRequest.current.payload !== payload) {
+        pendingRequest.current = {payload, id: crypto.randomUUID()};
+      }
       const res = await fetch(ENQUIRY_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, message: [formData.service === visaService && visaType ? 'Visa type: ' + visaType : '', formData.message].filter(Boolean).join('\n'), source: 'expediaservices.ae' })
+        body: JSON.stringify({ ...JSON.parse(payload), request_id: pendingRequest.current.id })
       });
       if (!res.ok) throw new Error('enquiry endpoint returned ' + res.status);
     } catch (err) {
       console.error('Enquiry submission failed:', err);
       setSendError(true);
+      sendingRef.current = false;
       setSending(false);
       return; // no confetti, no false success - the visitor can retry or WhatsApp
     }
 
     trackConversion('generate_lead', formData);
 
+    sendingRef.current = false;
     setSending(false);
     setSubmitted(true);
   };
