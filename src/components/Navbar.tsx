@@ -375,6 +375,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               <Search className="w-4 h-4 text-cyan-400" />
             </button>
             <button
+              aria-label={isArabic ? (mobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة") : (mobileMenuOpen ? "Close menu" : "Open menu")}
+              aria-expanded={mobileMenuOpen}
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white"
             >
