@@ -96,7 +96,7 @@ export function DedicatedJurisdictionPage({
   const handleWhatsAppQuote = (packageDetail?: string) => {
     const contextText = packageDetail 
       ? `Hi Expedia Business Services! I am on the ${pageData.slug} page and would like a custom quote for: ${packageDetail}. Please guide me on official 2026 requirements.`
-      : `Hi Expedia Business Services! I am interested in ${isArabic ? hero.h1Ar : hero.h1En} (License from AED ${hero.startingPriceAed}). Please share exact itemized quotation and required documents.`;
+      : `Hi Expedia Business Services! I am interested in ${isArabic ? hero.h1Ar : hero.h1En} . Please share exact itemized quotation and required documents.`;
 
     const encoded = encodeURIComponent(contextText);
     trackConversion('dedicated_page_whatsapp', { slug, packageDetail });
@@ -173,9 +173,9 @@ export function DedicatedJurisdictionPage({
           {/* Quick Metrics Bar */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-obsidian-950/80 border border-white/5 mb-8">
             <div>
-              <div className="text-xs font-mono text-slate-400 mb-1">{isArabic ? 'يبدأ من' : 'Starting From'}</div>
+              <div className="text-xs font-mono text-slate-400 mb-1">{isArabic ? 'عرض أسعار' : 'Quotation'}</div>
               <div className="text-xl font-mono font-bold text-emerald-400">
-                AED {hero.startingPriceAed.toLocaleString()}
+                {isArabic ? "اطلب عرض أسعار" : "Request a quotation"}
               </div>
             </div>
             <div>
@@ -312,7 +312,7 @@ export function DedicatedJurisdictionPage({
                       {isArabic ? item.categoryAr : item.categoryEn}
                     </td>
                     <td className="py-4 px-4 font-mono font-bold text-emerald-400 whitespace-nowrap">
-                      {typeof item.costAed === 'number' ? `AED ${item.costAed.toLocaleString()}` : item.costAed}
+                      {isArabic ? "حسب عرض الأسعار" : "Quotation required"}
                     </td>
                     <td className="py-4 px-4 text-xs text-slate-400 max-w-md">
                       {isArabic ? item.notesAr : item.notesEn}
