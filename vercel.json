@@ -1,1 +1,27 @@
-{"cleanUrls":true,"buildCommand":"npm run build","outputDirectory":"dist"}
+{
+  "cleanUrls": true,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/meydan-free-zone-license-cost/:path*",
+      "destination": "/meydan-free-zone",
+      "permanent": true
+    },
+    {
+      "source": "/business-setup-cost-abu-dhabi/:path*",
+      "destination": "/mainland-business-setup",
+      "permanent": true
+    },
+    {
+      "source": "/about/:path*",
+      "destination": "/#about",
+      "permanent": true
+    },
+    {
+      "source": "/services/:path*",
+      "destination": "/#services",
+      "permanent": true
+    }
+  ]
+}
