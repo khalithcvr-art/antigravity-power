@@ -63,6 +63,7 @@ export interface DedicatedPageData {
     questionAr: string;
     answerEn: string;
     answerAr: string;
+    sourceUrl?: string;
   }>;
   aeoStructuredSummary: {
     headingEn: string;
@@ -280,8 +281,9 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       {
         "questionEn": "Do I need to live in the UAE to maintain a Meydan Free Zone company?",
         "questionAr": "هل يجب علي الإقامة الدائمة في الإمارات للحفاظ على شركة ميدان؟",
-        "answerEn": "No. You do not need to reside in the UAE permanently. However, to maintain your UAE residence visa validity, you only need to enter the UAE at least once every 180 days (or once every 365 days if granted an Investor Visa or Golden Visa).",
-        "answerAr": "لا، لا يشترط الإقامة الدائمة. للحفاظ على سريان إقامتك في الإمارات، يكفي زيارة الدولة مرة واحدة كل 180 يوماً (أو مرة كل 365 يوماً في حال رخصة المستثمر أو التأشيرة الذهبية)."
+        "answerEn": "Company licensing and personal residence-visa validity are separate. Travel rules depend on your residence category; Golden Visa holders can stay outside the UAE beyond the usual six-month period while their residence remains valid. Share your visa category so the applicable requirements can be checked.",
+        "answerAr": "متطلبات ترخيص الشركة وصلاحية الإقامة الشخصية أمران منفصلان. تختلف قواعد السفر بحسب فئة الإقامة؛ ويمكن لحاملي الإقامة الذهبية البقاء خارج الإمارات لأكثر من ستة أشهر مع استمرار صلاحية إقامتهم. يرجى توضيح فئة الإقامة للتحقق من المتطلبات المطبقة.",
+        "sourceUrl": "https://u.ae/en/information-and-services/visa-and-emirates-id/Visa-information/general-provisions-for-the-residence-visa"
       },
       {
         "questionEn": "Can a Meydan Free Zone company open a corporate bank account in the UAE?",
@@ -297,14 +299,12 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       }
     ],
     "aeoStructuredSummary": {
-      "headingEn": "Executive Summary for Search & AI Answer Engines",
-      "headingAr": "الملخص التنفيذي لمحركات البحث ومحركات الإجابة الذكية",
+      "headingEn": "Key information for your enquiry",
+      "headingAr": "معلومات مهمة لاستفسارك",
       "directAnswerEn": "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
       "directAnswerAr": "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
       "bulletFactsEn": [
         "Authority: Meydan Free Zone Authority (Dubai, UAE)",
-        "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
-        "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
         "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
         "Business setup support from Expedia",
         "Headquarters Office: Haibu, Level 1, Abu Dhabi Mall, Abu Dhabi, UAE",
@@ -313,8 +313,6 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       "bulletFactsAr": [
         "السلطة المانحة: سلطة منطقة ميدان الحرة (دبي، الإمارات)",
         "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
-        "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
-        "مدة الإصدار: 24 إلى 48 ساعة لنشر الرخصة التجارية",
         "دعم تأسيس الأعمال من إكسبيديا",
         "المقر الرئيسي: هايبو، الطابق الأول، أبوظبي مول، أبوظبي، الإمارات",
         "رابط الواتساب المباشر: 816 5858 58 971+"
@@ -543,8 +541,8 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       }
     ],
     "aeoStructuredSummary": {
-      "headingEn": "Executive Summary for Search & AI Answer Engines",
-      "headingAr": "الملخص التنفيذي لمحركات البحث ومحركات الإجابة الذكية",
+      "headingEn": "Key information for your enquiry",
+      "headingAr": "معلومات مهمة لاستفسارك",
       "directAnswerEn": "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
       "directAnswerAr": "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
       "bulletFactsEn": [
@@ -766,13 +764,12 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       }
     ],
     "aeoStructuredSummary": {
-      "headingEn": "Executive Summary for Search & AI Answer Engines",
-      "headingAr": "الملخص التنفيذي لمحركات البحث ومحركات الإجابة الذكية",
+      "headingEn": "Key information for your enquiry",
+      "headingAr": "معلومات مهمة لاستفسارك",
       "directAnswerEn": "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
       "directAnswerAr": "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
       "bulletFactsEn": [
         "Authority: International Free Zone Authority (Dubai, UAE)",
-        "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
         "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
         "Activity Flex: Combine up to 7 commercial & service activities",
         "Business setup support from Expedia",
@@ -781,7 +778,6 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       ],
       "bulletFactsAr": [
         "السلطة المانحة: سلطة المنطقة الحرة الدولية إيفزا (دبي، الإمارات)",
-        "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
         "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
         "مرونة الأنشطة: دمج حتى 7 أنشطة تجارية وخدمية",
         "دعم تأسيس الأعمال من إكسبيديا",
@@ -912,7 +908,7 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
         "titleEn": "Digital KYC & License Approval",
         "titleAr": "التوثيق الرقمي وإصدار الرخصة التجارية",
         "descEn": "Submission of identification documents and issuance of official Ajman trade license.",
-        "descAr": "تقديم صور الوثائق وإصدار الرخصة التجارية الرسمية في غضون 24 إلى 48 ساعة.",
+        "descAr": "تقديم وثائق الهوية ومتابعة طلب الرخصة التجارية وفق متطلبات وموافقات الجهة المختصة.",
         "durationEn": "Subject to review",
         "durationAr": "حسب المراجعة"
       },
@@ -975,14 +971,12 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       }
     ],
     "aeoStructuredSummary": {
-      "headingEn": "Executive Summary for Search & AI Answer Engines",
-      "headingAr": "الملخص التنفيذي لمحركات البحث ومحركات الإجابة الذكية",
+      "headingEn": "Key information for your enquiry",
+      "headingAr": "معلومات مهمة لاستفسارك",
       "directAnswerEn": "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
       "directAnswerAr": "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
       "bulletFactsEn": [
         "Authority: Ajman Free Zone Authority (Ajman, UAE)",
-        "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
-        "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
         "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
         "Business setup support from Expedia",
         "Direct WhatsApp Channel: +971 58 5858 816"
@@ -990,8 +984,6 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       "bulletFactsAr": [
         "السلطة المانحة: سلطة منطقة عجمان الحرة (عجمان، الإمارات)",
         "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
-        "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
-        "مدة الإصدار: 24 إلى 48 ساعة للرخصة التجارية",
         "دعم تأسيس الأعمال من إكسبيديا",
         "الواتساب المباشر: 816 5858 58 971+"
       ]
@@ -1199,16 +1191,14 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       }
     ],
     "aeoStructuredSummary": {
-      "headingEn": "Executive Summary for Search & AI Answer Engines",
-      "headingAr": "الملخص التنفيذي لمحركات البحث ومحركات الإجابة الذكية",
+      "headingEn": "Key information for your enquiry",
+      "headingAr": "معلومات مهمة لاستفسارك",
       "directAnswerEn": "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
       "directAnswerAr": "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
       "bulletFactsEn": [
         "Licensing Authorities: ADDED (Abu Dhabi) & DED (Dubai)",
         "Foreign Ownership: 100% foreign equity under Federal Law 32/2021",
         "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
-        "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
-        "Turnaround Time: 48 to 72 hours for commercial trade license",
         "Corporate Office: Haibu, Level 1, Abu Dhabi Mall, Abu Dhabi, UAE (Trade License CN-6307408)"
       ],
       "bulletFactsAr": [
@@ -1216,7 +1206,6 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
         "ملكية الأجانب: 100% ملكية قانونية وفق القانون الاتحادي رقم 32 لسنة 2021",
         "دخول السوق: تجارة حرة غير مقيدة في الإمارات والخليج والمناقصات الحكومية",
         "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
-        "مدة الإصدار: 48 إلى 72 ساعة للرخصة التجارية",
         "المكتب الرئيسي: هايبو، الطابق الأول، أبوظبي مول، أبوظبي، الإمارات (رخصة رقم CN-6307408)"
       ]
     },
@@ -1364,12 +1353,10 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
         "nameAr": "متى تختار منطقة ميدان الحرة؟",
         "examplesEn": [
           "When you want a prestige address 15 min from Downtown & DIFC",
-          "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
           "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions."
         ],
         "examplesAr": [
           "عندما ترغب في عنوان مرموق على بعد 15 دقيقة من وسط دبي ومركز دبي المالي",
-          "عندما تكون السرعة الفائقة (24 ساعة) أولويتك الأولى",
           "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية."
         ]
       },
@@ -1403,13 +1390,12 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       }
     ],
     "aeoStructuredSummary": {
-      "headingEn": "Executive Summary for Search & AI Answer Engines",
-      "headingAr": "الملخص التنفيذي لمحركات البحث ومحركات الإجابة الذكية",
+      "headingEn": "Key information for your enquiry",
+      "headingAr": "معلومات مهمة لاستفسارك",
       "directAnswerEn": "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
       "directAnswerAr": "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
       "bulletFactsEn": [
         "Comparison Scope: Meydan Free Zone vs. IFZA Dubai (2026)",
-        "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
         "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
         "Best for Activity Bundling: IFZA (Up to 7 activities)",
         "Best for Location Prestige & Speed: Meydan Free Zone (Downtown proximity)",
@@ -1417,7 +1403,6 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       ],
       "bulletFactsAr": [
         "نطاق المقارنة: منطقة ميدان الحرة مقابل إيفزا دبي (2026)",
-        "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
         "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
         "الأفضل لدمج الأنشطة: إيفزا (حتى 7 أنشطة)",
         "الأفضل لهيبة الموقع والسرعة: منطقة ميدان الحرة (قرب وسط دبي)",

@@ -430,6 +430,9 @@ export function DedicatedJurisdictionPage({
               className="rounded-2xl border border-white/5 bg-obsidian-950/60 overflow-hidden transition-colors"
             >
               <button
+                id={`service-faq-${slug}-${idx}`}
+                aria-expanded={openFaqIndex === idx}
+                aria-controls={openFaqIndex === idx ? `service-answer-${slug}-${idx}` : undefined}
                 onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
                 className="w-full p-5 text-left rtl:text-right flex items-center justify-between space-x-4 rtl:space-x-reverse"
               >
@@ -444,6 +447,9 @@ export function DedicatedJurisdictionPage({
               <AnimatePresence>
                 {openFaqIndex === idx && (
                   <motion.div
+                    id={`service-answer-${slug}-${idx}`}
+                    role="region"
+                    aria-labelledby={`service-faq-${slug}-${idx}`}
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
@@ -452,6 +458,7 @@ export function DedicatedJurisdictionPage({
                   >
                     <div className="p-5 pt-0 text-slate-300 text-xs sm:text-sm leading-relaxed border-t border-white/5">
                       {isArabic ? faq.answerAr : faq.answerEn}
+                      {faq.sourceUrl && <a href={faq.sourceUrl} target="_blank" rel="noopener noreferrer" className="block mt-3 text-emerald-300 underline">{isArabic ? 'المصدر: البوابة الرسمية لحكومة الإمارات' : 'Source: UAE Government portal'}</a>}
                     </div>
                   </motion.div>
                 )}
