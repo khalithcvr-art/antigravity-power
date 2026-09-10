@@ -542,7 +542,7 @@ export const CHANNEL_PARTNERS: ChannelPartnerItem[] = [
     badgeAr: 'عنوان مرموق في دبي',
     desc: 'Located at the heart of Dubai near Downtown, offering 100% digital setup, 1,500+ commercial activities, and bank application guidance.',
     descAr: 'تقع في قلب دبي بالقرب من وسط المدينة، وتتيح التأسيس الرقمي بنسبة 100%، وأكثر من 1500 نشاط تجاري، مع تسهيل فتح الحساب البنكي.',
-    startingPrice: 'AED 12,500',
+    startingPrice: 'Request a quotation',
     startingPriceAr: '12,500 درهم',
     popularFor: 'International consultants, media & investment firms',
     popularForAr: 'الاستشاريون الدوليون، والإعلام، وشركات الاستثمار',
@@ -558,7 +558,7 @@ export const CHANNEL_PARTNERS: ChannelPartnerItem[] = [
     badgeAr: 'أفضل تكلفة في دبي',
     desc: 'The UAE’s most flexible free zone allowing multi-activity combination under a single license with cost-effective visa allocations.',
     descAr: 'المنطقة الحرة الأكثر مرونة في الإمارات، تتيح الجمع بين أنشطة متعددة في رخصة واحدة وتكاليف إقامات اقتصادية.',
-    startingPrice: 'AED 11,900',
+    startingPrice: 'Request a quotation',
     startingPriceAr: '11,900 درهم',
     popularFor: 'E-commerce, digital agencies & holding structures',
     popularForAr: 'التجارة الإلكترونية، والوكالات الرقمية، والشركات القابضة',
@@ -574,7 +574,7 @@ export const CHANNEL_PARTNERS: ChannelPartnerItem[] = [
     badgeAr: 'مركز الابتكار والتكنولوجيا',
     desc: 'Abu Dhabi’s premier sustainable tech cluster, offering zero import tariffs, fast-track ADDED dual licensing, and proximity to Abu Dhabi Airport.',
     descAr: 'المجمع التكنولوجي المستدام الرائد في أبوظبي، يقدم إعفاءات جمركية، ورخصة مزدوجة مع التنمية الاقتصادية، وبالقرب من مطار أبوظبي.',
-    startingPrice: 'AED 13,200',
+    startingPrice: 'Request a quotation',
     startingPriceAr: '13,200 درهم',
     popularFor: 'Clean tech, AI startups, renewable energy & AI research',
     popularForAr: 'التكنولوجيا النظيفة، والذكاء الاصطناعي، والطاقة المتجددة',
@@ -590,7 +590,7 @@ export const CHANNEL_PARTNERS: ChannelPartnerItem[] = [
     badgeAr: 'الخيار الأكثر اقتصاداً',
     desc: 'The most economical jurisdiction in the UAE for budget-conscious entrepreneurs, freelance permits, and import/export trading companies.',
     descAr: 'المنطقة الأكثر توفيراً في الدولة لرواد الأعمال، وتصاريح العمل الحر، وشركات الاستيراد والتصدير والتجارة العامة.',
-    startingPrice: 'AED 5,750',
+    startingPrice: 'Request a quotation',
     startingPriceAr: '5,750 درهم',
     popularFor: 'Freelancers, remote founders & general traders',
     popularForAr: 'أصحاب العمل الحر، والمؤسسون عن بعد، والتجار',
@@ -606,7 +606,7 @@ export const CHANNEL_PARTNERS: ChannelPartnerItem[] = [
     badgeAr: 'ملكية أجنبية 100%',
     desc: 'Operate unrestricted across the entire UAE and bid directly for government and oil & gas contracts with a Department of Economic Development commercial license.',
     descAr: 'ممارسة الأعمال بحرية تامة في كافة أنحاء الإمارات والدخول مباشرة في المناقصات الحكومية وعقود النفط والغاز برخصة اقتصادية رسمية.',
-    startingPrice: 'AED 9,500',
+    startingPrice: 'Request a quotation',
     startingPriceAr: '9,500 درهم',
     popularFor: 'Contractors, corporate retail, engineering & local trading',
     popularForAr: 'المقاولات، والمتاجر الكبرى، والهندسة، والتجارة المحلية',
@@ -621,10 +621,10 @@ export const FAQS: FaqItem[] = [
     categoryAr: 'البر الرئيسي',
     question: 'Can a foreign national own 100% of an Abu Dhabi Mainland company?',
     questionAr: 'هل يمكن للمستثمر الأجنبي تملك 100% من شركة في البر الرئيسي بأبوظبي؟',
-    answer: 'Yes. Under the amended UAE Commercial Companies Law (Federal Law No. 26 of 2020), foreign investors can enjoy 100% foreign ownership of Mainland LLCs across more than 1,000 commercial and industrial business activities in Abu Dhabi without requiring a local UAE national sponsor.',
-    answerAr: 'نعم، بموجب تعديلات قانون الشركات التجارية الاتحادي (المرسوم بقانون رقم 26 لسنة 2020)، يحق للمستثمرين الأجانب التملك بنسبة 100% في الشركات ذات المسؤولية المحدودة في البر الرئيسي لأكثر من 1000 نشاط تجاري وصناعي دون الحاجة لشريك أو وكيل خدمات مواطن.',
-    directAnswerAEO: 'Foreign investors can own 100% of mainland LLC companies across 1,000+ commercial activities in Abu Dhabi and Dubai with zero national sponsorship requirements.',
-    directAnswerAEOAr: 'يحق للمستثمرين الأجانب تملك الشركات ذات المسؤولية المحدودة بنسبة 100% في بر أبوظبي ودبي الرئيسي لأكثر من 1000 نشاط تجاري دون كفيل محلي.'
+    answer: 'Many activities allow full foreign ownership. Eligibility and any additional approvals depend on the selected activity and licensing authority. We confirm the requirements before quoting.',
+    answerAr: 'تسمح أنشطة عديدة بالملكية الأجنبية الكاملة. تعتمد الأهلية والموافقات الإضافية على النشاط والجهة المرخصة، ونراجع المتطلبات قبل تقديم العرض.',
+    directAnswerAEO: 'Many activities allow full foreign ownership. Eligibility and any additional approvals depend on the selected activity and licensing authority. We confirm the requirements before quoting.',
+    directAnswerAEOAr: 'تسمح أنشطة عديدة بالملكية الأجنبية الكاملة. تعتمد الأهلية والموافقات الإضافية على النشاط والجهة المرخصة، ونراجع المتطلبات قبل تقديم العرض.'
   },
   {
     id: 'faq-2',
@@ -632,10 +632,10 @@ export const FAQS: FaqItem[] = [
     categoryAr: 'المناطق الحرة',
     question: 'What is the main difference between UAE Mainland and Free Zone licenses?',
     questionAr: 'ما هو الفرق الرئيسي بين رخصة البر الرئيسي ورخصة المنطقة الحرة في الإمارات؟',
-    answer: 'Mainland companies are licensed by the local Economic Department (ADDED in Abu Dhabi, DED in Dubai) and can trade freely anywhere within the UAE local market and take government tenders. Free Zone companies are confined to trading within their free zone or internationally, and benefit from 0% qualifying corporate tax incentives and streamlined remote setup.',
-    answerAr: 'شركات البر الرئيسي مرخصة من دوائر التنمية الاقتصادية (أبوظبي ودبي) ولها حرية التجارة داخل السوق الإماراتي بالكامل والتعاقد مع الجهات الحكومية، بينما شركات المناطق الحرة مخصصة للتجارة الدولية أو داخل منطقتها وتستفيد من نسبة 0% لضريبة الشركات المؤهلة وإجراءات تأسيس سريعة عن بعد.',
-    directAnswerAEO: 'Mainland companies trade unrestricted anywhere in the UAE and tender for government contracts, whereas Free Zone entities enjoy streamlined remote setup and 0% qualifying corporate tax rates.',
-    directAnswerAEOAr: 'تتميز شركات البر الرئيسي بحرية التجارة في كل أنحاء الدولة والمناقصات الحكومية، بينما توفر المناطق الحرة تأسيساً رقمياً سريعاً وضريبة 0% للدخل المؤهل.'
+    answer: 'Mainland and free-zone licences have different activity, location and market-access requirements. Tax treatment is conditional. We compare the appropriate options for your actual business plans.',
+    answerAr: 'تختلف متطلبات النشاط والموقع والوصول إلى الأسواق بين رخص البر الرئيسي والمناطق الحرة. تخضع المعاملة الضريبية لشروط، ونقارن الخيارات حسب خطط عملك.',
+    directAnswerAEO: 'Mainland and free-zone licences have different activity, location and market-access requirements. Tax treatment is conditional. We compare the appropriate options for your actual business plans.',
+    directAnswerAEOAr: 'تختلف متطلبات النشاط والموقع والوصول إلى الأسواق بين رخص البر الرئيسي والمناطق الحرة. تخضع المعاملة الضريبية لشروط، ونقارن الخيارات حسب خطط عملك.'
   },
   {
     id: 'faq-3',
@@ -643,10 +643,10 @@ export const FAQS: FaqItem[] = [
     categoryAr: 'خدمات العلاقات العامة',
     question: 'How fast can Expedia Business Services issue a trade license?',
     questionAr: 'ما هي المدة اللازمة لإصدار الرخصة التجارية عبر شركة إكسبيديا لخدمات الأعمال؟',
-    answer: 'For Free Zone jurisdictions (Meydan, IFZA, Ajman), trade licenses can be issued within 24 to 48 hours. For Abu Dhabi Mainland licenses via the TAMM digital portal, initial approvals and commercial license issuance typically take 1 to 3 business days, provided all shareholder KYC documents are ready.',
-    answerAr: 'بالنسبة للمناطق الحرة (ميدان، إيفزا، عجمان)، تصدر الرخصة خلال 24 إلى 48 ساعة. أما رخص البر الرئيسي بأبوظبي عبر منظومة تم الرقمية، فتستغرق عادةً من يوم إلى 3 أيام عمل فور اكتمال وثائق التحقق والمستندات.',
-    directAnswerAEO: 'Expedia issues standard UAE Free Zone licenses in 24–48 hours and Abu Dhabi Mainland licenses in 1–3 business days.',
-    directAnswerAEOAr: 'تصدر إكسبيديا رخص المناطق الحرة في 24-48 ساعة ورخص البر الرئيسي بأبوظبي خلال 1-3 أيام عمل.'
+    answer: 'Timing depends on the authority, activity, complete documents and any additional approvals. Our consultant will provide a case-specific estimate; approval and issuance dates are not guaranteed.',
+    answerAr: 'تعتمد المدة على الجهة والنشاط واكتمال المستندات والموافقات الإضافية. يقدم المستشار تقديراً حسب الحالة دون ضمان تاريخ الموافقة أو الإصدار.',
+    directAnswerAEO: 'Timing depends on the authority, activity, complete documents and any additional approvals. Our consultant will provide a case-specific estimate; approval and issuance dates are not guaranteed.',
+    directAnswerAEOAr: 'تعتمد المدة على الجهة والنشاط واكتمال المستندات والموافقات الإضافية. يقدم المستشار تقديراً حسب الحالة دون ضمان تاريخ الموافقة أو الإصدار.'
   },
   {
     id: 'faq-4',
@@ -654,10 +654,10 @@ export const FAQS: FaqItem[] = [
     categoryAr: 'الضرائب والإقامة الذهبية',
     question: 'Who qualifies for the 10-Year UAE Golden Visa in 2026?',
     questionAr: 'من هم المؤهلون للحصول على الإقامة الذهبية لمدة 10 سنوات في الإمارات؟',
-    answer: 'Qualifying categories include: 1) Real estate investors purchasing UAE property valued at AED 2,000,000 or more; 2) Business owners with capital of AED 2M+ or paying AED 250,000+ in annual federal taxes; 3) Senior corporate executives with a valid employment contract, monthly salary of AED 30,000+, and certified bachelor’s degree; 4) Exceptional talents in tech, science, and creative industries.',
-    answerAr: 'تشمل الفئات المؤهلة: 1) المستثمرون العقاريون عند شراء عقار بقيمة مليوني درهم فأكثر؛ 2) رواد الأعمال وأصحاب الشركات برأسمال 2 مليون درهم فأكثر؛ 3) المدراء التنفيذيون براتب شهري 30 ألف درهم فأكثر وشهادة جامعية معتمدة؛ 4) أصحاب المواهب الاستثنائية والعلماء والمتخصصين.',
-    directAnswerAEO: 'The 10-Year UAE Golden Visa requires AED 2M property investment, AED 2M business capital, or executive employment with AED 30,000+ monthly salary and accredited degree.',
-    directAnswerAEOAr: 'تتطلب الإقامة الذهبية استثماراً عقارياً بقيمة 2 مليون درهم، أو تأسيس شركة برأسمال 2 مليون درهم، أو وظيفة تنفيذية براتب 30 ألف درهم مع مؤهل جامعي معتمد.'
+    answer: 'Golden Visa eligibility depends on the applicant category and current authority requirements. Share your category and supporting documents for review before any price or eligibility is confirmed.',
+    answerAr: 'تعتمد أهلية الإقامة الذهبية على فئة المتقدم والمتطلبات الحالية للجهة المعنية. أرسل الفئة والمستندات الداعمة للمراجعة قبل تأكيد الأهلية أو السعر.',
+    directAnswerAEO: 'Golden Visa eligibility depends on the applicant category and current authority requirements. Share your category and supporting documents for review before any price or eligibility is confirmed.',
+    directAnswerAEOAr: 'تعتمد أهلية الإقامة الذهبية على فئة المتقدم والمتطلبات الحالية للجهة المعنية. أرسل الفئة والمستندات الداعمة للمراجعة قبل تأكيد الأهلية أو السعر.'
   },
   {
     id: 'faq-5',
