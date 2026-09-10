@@ -217,7 +217,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       faq: "FAQ",
       contact: "Contact",
       trackStatus: "Request Application Update",
-      costEstimator: "Cost Estimator",
+      costEstimator: "Quotation Request",
       whatsappDirect: "WhatsApp Us"
     },
     hero: {
@@ -226,7 +226,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
         titleMain: "Empowering Enterprises Across Abu Dhabi & Dubai",
         titleHighlight: "With 100% Foreign Ownership & Swift Turnaround",
         subtitle: "Expedia Business & Services L.L.C delivers turnkey business incorporation across ADDED Mainland, DED Dubai, and premier UAE Free Zones. Complete licensing, Golden Visas, and banking under Trade License CN-6307408.",
-        ctaEstimator: "Instant Cost Calculator",
+        ctaEstimator: "Request a Quotation",
         ctaTracker: "Request Application Update",
         stats: {
           ownership: { label: "Foreign Ownership", value: "100%" },
@@ -256,7 +256,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       titleHighlight: "From Concept to Operational Entity",
       subtitle: "A frictionless, fintech-grade progression engineered to eliminate bureaucratic latency and deliver your active commercial license, residence visas, and corporate bank account in record time.",
       stepBadge: "Step",
-      ctaButton: "Calculate Your Setup Cost",
+      ctaButton: "Request Your Setup Quote",
       steps: [
         {
           number: "01",
@@ -374,7 +374,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       uaeCompliance: "UAE Commercial Law Compliance"
     },
     estimator: {
-      title: "Interactive UAE License & Setup Cost Estimator",
+      title: "Interactive UAE License & Setup Quotation Request",
       subtitle: "Live regulatory calculation based on 2026 official UAE government tariffs.",
       step1Title: "1. Select Jurisdiction & Hub",
       step1Desc: "Choose between Mainland (unrestricted UAE market) or leading Free Zones.",
@@ -437,7 +437,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
     dock: {
       corporate: "Corporate Setup",
       digital: "Digital Studio",
-      estimator: "Cost Calculator",
+      estimator: "Quotation Request",
       tracker: "Status Tracker",
       contact: "Get in Touch",
       whatsapp: "Chat on WhatsApp"
@@ -456,7 +456,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       faq: "الأسئلة الشائعة",
       contact: "اتصل بنا",
       trackStatus: "تتبع حالة المعاملة",
-      costEstimator: "حاسبة التكاليف",
+      costEstimator: "طلب عرض أسعار",
       whatsappDirect: "تواصل عبر واتساب"
     },
     hero: {
@@ -465,7 +465,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
         titleMain: "تمكين الشركات في أبوظبي ودبي",
         titleHighlight: "بملكية أجنبية 100% وسرعة إنجاز قياسية",
         subtitle: "تقدم إكسبيديا للأعمال والخدمات ذ.م.م حلولاً متكاملة لتأسيس الشركات في البر الرئيسي (دائرة التنمية الاقتصادية بأبوظبي ودبي) وأبرز المناطق الحرة، مع استخراج الإقامات الذهبية وفتح الحسابات المصرفية بموجب الرخصة التجارية CN-6307408.",
-        ctaEstimator: "حاسبة التكاليف الفورية",
+        ctaEstimator: "طلب عرض أسعار",
         ctaTracker: "تتبع حالة معاملتك مباشرة",
         stats: {
           ownership: { label: "الملكية الأجنبية", value: "100%" },
@@ -495,7 +495,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       titleHighlight: "من الفكرة إلى شركة قائمة وقانونية بالكامل",
       subtitle: "مسار سلس وخالٍ من التعقيدات مصمم لتوفير رخصتك التجارية الفعالة، وتأشيرات الإقامة، وحسابك البنكي المؤسسي في وقت قياسي.",
       stepBadge: "المرحلة",
-      ctaButton: "احسب تكلفة تأسيس شركتك الآن",
+      ctaButton: "اطلب عرض أسعار لتأسيس شركتك",
       steps: [
         {
           number: "01",
@@ -558,7 +558,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       colAction: "الإجراء المباشر",
       inquireBtn: "استفسر عبر واتساب",
       learnMore: "عرض تفاصيل الترخيص",
-      calculatorCta: "احسب التكلفة المخصصة لشركتك"
+      calculatorCta: "اطلب عرض أسعار مخصصاً لشركتك"
     },
     trustPartners: {
       badge: "المنظومة الحكومية والمصرفية",
@@ -676,7 +676,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
     dock: {
       corporate: "تأسيس الشركات",
       digital: "الاستوديو الرقمي",
-      estimator: "حاسبة التكاليف",
+      estimator: "طلب عرض أسعار",
       tracker: "تتبع المعاملة",
       contact: "اتصل بنا",
       whatsapp: "محادثة واتساب"
