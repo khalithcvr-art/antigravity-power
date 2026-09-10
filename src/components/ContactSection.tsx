@@ -14,6 +14,7 @@ import {
 import { COMPANY_INFO } from '../data/siteData';
 import { generateWhatsAppUrl, generateCallUrl, trackConversion } from '../lib/tracking';
 import { TRANSLATIONS } from '../data/translations';
+import { getEarlyEnquiry, clearEarlyEnquiry } from '../lib/earlyEnquiry';
 
 
 interface ContactSectionProps {
@@ -29,14 +30,15 @@ const ENQUIRY_ENDPOINT =
 export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false }) => {
   const t = isArabic ? TRANSLATIONS.ar.contact : TRANSLATIONS.en.contact;
 
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    service: isArabic ? 'تأسيس الشركات بالبر الرئيسي (أبوظبي / دبي)' : 'Mainland Company Formation (Abu Dhabi / Dubai)',
-    message: ''
-  });
-  const [visaType, setVisaType] = useState('');
+  const [formData, setFormData] = useState(() => ({
+    name: getEarlyEnquiry().name ?? '',
+    phone: getEarlyEnquiry().phone ?? '',
+    email: getEarlyEnquiry().email ?? '',
+    service: getEarlyEnquiry().service ?? (isArabic ? 'تأسيس الشركات بالبر الرئيسي (أبوظبي / دبي)' : 'Mainland Company Formation (Abu Dhabi / Dubai)'),
+    message: getEarlyEnquiry().message ?? ''
+  }));
+  const [visaType, setVisaType] = useState(() => getEarlyEnquiry().visaType ?? '');
+  useEffect(clearEarlyEnquiry, []);
   const visaService = isArabic ? 'تأشيرات الإقامة' : 'Residency visas';
   const [submitted, setSubmitted] = useState(false);
 
@@ -360,4 +362,3 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
     </section>
   );
 };
-
