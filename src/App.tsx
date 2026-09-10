@@ -115,6 +115,9 @@ export function App({initialPath = typeof window === 'undefined' ? '/' : window.
 
       <div className="relative z-10 flex flex-col min-h-screen">
         
+        <a className="skip-to-content" href="#main-content" onClick={() => document.getElementById("main-content")?.focus()}>
+          {isArabic ? "انتقل إلى المحتوى الرئيسي" : "Skip to main content"}
+        </a>
         {/* Top Navbar */}
         <Navbar
           mode={mode}
@@ -129,7 +132,7 @@ export function App({initialPath = typeof window === 'undefined' ? '/' : window.
         />
 
         {/* Main Content View (Dedicated Page vs Full Homepage) */}
-        <main className="flex-grow">
+        <main id="main-content" tabIndex={-1} className="flex-grow">
           {isDedicatedPage ? (
             <DedicatedJurisdictionPage
               slug={currentSlug}

@@ -182,6 +182,9 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ mode = 'corporate', isAr
                     }`}
                   >
                     <button
+                      id={`faq-question-${faq.id}`}
+                      aria-expanded={isOpen}
+                      aria-controls={isOpen ? `faq-answer-${faq.id}` : undefined}
                       onClick={() => toggleAccordion(faq.id)}
                       className="w-full p-6 text-left rtl:text-right flex items-center justify-between gap-4 focus:outline-none"
                     >
@@ -204,6 +207,9 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ mode = 'corporate', isAr
                     <AnimatePresence>
                       {isOpen && (
                         <motion.div
+                          id={`faq-answer-${faq.id}`}
+                          role="region"
+                          aria-labelledby={`faq-question-${faq.id}`}
                           initial={{ height: 0, opacity: 0 }}
                           animate={{ height: 'auto', opacity: 1 }}
                           exit={{ height: 0, opacity: 0 }}

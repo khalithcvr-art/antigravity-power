@@ -141,3 +141,24 @@
 .comfort-navbar button,.comfort-navbar a{white-space:nowrap}
 @media(min-width:1024px) and (max-width:1535px){.comfort-navbar button[title^="Call Expedia"],.comfort-navbar button[title^="اتصل بنا"]{display:none}.comfort-navbar .max-w-7xl{max-width:100%}}
 #contact{scroll-margin-top:110px}
+
+/* Keyboard navigation: two-tone focus works on the light and dark sections. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #087f5b !important;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 6px #fff;
+}
+.skip-to-content {
+  position: fixed;
+  inset-inline-start: 1rem;
+  top: 1rem;
+  z-index: 9999;
+  padding: .75rem 1rem;
+  border-radius: .5rem;
+  background: #fff;
+  color: #111827;
+  font-weight: 700;
+  transform: translateY(-200%);
+}
+.skip-to-content:focus { transform: translateY(0); }
+#main-content { scroll-margin-top: 6rem; }
