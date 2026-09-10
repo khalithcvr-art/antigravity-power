@@ -196,6 +196,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEstimator, onOpenTracker, 
 
         </div>
 
+        <nav aria-label={isArabic ? 'الأدلة والسياسات' : 'Guides and policies'} className="mt-8 flex flex-wrap gap-5 text-sm underline">
+          <a href="/blog">{isArabic ? 'أدلة الأعمال (بالإنجليزية)' : 'Business guides'}</a>
+          <a href="/privacy">{isArabic ? 'الخصوصية (بالإنجليزية)' : 'Privacy'}</a>
+          <a href="/cookies">{isArabic ? 'ملفات الارتباط (بالإنجليزية)' : 'Cookies'}</a>
+          <a href="/terms">{isArabic ? 'الشروط (بالإنجليزية)' : 'Terms'}</a>
+        </nav>
         {/* Legal Disclaimer Box */}
         <div className="mt-12 p-6 rounded-2xl bg-obsidian-900 border border-white/5 space-y-2 text-[11px] text-slate-400">
           <strong className="text-slate-200 block">{t.disclaimerTitle}</strong>
