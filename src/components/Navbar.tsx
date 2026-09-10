@@ -84,7 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({
     if (onNavigateSlug) {
       onNavigateSlug(slug);
     } else {
-      window.location.href = `/${slug}`;
+      window.location.href = `${isArabic ? "/ar" : ""}/${slug}`;
     }
   };
 
@@ -282,7 +282,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     ].map(j => (
                       <a
                         key={j.slug}
-                        href={`/${j.slug}`}
+                        href={`${isArabic ? "/ar" : ""}/${j.slug}`}
                         onClick={(e) => handleSlugClick(e, j.slug)}
                         className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-emerald-400 text-xs transition-colors"
                       >
