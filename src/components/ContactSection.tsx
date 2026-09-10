@@ -75,7 +75,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
       return; // no confetti, no false success - the visitor can retry or WhatsApp
     }
 
-    trackConversion('generate_lead', formData);
+    trackConversion('generate_lead', { source: 'contact_form' });
 
     sendingRef.current = false;
     setSending(false);

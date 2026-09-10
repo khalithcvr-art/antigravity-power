@@ -578,7 +578,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       phoneTitle: "الهاتف المباشر / الخط الساخن",
       phoneHours: "الإثنين - السبت: 8:30 صباحاً - 6:00 مساءً (توقيت الإمارات)",
       emailTitle: "البريد الإلكتروني الرسمي",
-      emailResponseTime: "استجابة مضمونة خلال ساعتي عمل",
+      emailResponseTime: "الرد خلال ساعات العمل",
       tradeLicenseTitle: "رقم الرخصة التجارية / السجل التجاري",
       tradeLicenseVal: "CN-6307408 (معتمدة من اقتصادية أبوظبي)",
       formTitle: "إرسال طلب استشارة فورية",
