@@ -333,8 +333,8 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
     anchorId: 'icp-immigration',
     shortDesc: 'Smart services portal management, establishment immigration card, entry permit processing, and urgent ID replacement.',
     shortDescAr: 'إدارة بوابة الخدمات الذكية، وبطاقة منشأة الجوازات، وأذونات الدخول، وتعديل بيانات وبدل فاقد الهوية الإماراتية.',
-    fullDesc: 'Direct integration with ICP (Federal Authority for Identity, Citizenship, Customs and Port Security) and GDRFA systems. We manage immigration portal credentials, quota transfers, and fast-track biometric card issuance.',
-    fullDescAr: 'ربط مباشر مع أنظمة الهيئة الاتحادية للهوية والجنسية (ICP) والإدارة العامة للإقامة وشؤون الأجانب (GDRFA) لإدارة المنشآت، وتعديل البيانات، وإصدار بطاقات الهوية السريعة.',
+    fullDesc: 'Assistance with ICP and GDRFA application requirements, establishment records and Emirates ID services. Eligibility, approvals and processing times are determined by the relevant authority.',
+    fullDescAr: 'المساعدة في متطلبات طلبات الهيئة الاتحادية للهوية والجنسية وإقامة دبي وملفات المنشآت وخدمات الهوية. تحدد الجهة المعنية الأهلية والموافقات ومدة المعالجة.',
     directAnswerAEO: 'ICP manages UAE border security, national identity registers, Emirates ID distribution, and residency file approvals across Abu Dhabi and the Northern Emirates.',
     directAnswerAEOAr: 'تدير الهيئة الاتحادية للهوية والجنسية السجل السكاني الوطني وإصدار الهوية الإماراتية والموافقات الأمنية للإقامات والتأشيرات.',
     deliverables: [
