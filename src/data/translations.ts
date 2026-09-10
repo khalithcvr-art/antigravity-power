@@ -216,7 +216,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       about: "About Us",
       faq: "FAQ",
       contact: "Contact",
-      trackStatus: "Track Live Application",
+      trackStatus: "Request Application Update",
       costEstimator: "Cost Estimator",
       whatsappDirect: "WhatsApp Us"
     },
@@ -227,7 +227,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
         titleHighlight: "With 100% Foreign Ownership & Swift Turnaround",
         subtitle: "Expedia Business & Services L.L.C delivers turnkey business incorporation across ADDED Mainland, DED Dubai, and premier UAE Free Zones. Complete licensing, Golden Visas, and banking under Trade License CN-6307408.",
         ctaEstimator: "Instant Cost Calculator",
-        ctaTracker: "Track Live Application",
+        ctaTracker: "Request Application Update",
         stats: {
           ownership: { label: "Foreign Ownership", value: "100%" },
           turnaround: { label: "License Turnaround", value: "24–48h" },
@@ -412,11 +412,11 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       disclaimerNote: "Final invoice figures are subject to exact activity codes and external department approvals (MOE, Civil Defense, DOH) if applicable."
     },
     tracker: {
-      title: "Live UAE Corporate Application Tracker",
-      subtitle: "Track real-time progress across ADDED, DED, ICP, and MoHRE smart portals.",
+      title: "Request an Application Update",
+      subtitle: "Ask our consultant to verify your application status.",
       searchLabel: "Enter Reference or Tracking Number:",
       searchPlaceholder: "e.g. EXP-AUH-2026, EXP-MEY-9014...",
-      searchBtn: "Track Application",
+      searchBtn: "Continue",
       sampleQueries: "Try sample reference numbers: EXP-AUH-2026 (Mainland) or EXP-MEY-9014 (Freezone)",
       statusActive: "In Progress",
       statusCompleted: "Approved & Completed",
@@ -651,8 +651,8 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       disclaimerNote: "تخضع الأرقام النهائية للموافقة على الأنشطة المحددة وموافقات الجهات الخارجية (وزارة الاقتصاد، الدفاع المدني، دائرة الصحة) إن وجدت."
     },
     tracker: {
-      title: "نظام تتبع المعاملات والرخص التجارية المباشر",
-      subtitle: "تتبع فوري لمراحل المعاملة عبر بوابات اقتصادية أبوظبي، دبي، الهيئة الاتحادية، ووزارة العمل.",
+      title: "طلب تحديث حالة المعاملة",
+      subtitle: "اطلب من مستشارنا التحقق من حالة معاملتك.",
       searchLabel: "أدخل رقم المعاملة أو الرمز المرجعي:",
       searchPlaceholder: "مثال: EXP-AUH-2026 أو EXP-MEY-9014...",
       searchBtn: "تتبع المعاملة",
