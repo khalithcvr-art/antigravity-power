@@ -1,3 +1,4 @@
+import { preferredScrollBehavior } from './hooks/useMotionPreference';
 import { ComfortHero } from './components/ComfortHero';
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { DualEngineMode } from './types';
@@ -53,14 +54,14 @@ export function App({initialPath = typeof window === 'undefined' ? '/' : window.
   const handleNavigateSlug = (slug: string) => {
     window.history.pushState({}, '', `${isArabic ? '/ar' : ''}/${slug}`);
     setCurrentSlug(slug);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: preferredScrollBehavior() });
     trackConversion('page_view_dedicated', { slug });
   };
 
   const handleNavigateHome = () => {
     window.history.pushState({}, '', isArabic ? '/ar' : '/');
     setCurrentSlug('');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: preferredScrollBehavior() });
   };
 
   const handleToggleMode = (newMode: DualEngineMode) => {

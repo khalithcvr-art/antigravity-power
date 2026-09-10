@@ -1,3 +1,4 @@
+import { preferredScrollBehavior } from '../hooks/useMotionPreference';
 import React, { useState, useEffect } from 'react';
 import { 
   Building2, 
@@ -94,16 +95,16 @@ export const Navbar: React.FC<NavbarProps> = ({
       onNavigateHome();
       setTimeout(() => {
         const element = document.getElementById(targetId);
-        element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        element?.scrollIntoView({ behavior: preferredScrollBehavior(), block: 'start' });
       }, 100);
       return;
     }
     const element = document.getElementById(targetId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      element.scrollIntoView({ behavior: preferredScrollBehavior(), block: 'start' });
     } else {
       const s = document.getElementById('services');
-      s?.scrollIntoView({ behavior: 'smooth' });
+      s?.scrollIntoView({ behavior: preferredScrollBehavior() });
     }
   };
 
@@ -258,7 +259,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onClick={(e) => {
                   e.preventDefault();
                   const el = document.getElementById('jurisdictions');
-                  el?.scrollIntoView({ behavior: 'smooth' });
+                  el?.scrollIntoView({ behavior: preferredScrollBehavior() });
                 }}
               >
                 <span>{t.jurisdictions}</span>
@@ -299,7 +300,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 if (window.location.pathname !== '/' && onNavigateHome) {
                   e.preventDefault();
                   onNavigateHome();
-                  setTimeout(() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }), 100);
+                  setTimeout(() => document.getElementById('about')?.scrollIntoView({ behavior: preferredScrollBehavior() }), 100);
                 }
               }} className="hover:text-white transition-colors">{t.about}</a>
             )}
@@ -307,14 +308,14 @@ export const Navbar: React.FC<NavbarProps> = ({
               if (window.location.pathname !== '/' && onNavigateHome) {
                 e.preventDefault();
                 onNavigateHome();
-                setTimeout(() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' }), 100);
+                setTimeout(() => document.getElementById('faq')?.scrollIntoView({ behavior: preferredScrollBehavior() }), 100);
               }
             }} className="hover:text-white transition-colors">{t.faq}</a>
             <a href="#contact" onClick={(e) => {
               if (window.location.pathname !== '/' && onNavigateHome) {
                 e.preventDefault();
                 onNavigateHome();
-                setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 100);
+                setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: preferredScrollBehavior() }), 100);
               }
             }} className="hover:text-white transition-colors">{t.contact}</a>
           </nav>

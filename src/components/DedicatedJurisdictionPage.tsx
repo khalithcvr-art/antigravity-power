@@ -1,3 +1,4 @@
+import { preferredScrollBehavior } from '../hooks/useMotionPreference';
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -32,7 +33,7 @@ export function DedicatedJurisdictionPage({
   const [openFaqIndex, setOpenFaqIndex] = React.useState<number | null>(0);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: preferredScrollBehavior() });
   }, [slug]);
 
   // Dynamic SEO / Meta injection

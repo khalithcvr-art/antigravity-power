@@ -1,3 +1,4 @@
+import { preferredScrollBehavior } from '../hooks/useMotionPreference';
 import React from 'react';
 import { 
   Building2, 
@@ -32,7 +33,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEstimator, onOpenTracker, 
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: preferredScrollBehavior() });
   };
 
   const handleSlugClick = (e: React.MouseEvent, slug: string) => {

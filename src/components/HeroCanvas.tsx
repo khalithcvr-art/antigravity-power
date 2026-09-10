@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useMotionPreference } from '../hooks/useMotionPreference';
 import { DualEngineMode } from '../types';
 
 interface HeroCanvasProps {
@@ -17,11 +18,13 @@ interface Particle {
 }
 
 export const HeroCanvas: React.FC<HeroCanvasProps> = ({ mode }) => {
+  const reducedMotion = useMotionPreference();
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    if (reducedMotion) { canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height); return; }
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
@@ -172,11 +175,12 @@ export const HeroCanvas: React.FC<HeroCanvasProps> = ({ mode }) => {
       canvas.parentElement?.removeEventListener('mousemove', handleMouseMove);
       canvas.parentElement?.removeEventListener('mouseleave', handleMouseLeave);
     };
-  }, [mode]);
+  }, [mode, reducedMotion]);
 
   return (
     <canvas
       ref={canvasRef}
+      aria-hidden="true"
       className="absolute inset-0 pointer-events-none z-0 opacity-80 transition-opacity duration-700"
       style={{ filter: 'drop-shadow(0 0 10px rgba(0,0,0,0.5))' }}
     />

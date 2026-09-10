@@ -1,3 +1,5 @@
+import { preferredScrollBehavior } from '../hooks/useMotionPreference';
+import { useMotionPreference } from '../hooks/useMotionPreference';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -79,16 +81,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     'أداء فائق وسرعة تحميل استثنائية'
   ];
 
+  const reducedMotion = useMotionPreference();
   const corporateHeadlines = isArabic ? corporateHeadlinesAr : corporateHeadlinesEn;
   const digitalHeadlines = isArabic ? digitalHeadlinesAr : digitalHeadlinesEn;
   const currentList = mode === 'corporate' ? corporateHeadlines : digitalHeadlines;
 
   useEffect(() => {
+    if (reducedMotion) return;
     const timer = setInterval(() => {
       setRotatingIndex((prev) => (prev + 1) % currentList.length);
     }, 3200);
     return () => clearInterval(timer);
-  }, [currentList.length]);
+  }, [currentList.length, reducedMotion]);
 
   const handleWhatsAppHero = () => {
     trackConversion('whatsapp_click', { source: 'hero_primary_cta' });
@@ -175,7 +179,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 opacity: [0.4, 0.7, 0.4],
                 rotate: [0, 90, 0]
               }}
-              transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 12, repeat: reducedMotion ? 0 : Infinity, ease: "easeInOut" }}
               className="absolute top-1/6 left-1/5 w-[600px] h-[600px] bg-gradient-to-tr from-cyan-500/25 via-indigo-600/20 to-transparent rounded-full blur-[110px] mix-blend-screen pointer-events-none"
             />
             <motion.div 
@@ -184,7 +188,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 opacity: [0.35, 0.65, 0.35],
                 rotate: [90, 0, 90]
               }}
-              transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+              transition={{ duration: 15, repeat: reducedMotion ? 0 : Infinity, ease: "easeInOut" }}
               className="absolute bottom-1/5 right-1/5 w-[650px] h-[650px] bg-gradient-to-bl from-teal-400/20 via-cyan-500/25 to-purple-600/25 rounded-full blur-[120px] mix-blend-screen pointer-events-none"
             />
 
@@ -380,10 +384,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                       } else {
                         const el = document.getElementById(pill.targetId);
                         if (el) {
-                          el.scrollIntoView({ behavior: 'smooth' });
+                          el.scrollIntoView({ behavior: preferredScrollBehavior() });
                         } else {
                           const j = document.getElementById('jurisdictions');
-                          j?.scrollIntoView({ behavior: 'smooth' });
+                          j?.scrollIntoView({ behavior: preferredScrollBehavior() });
                         }
                       }
                     }}
@@ -478,7 +482,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               onOpenTracker={onOpenTracker}
               onExploreServices={() => {
                 const s = document.getElementById('services');
-                s?.scrollIntoView({ behavior: 'smooth' });
+                s?.scrollIntoView({ behavior: preferredScrollBehavior() });
               }}
               onBookConsultation={handleWhatsAppHero}
             />
