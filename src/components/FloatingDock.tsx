@@ -68,6 +68,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
           whileHover={{ scale: 1.05, y: -1 }}
           whileTap={{ scale: 0.95 }}
           onClick={handleWhatsApp}
+          aria-label={t.whatsapp}
           className="relative flex items-center space-x-2 rtl:space-x-reverse px-4 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400 text-obsidian-950 text-xs font-bold transition-all shadow-lg shadow-emerald-500/30 overflow-hidden group"
         >
           <span className="animate-ping absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-300 opacity-60 pointer-events-none" />
@@ -91,6 +92,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
           whileHover={{ scale: 1.04, y: -1 }}
           whileTap={{ scale: 0.95 }}
           onClick={onOpenEstimator}
+          aria-label={t.estimator}
           className="flex items-center space-x-1.5 rtl:space-x-reverse px-3.5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-medium border border-white/10 transition-all hover:text-white"
         >
           <Calculator className="w-4 h-4 text-emerald-400" />
@@ -102,6 +104,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
           whileHover={{ scale: 1.04, y: -1 }}
           whileTap={{ scale: 0.95 }}
           onClick={onOpenTracker}
+          aria-label={t.tracker}
           className="flex items-center space-x-1.5 rtl:space-x-reverse px-3.5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-medium border border-white/10 transition-all hover:text-white"
         >
           <Search className="w-4 h-4 text-cyan-400" />

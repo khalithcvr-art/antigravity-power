@@ -141,7 +141,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
             </div>
 
             {/* Verified Entity Details */}
-            <div className="p-6 rounded-3xl bg-obsidian-900 border border-white/10 space-y-5">
+            <div className="contact-details-card p-6 rounded-3xl bg-obsidian-900 border border-white/10 space-y-5">
               
               <div className="flex items-start space-x-3.5 rtl:space-x-reverse">
                 <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-emerald-400 shrink-0">
@@ -187,7 +187,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
             </div>
 
             {/* WhatsApp Immediate Connect Box */}
-            <div className="p-6 rounded-3xl bg-gradient-to-br from-emerald-950/40 via-obsidian-900 to-obsidian-900 border border-emerald-500/30 flex flex-col justify-between">
+            <div className="contact-whatsapp-card p-6 rounded-3xl bg-gradient-to-br from-emerald-950/40 via-obsidian-900 to-obsidian-900 border border-emerald-500/30 flex flex-col justify-between">
               <div>
                 <div className="flex items-center space-x-2 rtl:space-x-reverse text-emerald-400 text-xs font-mono font-bold uppercase mb-1">
                   <MessageSquare className="w-4 h-4" />

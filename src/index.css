@@ -162,3 +162,15 @@
 }
 .skip-to-content:focus { transform: translateY(0); }
 #main-content { scroll-margin-top: 6rem; }
+
+/* Keep contact text and its surfaces in the same light colour scheme. */
+.comfort-contact .contact-details-card,
+.comfort-contact .contact-whatsapp-card {
+  background: #fff;
+  border-color: #d8cfbe;
+}
+.comfort-contact .text-gradient-emerald {
+  background: none;
+  -webkit-text-fill-color: currentColor;
+  color: #79581f;
+}
