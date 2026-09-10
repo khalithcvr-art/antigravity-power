@@ -319,13 +319,13 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       colAction: "Direct Action",
       inquireBtn: "Inquire on WhatsApp",
       learnMore: "View License Details",
-      calculatorCta: "Estimate Exact Custom Quote"
+      calculatorCta: "Request a Custom Quotation"
     },
     trustPartners: {
       badge: "Government & Banking Ecosystem",
-      title: "Authorized Government Liaisons &",
-      titleHighlight: "Tier-1 UAE Banking Partners",
-      subtitle: "Expedia Business & Services operates with direct integration into federal and local UAE administrative portals and major financial institutions.",
+      title: "Application Support for",
+      titleHighlight: "Authorities & Banks",
+      subtitle: "We assist with application requirements for the relevant authorities and banks. Decisions remain with each authority or institution.",
       complianceNote: "All corporate transactions are conducted under UAE Federal Decree Law No. (32) of 2021 on Commercial Companies."
     },
     contact: {
@@ -375,7 +375,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
     },
     estimator: {
       title: "Interactive UAE License & Setup Quotation Request",
-      subtitle: "Live regulatory calculation based on 2026 official UAE government tariffs.",
+      subtitle: "Request a consultant-reviewed quotation for your requirements.",
       step1Title: "1. Select Jurisdiction & Hub",
       step1Desc: "Choose between Mainland (unrestricted UAE market) or leading Free Zones.",
       step2Title: "2. Investor & Employee Visa Allocation",
@@ -562,9 +562,9 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
     },
     trustPartners: {
       badge: "المنظومة الحكومية والمصرفية",
-      title: "الجهات الحكومية المعتمدة و",
-      titleHighlight: "الشركاء المصرفيون الرائدون في الإمارات",
-      subtitle: "تعمل شركة إكسبيديا للأعمال والخدمات عبر تكامل رقمي مباشر مع المنصات الاتحادية والمحلية وكبرى المؤسسات المالية في الدولة.",
+      title: "دعم الطلبات لدى",
+      titleHighlight: "الجهات الحكومية والبنوك",
+      subtitle: "نساعد في متطلبات الطلبات لدى الجهات الحكومية والبنوك المعنية. تبقى القرارات لدى كل جهة أو مؤسسة.",
       complianceNote: "تتم كافة المعاملات والتوثيقات بموجب المرسوم بقانون اتحادي رقم (32) لسنة 2021 بشأن الشركات التجارية في دولة الإمارات."
     },
     contact: {
@@ -614,7 +614,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
     },
     estimator: {
       title: "حاسبة تكاليف تأسيس الشركات في الإمارات",
-      subtitle: "حساب فوري وتفاعلي وفق أحدث التعرفات الحكومية الرسمية لعام 2026.",
+      subtitle: "اطلب عرض أسعار يراجعه المستشار حسب متطلباتك.",
       step1Title: "1. اختيار المنطقة والجهة المصدرة",
       step1Desc: "اختر بين البر الرئيسي (حرية التجارة بكافة أرجاء الدولة) أو أبرز المناطق الحرة.",
       step2Title: "2. تحديد عدد تأشيرات الإقامة للمستثمرين والموظفين",
@@ -633,7 +633,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
       taxRegDesc: "استخراج الرقم الضريبي وإعداد ملف الامتثال المالي للشركة.",
       goldenVisaLabel: "ترقية الإقامة إلى الإقامة الذهبية لمدة 10 سنوات (VIP)",
       goldenVisaDesc: "ترشيح فوري وإصدار الإقامة الذهبية للمستثمرين والمديرين التنفيذيين.",
-      bankLabel: "فتح الحساب البنكي التجاري المضمون",
+      bankLabel: "المساعدة في طلب فتح حساب بنكي تجاري",
       bankDesc: "تسهيل وتسريع فتح الحساب لدى بنك الإمارات دبي الوطني، بنك ويو، أو بنك المشرق.",
       digitalBrandingLabel: "باقة الهوية الرقمية وموقع الويب ثنائي اللغة",
       digitalBrandingDesc: "تصميم موقع إلكتروني احترافي، إعداد البريد المؤسسي، وهوية بصرية كاملة.",

@@ -249,7 +249,7 @@ export const JurisdictionTable: React.FC<JurisdictionTableProps> = ({
                               </span>
                             </td>
                             <td className="p-5 font-mono text-sm font-bold text-emerald-400">
-                              {isArabic ? `${j.baseCost.toLocaleString()} درهم` : `AED ${j.baseCost.toLocaleString()}`}
+                              {isArabic ? "اطلب عرض أسعار" : "Request a quotation"}
                             </td>
                             <td className="p-5 font-medium text-slate-300">
                               {foreignOwnership}
@@ -315,7 +315,7 @@ export const JurisdictionTable: React.FC<JurisdictionTableProps> = ({
                           {type} · {city}
                         </span>
                         <span className="text-emerald-400 font-mono font-bold text-sm">
-                          {isArabic ? `${j.baseCost.toLocaleString()} درهم` : `AED ${j.baseCost.toLocaleString()}`}
+                          {isArabic ? "اطلب عرض أسعار" : "Request a quotation"}
                         </span>
                       </div>
 
