@@ -1,3 +1,4 @@
+import { useDialogKeyboard } from '../hooks/useDialogKeyboard';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { X, Search, ShieldCheck } from 'lucide-react';
@@ -10,6 +11,7 @@ interface StatusTrackerModalProps {
   isArabic?: boolean;
 }
 export const StatusTrackerModal: React.FC<StatusTrackerModalProps> = ({ isOpen, onClose, isArabic = false }) => {
+  const dialogRef = useDialogKeyboard(isOpen, onClose);
   const [trackingInput, setTrackingInput] = useState('');
   const [searched, setSearched] = useState(false);
   const t = isArabic ? TRANSLATIONS.ar.tracker : TRANSLATIONS.en.tracker;
@@ -38,7 +40,7 @@ export const StatusTrackerModal: React.FC<StatusTrackerModalProps> = ({ isOpen, 
           
           {/* Modal Container */}
           <motion.div
-            role="dialog" aria-modal="true" aria-label={t.title}
+            ref={dialogRef} role="dialog" aria-modal="true" aria-label={t.title}
             initial={{ opacity: 0, scale: 0.94, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.94, y: 20 }}

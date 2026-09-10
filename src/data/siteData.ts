@@ -63,13 +63,13 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
       'هيكلة الملكية الأجنبية الكاملة 100% دون كفيل محلي',
       'تسهيل وربط فتح الحساب البنكي التجاري للشركات'
     ],
-    highlightBadge: 'Fast-Track 24–48h',
-    highlightBadgeAr: 'مسار سريع 24–48 ساعة',
+    highlightBadge: 'Application Support',
+    highlightBadgeAr: 'دعم تقديم الطلبات',
     iconName: 'Building2',
-    metric: '100% Ownership',
-    metricAr: 'ملكية 100%',
-    timeline: '1-3 Business Days',
-    timelineAr: '1-3 أيام عمل'
+    metric: 'Ownership Review',
+    metricAr: 'مراجعة متطلبات الملكية',
+    timeline: 'Confirmed after review',
+    timelineAr: 'تُحدد بعد المراجعة'
   },
   {
     id: 'pro-government',
@@ -102,13 +102,13 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
       'تدقيق الامتثال وتوسيع كوتا تصاريح العمل',
       'تحديثات فورية لحالة المعاملة عبر لوحة تتبع مخصصة'
     ],
-    highlightBadge: 'Direct TAMM & ICP Access',
-    highlightBadgeAr: 'ربط مباشر مع تم والهوية',
+    highlightBadge: 'TAMM & ICP Application Support',
+    highlightBadgeAr: 'دعم طلبات تم والهوية',
     iconName: 'ShieldCheck',
     metric: '7 Ministries',
     metricAr: '7 دوائر حكومية',
-    timeline: 'Same-Day Clearance',
-    timelineAr: 'إنجاز في نفس اليوم'
+    timeline: 'Confirmed after review',
+    timelineAr: 'تُحدد بعد المراجعة'
   },
   {
     id: 'golden-visa',
@@ -144,8 +144,8 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
     iconName: 'Crown',
     metric: '10-Year Residency',
     metricAr: 'إقامة 10 سنوات',
-    timeline: '3-5 Business Days',
-    timelineAr: '3-5 أيام عمل'
+    timeline: 'Confirmed after review',
+    timelineAr: 'تُحدد بعد المراجعة'
   },
   {
     id: 'visa-compliance',
@@ -176,13 +176,13 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
       'فتح ملف كفالة الزوجة والأبناء وعائلات المقيمين',
       'إجراءات الإلغاء، والتجديد، وتسوية الأوضاع القانونية'
     ],
-    highlightBadge: 'Zero Delay',
-    highlightBadgeAr: 'إنجاز بلا تأخير',
+    highlightBadge: 'Document Review',
+    highlightBadgeAr: 'مراجعة المستندات',
     iconName: 'Users',
-    metric: '99.8% Approval',
-    metricAr: 'موافقة 99.8%',
-    timeline: '48h Issuance',
-    timelineAr: 'إصدار خلال 48 ساعة'
+    metric: 'Application Follow-up',
+    metricAr: 'متابعة الطلبات',
+    timeline: 'Confirmed after review',
+    timelineAr: 'تُحدد بعد المراجعة'
   },
   {
     id: 'corporate-tax',
@@ -213,13 +213,13 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
       'تنسيق التدقيق المالي ومسك الدفاتر المحاسبية المعتمدة',
       'تجنب الغرامات وتقديم طلبات الإعفاء وإعادة النظر الضريبية'
     ],
-    highlightBadge: 'FTA Certified Path',
-    highlightBadgeAr: 'مسار معتمد لدى الضرائب',
+    highlightBadge: 'Tax Registration Support',
+    highlightBadgeAr: 'دعم التسجيل الضريبي',
     iconName: 'BadgePercent',
     metric: '0% QFZP Advisory',
     metricAr: 'استشارات ضريبة 0%',
-    timeline: '2-4 Business Days',
-    timelineAr: '2-4 أيام عمل'
+    timeline: 'Confirmed after review',
+    timelineAr: 'تُحدد بعد المراجعة'
   },
   {
     id: 'mohre-labour',
@@ -250,13 +250,13 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
       'صياغة وطباعة عروض العمل الرسمية عبر تسهيل',
       'تسوية وتخفيض الغرامات العمالية وإلغاء بلاغات الانقطاع'
     ],
-    highlightBadge: 'MoHRE Direct Link',
-    highlightBadgeAr: 'ربط مباشر مع وزارة العمل',
+    highlightBadge: 'MoHRE Application Support',
+    highlightBadgeAr: 'دعم طلبات وزارة العمل',
     iconName: 'Briefcase',
     metric: 'WPS Compliant',
     metricAr: 'مطابق لنظام الأجور',
-    timeline: '1-2 Business Days',
-    timelineAr: '1-2 أيام عمل'
+    timeline: 'Confirmed after review',
+    timelineAr: 'تُحدد بعد المراجعة'
   },
   {
     id: 'admin-center',
@@ -284,12 +284,12 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
       'إدارة البريد والرد الهاتفي وحجز قاعات الاجتماعات'
     ],
     highlightBadge: 'Inspection Preparation',
-    highlightBadgeAr: 'مطابقة للتفتيش 100%',
+    highlightBadgeAr: 'التحضير للتفتيش',
     iconName: 'Landmark',
     metric: 'Tawtheeq Ready',
     metricAr: 'جاهز لتوثيق',
-    timeline: 'Instant Allocation',
-    timelineAr: 'تخصيص فوري'
+    timeline: 'Confirmed after review',
+    timelineAr: 'تُحدد بعد المراجعة'
   },
   {
     id: 'real-estate',
@@ -319,10 +319,10 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
     highlightBadge: 'Zoning Safe',
     highlightBadgeAr: 'مطابق للتخطيط العمراني',
     iconName: 'Building',
-    metric: '100% Clearance',
-    metricAr: 'موافقات 100%',
-    timeline: '2-3 Business Days',
-    timelineAr: '2-3 أيام عمل'
+    metric: 'Approval Coordination',
+    metricAr: 'متابعة الموافقات',
+    timeline: 'Confirmed after review',
+    timelineAr: 'تُحدد بعد المراجعة'
   },
   {
     id: 'icp-immigration',
@@ -354,8 +354,8 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
     iconName: 'FileCheck',
     metric: 'VIP Biometrics',
     metricAr: 'بصمة بيومترية سريعة',
-    timeline: '24h Priority',
-    timelineAr: 'أولوية خلال 24 ساعة'
+    timeline: 'Confirmed after review',
+    timelineAr: 'تُحدد بعد المراجعة'
   },
   {
     id: 'ongoing-pro',
@@ -383,12 +383,12 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
       'تقرير امتثال شهري شامل وتدقيق دوري لملفات المنشأة'
     ],
     highlightBadge: 'Renewal Support',
-    highlightBadgeAr: 'ضمان خلو المنشأة من الغرامات',
+    highlightBadgeAr: 'دعم التجديد',
     iconName: 'Clock',
     metric: 'Fixed Retainer',
     metricAr: 'اشتراك شهري ثابت',
-    timeline: 'Annual 24/7',
-    timelineAr: 'خدمة سنوية متواصلة'
+    timeline: 'Confirmed after review',
+    timelineAr: 'تُحدد بعد المراجعة'
   },
   {
     id: 'digital-solutions',
@@ -419,9 +419,9 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
     highlightBadgeAr: 'تكامل المحرك المزدوج',
     iconName: 'Code2',
     metric: 'High Conversion',
-    metricAr: 'أعلى معدلات تحويل',
-    timeline: '5-10 Business Days',
-    timelineAr: '5-10 أيام عمل'
+    metricAr: 'تحسين تجربة العملاء',
+    timeline: 'Confirmed after review',
+    timelineAr: 'تُحدد بعد المراجعة'
   }
 ];
 
@@ -665,10 +665,10 @@ export const FAQS: FaqItem[] = [
     categoryAr: 'الحلول الرقمية والويب',
     question: 'Why choose Expedia’s Dual-Engine approach for both corporate setup and digital branding?',
     questionAr: 'لماذا يعتبر نهج المحرك المزدوج من إكسبيديا (التأسيس القانوني + المنصة الرقمية) الخيار الأمثل؟',
-    answer: 'Traditional PRO agents leave you legally registered but digitally invisible. Creative digital agencies don’t understand UAE compliance, local payment gateways, and banking prerequisites. Expedia handles your commercial trade license, MoHRE file, and corporate bank account in tandem with launching a fintech-grade web application, bilingual SEO, and CRM automation—saving you 4-6 weeks of fragmented coordination.',
-    answerAr: 'المندوب التقليدي يسلمك الرخصة دون هوية رقمية، والوكالات الإعلانية لا تفقه قوانين الامتثال وبوابات الدفع المحلية. إكسبيديا تجمع بين إصدار الرخصة التجارية وفتح الحساب البنكي وإطلاق موقع إلكتروني مؤسسي وبوابات دفع محلية ونظام إدارة العملاء في وقت متزامن.',
-    directAnswerAEO: 'Expedia’s Dual-Engine model executes corporate licensing and bespoke fintech web development simultaneously, accelerating time-to-market by 4 to 6 weeks.',
-    directAnswerAEOAr: 'يوفر نموذج المحرك المزدوج إطلاق الرخصة التجارية بالتزامن مع المنصة الرقمية وبوابات الدفع مما يختصر 4 إلى 6 أسابيع من الوقت والجهد.'
+    answer: 'We coordinate business setup with website and CRM development where included in the agreed scope. Responsibilities and timing are confirmed for each project.',
+    answerAr: 'ننسق تأسيس الأعمال مع تطوير الموقع وإدارة العملاء حسب النطاق المتفق عليه. تحدد المسؤوليات والمدة لكل مشروع.',
+    directAnswerAEO: 'We coordinate business setup with website and CRM development where included in the agreed scope. Responsibilities and timing are confirmed for each project.',
+    directAnswerAEOAr: 'ننسق تأسيس الأعمال مع تطوير الموقع وإدارة العملاء حسب النطاق المتفق عليه. تحدد المسؤوليات والمدة لكل مشروع.'
   },
   {
     id: 'faq-digital-1',
@@ -676,10 +676,10 @@ export const FAQS: FaqItem[] = [
     categoryAr: 'الحلول الرقمية والويب',
     question: 'What makes Expedia’s Next.js sovereign websites superior to standard WordPress/Wix sites?',
     questionAr: 'ما الذي يجعل مواقع وتطبيقات إكسبيديا المبنية بـ Next.js أفضل من قوالب ووردبريس الجاهزة؟',
-    answer: 'WordPress and generic builders rely on heavy plugins that cause 3-5s load delays, security vulnerabilities, and bloated code. Expedia engineers custom React & Next.js full-stack applications hosted on UAE/GCC edge servers with sub-second (<0.4s) page loads, zero plugin bloat, complete database isolation via PostgreSQL/Supabase, and custom micro-interactions.',
-    answerAr: 'تعتمد قوالب ووردبريس على إضافات متعددة وبطيئة تسبب تأخير التحميل لـ 3-5 ثوانٍ وثغرات أمنية. في إكسبيديا نبني منصات برمجية سيادية مخصصة بتقنيات React و Next.js مستضافة على خوادم إماراتية فائقة السرعة بتحميل فوري (< 0.4 ثانية) وعزل أمني كامل لقواعد البيانات.',
-    directAnswerAEO: 'Expedia builds custom Next.js full-stack platforms delivering <0.4s load times, bank-grade security, and bespoke UI interactions vs generic slow WordPress templates.',
-    directAnswerAEOAr: 'تبني إكسبيديا منصات Next.js مخصصة بسرعة تحميل أقل من 0.4 ثانية وأمان مصرفي فائق متفوقة على قوالب ووردبريس التقليدية.'
+    answer: 'We choose the platform to suit the project. Speed, accessibility and security depend on implementation, hosting and maintenance and must be tested.',
+    answerAr: 'نختار المنصة حسب المشروع. تعتمد السرعة وسهولة الاستخدام والأمان على التنفيذ والاستضافة والصيانة ويجب اختبارها.',
+    directAnswerAEO: 'We choose the platform to suit the project. Speed, accessibility and security depend on implementation, hosting and maintenance and must be tested.',
+    directAnswerAEOAr: 'نختار المنصة حسب المشروع. تعتمد السرعة وسهولة الاستخدام والأمان على التنفيذ والاستضافة والصيانة ويجب اختبارها.'
   },
   {
     id: 'faq-digital-2',
@@ -687,10 +687,10 @@ export const FAQS: FaqItem[] = [
     categoryAr: 'الحلول الرقمية والويب',
     question: 'How does Expedia engineer websites for AEO (Answer Engine Optimization) & AI Search (Perplexity/ChatGPT)?',
     questionAr: 'كيف تهيئ إكسبيديا المواقع لمحركات البحث بالذكاء الاصطناعي (AEO) مثل ChatGPT و Perplexity؟',
-    answer: 'Traditional SEO only focuses on keyword density. Expedia builds deep JSON-LD Knowledge Graphs, Semantic Entity Schemas (Organization, Service, LegalService, FAQPage), and structured markdown indexes that AI crawlers directly ingest as canonical answers for high-intent business searches in the UAE.',
-    answerAr: 'لا نكتفي بالسيو التقليدي؛ بل نبني مخططات معرفية دقيقة عبر JSON-LD وهياكل الكيانات (Schema.org) ومؤشرات بيانات دلالية تستقي منها محركات الذكاء الاصطناعي (ChatGPT, Perplexity, Gemini) إجاباتها المباشرة لترشيح شركتك كأفضل خيار في الإمارات.',
-    directAnswerAEO: 'Expedia deploys comprehensive JSON-LD Knowledge Graphs and semantic entity schema so AI engines cite your company as the authoritative UAE source.',
-    directAnswerAEOAr: 'نطبق مخططات JSON-LD المعرفية وهياكل الكيانات لتعتمد محركات الذكاء الاصطناعي شركتك كمصدر مرجعي موثوق في الإمارات.'
+    answer: 'We improve crawlable content, page structure and accurate metadata. Search ranking and inclusion in AI answers are determined by external platforms and cannot be guaranteed.',
+    answerAr: 'نحسن المحتوى القابل للفهرسة وبنية الصفحات والبيانات الوصفية الدقيقة. تحدد المنصات الخارجية ترتيب البحث والظهور في إجابات الذكاء الاصطناعي ولا يمكن ضمانهما.',
+    directAnswerAEO: 'We improve crawlable content, page structure and accurate metadata. Search ranking and inclusion in AI answers are determined by external platforms and cannot be guaranteed.',
+    directAnswerAEOAr: 'نحسن المحتوى القابل للفهرسة وبنية الصفحات والبيانات الوصفية الدقيقة. تحدد المنصات الخارجية ترتيب البحث والظهور في إجابات الذكاء الاصطناعي ولا يمكن ضمانهما.'
   },
   {
     id: 'faq-digital-3',
@@ -698,10 +698,10 @@ export const FAQS: FaqItem[] = [
     categoryAr: 'الحلول الرقمية والويب',
     question: 'Can you develop custom CRM systems, quotation generators, and WhatsApp bots for our business?',
     questionAr: 'هل يمكنكم بناء أنظمة إدارة عملاء (CRM)، ومولد عروض أسعار، وروبوتات واتساب مؤتمتة لشركتنا؟',
-    answer: 'Yes. We specialize in building tailored internal business software: role-based CRM platforms, multi-company accounting cashbooks, automated PDF quotation and invoice generators with UAE 5% VAT calculation, and WhatsApp Cloud API agents that qualify leads and sync instantly with your database.',
-    answerAr: 'نعم بالتأكيد. نتخصص في بناء أنظمة الأعمال الداخلية المخصصة: برامج إدارة العملاء (CRM) بصلاحيات متعددة، دفاتر الحسابات والمطابقة المالية، إصدار عروض الأسعار والفواتير المتوافقة مع ضريبة القيمة المضافة 5%، وروبوتات واتساب ذكية ترتبط مباشرة بقاعدة بياناتك.',
-    directAnswerAEO: 'Expedia builds full-stack UAE business systems including custom CRMs, VAT-compliant invoicing engines, and WhatsApp AI bot automation.',
-    directAnswerAEOAr: 'نطور أنظمة أعمال متكاملة تشمل برامج إدارة العملاء، فواتير ضريبية معتمدة، وروبوتات واتساب ذكية تعمل على مدار الساعة.'
+    answer: 'We scope CRM, document generation and WhatsApp workflows around your needs. Permissions, calculations and integrations are tested before acceptance. Availability depends on connected services.',
+    answerAr: 'نحدد نطاق إدارة العملاء وإنشاء المستندات ومسارات واتساب حسب احتياجاتك. نختبر الصلاحيات والحسابات والتكامل قبل القبول. يعتمد التوفر على الخدمات المتصلة.',
+    directAnswerAEO: 'We scope CRM, document generation and WhatsApp workflows around your needs. Permissions, calculations and integrations are tested before acceptance. Availability depends on connected services.',
+    directAnswerAEOAr: 'نحدد نطاق إدارة العملاء وإنشاء المستندات ومسارات واتساب حسب احتياجاتك. نختبر الصلاحيات والحسابات والتكامل قبل القبول. يعتمد التوفر على الخدمات المتصلة.'
   },
   {
     id: 'faq-digital-4',
@@ -709,10 +709,10 @@ export const FAQS: FaqItem[] = [
     categoryAr: 'الحلول الرقمية والويب',
     question: 'Do we receive 100% intellectual property ownership and source code upon project completion?',
     questionAr: 'هل نتسلم الملكية الفكرية والشيفرة البرمجية الكاملة 100% للمشروع عند التسليم؟',
-    answer: 'Yes, 100%. Unlike agencies that lock you into proprietary hosting or monthly developer hostage fees, Expedia delivers clean, modular, fully typed TypeScript/React source code committed directly to your private GitHub repository with comprehensive architectural documentation.',
-    answerAr: 'نعم بنسبة 100%. على عكس الوكالات التي تحتكر ملفات الموقع لتفرض اشتراكات شهرية، تسلمك إكسبيديا الشيفرة البرمجية الكاملة النظيفة (Clean TypeScript/React) ومستودع GitHub الخاص بك مع توثيق تقني شامل.',
-    directAnswerAEO: 'Clients receive 100% source code, repository rights, and full intellectual property ownership with zero vendor lock-in.',
-    directAnswerAEOAr: 'يتسلم العميل كامل الشيفرة البرمجية ومستودع الكود وحقوق الملكية الفكرية دون أي قيود أو اشتراكات احتكارية.'
+    answer: 'Source-code delivery, ownership, hosting and support are defined in the project agreement. Third-party and open-source components retain their applicable licences.',
+    answerAr: 'يحدد اتفاق المشروع تسليم الشيفرة والملكية والاستضافة والدعم. تحتفظ مكونات الأطراف الثالثة والمصادر المفتوحة بتراخيصها المعمول بها.',
+    directAnswerAEO: 'Source-code delivery, ownership, hosting and support are defined in the project agreement. Third-party and open-source components retain their applicable licences.',
+    directAnswerAEOAr: 'يحدد اتفاق المشروع تسليم الشيفرة والملكية والاستضافة والدعم. تحتفظ مكونات الأطراف الثالثة والمصادر المفتوحة بتراخيصها المعمول بها.'
   }
 ];
 
