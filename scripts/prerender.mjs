@@ -15,6 +15,9 @@ try {
   const title=data?data.meta[ar?'titleAr':'titleEn']:(ar?'تأسيس الشركات وخدمات المعاملات في أبوظبي | إكسبيديا':'Business Setup & PRO Services Abu Dhabi | Expedia');
   const desc=data?data.meta[ar?'descriptionAr':'descriptionEn']:(ar?'تأسيس الشركات واستفسارات الإقامة وخدمات المعاملات. تواصل معنا للحصول على عرض سعر حسب احتياجاتك.':'Company formation, residency enquiries, PRO services and digital support in Abu Dhabi and Dubai. Contact Expedia for a tailored quotation.');
   let html=template.replace('<div id="root"></div>',`<div id="root">${renderToString(React.createElement(App,{initialPath:path}))}</div>`).replace('<html lang="en"',`<html lang="${ar?'ar':'en'}" dir="${ar?'rtl':'ltr'}"`).replace(/<title>.*?<\/title>/,`<title>${esc(title)}</title>`).replace(/(<meta name="description" content=")[^"]*/,`$1${esc(desc)}`).replace(/(<link rel="canonical" href=")[^"]*/,`$1${url}`).replace(/(<meta property="og:url" content=")[^"]*/,`$1${url}`);
+  for (const [property, value] of Object.entries({'og:title':title,'og:description':desc,'og:locale':ar?'ar_AE':'en_AE'})) {
+   html=html.replace(new RegExp('(<meta property="'+property+'" content=")[^"]*'), (_match,prefix)=>prefix+esc(value));
+  }
   html=html.replace('</head>',`<link rel="alternate" hreflang="en" href="https://www.expediaservices.ae/${slug}"/><link rel="alternate" hreflang="ar" href="https://www.expediaservices.ae/ar/${slug}"/></head>`);
   const dir='dist'+(path==='/'?'':path.replace(/\/$/,''));await mkdir(dir,{recursive:true});html=html.replace('</head>','<noscript><style>[style*="opacity"]{opacity:1!important;transform:none!important}</style></noscript></head>');await writeFile(dir+'/index.html',html);urls.push(url);
  }
