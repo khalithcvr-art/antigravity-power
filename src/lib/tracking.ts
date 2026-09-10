@@ -13,10 +13,19 @@ export type TrackingEvent =
   | 'quotation_print';
 
 export function trackConversion(event: TrackingEvent, params?: Record<string, any>) {
-  console.log(`[Expedia Analytics] Event Triggered: ${event}`, params || {});
-  
-  if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', event, params);
+  // These events must never carry enquiry details or application references,
+  // even if a future caller accidentally supplies them.
+  const safeParams = event === 'generate_lead'
+    ? { source: 'contact_form' }
+    : event === 'status_tracker_search'
+      ? { source: 'status_tracker' }
+      : params;
+  try {
+    if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+      (window as any).gtag('event', event, safeParams);
+    }
+  } catch {
+    // Analytics failure must not prevent a saved enquiry showing success.
   }
 }
 

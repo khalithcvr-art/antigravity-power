@@ -39,7 +39,7 @@ export const StatusTrackerModal: React.FC<StatusTrackerModalProps> = ({ isOpen, 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const query = trackingInput.trim().toUpperCase();
-    trackConversion('status_tracker_search', { query });
+    trackConversion('status_tracker_search', { source: 'status_tracker' });
 
     if (SAMPLE_TRACKING_APPLICATIONS[query]) {
       setActiveApplication(SAMPLE_TRACKING_APPLICATIONS[query]);
