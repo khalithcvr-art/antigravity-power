@@ -1,3 +1,5 @@
+import { preferredScrollBehavior } from '../hooks/useMotionPreference';
+import { useMotionPreference } from '../hooks/useMotionPreference';
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -82,6 +84,7 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
   onBookConsultation,
   onExploreServices,
 }) => {
+  const reducedMotion = useMotionPreference();
   // Stages:
   // 1. 'terminal' (0s - 4.5s): Terminal in center, typing line-by-line slowly and clearly
   // 2. 'materialize' (4.5s - 8.5s): Code morphs into Grand 3D Logo with glowing wireframes & explanation
@@ -124,6 +127,7 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
   }, []);
 
   const runSequence = () => {
+    if (reducedMotion) { setAnimStage('docked'); onLogoDocked(true); return; }
     onLogoDocked(false);
     setAnimStage('terminal');
     setActiveTab('architecture');
@@ -183,9 +187,10 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
   useEffect(() => {
     const cleanup = runSequence();
     return cleanup;
-  }, []);
+  }, [reducedMotion]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (reducedMotion) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width - 0.5) * 22;
     const y = ((e.clientY - rect.top) / rect.height - 0.5) * -22;
@@ -280,7 +285,7 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
                   {/* Laser Scanline Beam */}
                   <motion.div 
                     animate={{ y: [0, 260, 0] }}
-                    transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+                    transition={{ duration: 2.2, repeat: reducedMotion ? 0 : Infinity, ease: 'easeInOut' }}
                     className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80 shadow-[0_0_20px_#06b6d4] pointer-events-none"
                   />
 
@@ -360,7 +365,7 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
                       y: [-8, 8, -8],
                       rotateZ: [-1, 1, -1]
                     }}
-                    transition={{ repeat: Infinity, duration: 3.5, ease: 'easeInOut' }}
+                    transition={{ repeat: reducedMotion ? 0 : Infinity, duration: 3.5, ease: 'easeInOut' }}
                     className="relative z-10 filter drop-shadow-[0_25px_50px_rgba(6,182,212,0.8)]"
                   >
                     <img 
@@ -537,7 +542,7 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
               whileTap={{ scale: 0.97 }}
               onClick={() => {
                 const el = document.getElementById('services');
-                el?.scrollIntoView({ behavior: 'smooth' });
+                el?.scrollIntoView({ behavior: preferredScrollBehavior() });
               }}
               className="w-full sm:w-auto px-5 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-sm font-semibold flex items-center justify-center space-x-2 rtl:space-x-reverse transition-all"
             >
@@ -797,7 +802,7 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
             className="flex flex-col items-center pt-2 pb-6 cursor-pointer group"
             onClick={() => {
               const el = document.getElementById('services');
-              el?.scrollIntoView({ behavior: 'smooth' });
+              el?.scrollIntoView({ behavior: preferredScrollBehavior() });
             }}
           >
             <span className="text-[11px] font-mono text-slate-500 group-hover:text-cyan-400 transition-colors tracking-widest uppercase mb-1">
@@ -805,7 +810,7 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
             </span>
             <motion.div
               animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut' }}
+              transition={{ duration: 1.4, repeat: reducedMotion ? 0 : Infinity, ease: 'easeInOut' }}
             >
               <ChevronDown className="w-5 h-5 text-slate-500 group-hover:text-cyan-400 transition-colors" />
             </motion.div>

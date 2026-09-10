@@ -1,3 +1,4 @@
+import { preferredScrollBehavior } from '../hooks/useMotionPreference';
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
@@ -50,7 +51,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
   };
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: preferredScrollBehavior() });
   };
 
   return (

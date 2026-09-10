@@ -1,3 +1,4 @@
+import { useMotionPreference } from '../../hooks/useMotionPreference';
 import React, { useRef, useState, useEffect } from 'react';
 import { motion, useScroll, useTransform, useSpring, useInView } from 'motion/react';
 
@@ -63,6 +64,7 @@ export const TiltCard: React.FC<TiltCardProps> = ({
   onClick,
   id,
 }) => {
+  const reducedMotion = useMotionPreference();
   const cardRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -71,7 +73,7 @@ export const TiltCard: React.FC<TiltCardProps> = ({
   const rotateY = useSpring(0, { stiffness: 260, damping: 20 });
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
+    if (reducedMotion || !cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -102,8 +104,8 @@ export const TiltCard: React.FC<TiltCardProps> = ({
       id={id}
       style={{
         perspective: 1000,
-        rotateX,
-        rotateY,
+        rotateX: reducedMotion ? 0 : rotateX,
+        rotateY: reducedMotion ? 0 : rotateY,
         transformStyle: 'preserve-3d',
       }}
       onMouseMove={handleMouseMove}
@@ -113,7 +115,7 @@ export const TiltCard: React.FC<TiltCardProps> = ({
       className={`relative overflow-hidden transition-shadow duration-300 ${className}`}
     >
       {/* Dynamic Specular Spotlight Following Cursor */}
-      {isHovered && (
+      {isHovered && !reducedMotion && (
         <div
           className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-10"
           style={{
@@ -135,11 +137,13 @@ interface AnimatedCounterProps {
 }
 
 export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({ value, className = '' }) => {
+  const reducedMotion = useMotionPreference();
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: '-50px' });
   const [displayValue, setDisplayValue] = useState('0');
 
   useEffect(() => {
+    if (reducedMotion) { setDisplayValue(String(value)); return; }
     if (!isInView) return;
 
     const strVal = String(value);
@@ -153,6 +157,7 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({ value, classNa
     const prefix = strVal.slice(0, numericMatch.index);
     const suffix = strVal.slice((numericMatch.index || 0) + numericMatch[0].length);
 
+    let frame = 0;
     let start = 0;
     const duration = 1400;
     const startTime = performance.now();
@@ -167,14 +172,15 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({ value, classNa
       setDisplayValue(`${prefix}${current}${suffix}`);
 
       if (progress < 1) {
-        requestAnimationFrame(updateCounter);
+        frame = requestAnimationFrame(updateCounter);
       } else {
         setDisplayValue(strVal);
       }
     };
 
-    requestAnimationFrame(updateCounter);
-  }, [isInView, value]);
+    frame = requestAnimationFrame(updateCounter);
+    return () => cancelAnimationFrame(frame);
+  }, [isInView, value, reducedMotion]);
 
   return (
     <motion.span
@@ -184,7 +190,7 @@ export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({ value, classNa
       transition={{ duration: 0.5, ease: 'easeOut' }}
       className={className}
     >
-      {displayValue}
+      {reducedMotion ? String(value) : displayValue}
     </motion.span>
   );
 };
