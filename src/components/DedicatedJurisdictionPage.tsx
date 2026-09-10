@@ -481,13 +481,18 @@ export function DedicatedJurisdictionPage({
             { id: 'mainland-business-setup', labelEn: 'Mainland Setup (Abu Dhabi & Dubai)', labelAr: 'البر الرئيسي (أبوظبي ودبي)' },
             { id: 'ifza-vs-meydan', labelEn: 'IFZA vs. Meydan Comparison', labelAr: 'مقارنة إيفزا وميدان' },
           ].filter(item => item.id !== slug).map((item) => (
-            <button
+            <a
               key={item.id}
-              onClick={() => onNavigateSlug(item.id)}
+              href={`${isArabic ? "/ar" : ""}/${item.id}`}
+              onClick={(event) => {
+                if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+                event.preventDefault();
+                onNavigateSlug(item.id);
+              }}
               className="px-4 py-2 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-slate-300 hover:text-emerald-400 border border-white/10 text-xs font-mono transition-all"
             >
               {isArabic ? item.labelAr : item.labelEn}
-            </button>
+            </a>
           ))}
         </div>
       </section>

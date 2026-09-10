@@ -37,11 +37,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEstimator, onOpenTracker, 
   };
 
   const handleSlugClick = (e: React.MouseEvent, slug: string) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
     e.preventDefault();
     if (onNavigateSlug) {
       onNavigateSlug(slug);
     } else {
-      window.location.href = `/${slug}`;
+      window.location.href = `${isArabic ? "/ar" : ""}/${slug}`;
     }
   };
 
@@ -155,7 +156,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEstimator, onOpenTracker, 
               ].map(p => (
                 <li key={p.slug}>
                   <a 
-                    href={`/${p.slug}`} 
+                    href={`${isArabic ? "/ar" : ""}/${p.slug}`} 
                     onClick={(e) => handleSlugClick(e, p.slug)}
                     className="hover:text-emerald-400 transition-colors"
                   >
