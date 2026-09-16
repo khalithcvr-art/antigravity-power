@@ -179,13 +179,20 @@ export const SetupJourney: React.FC<SetupJourneyProps> = ({ mode = 'corporate', 
                 key={step.number}
                 maxTilt={8}
                 glowColor="rgba(16, 185, 129, 0.2)"
-                onClick={() => setActiveStep(index)}
                 className={`cursor-pointer p-7 rounded-3xl border transition-all duration-300 relative overflow-hidden flex flex-col justify-between ${
                   isActive
                     ? 'bg-obsidian-900 border-emerald-500/60 shadow-2xl shadow-emerald-500/20'
                     : 'bg-obsidian-950/60 border-white/5 hover:border-white/20 hover:bg-obsidian-900/40'
                 }`}
               >
+                <button
+                  type="button"
+                  onClick={() => setActiveStep(index)}
+                  aria-label={`${isArabic ? 'المرحلة' : 'Stage'} ${step.number}: ${step.title}`}
+                  aria-pressed={isActive}
+                  aria-controls="setup-stage-details"
+                  className="absolute -inset-7 z-20 rounded-3xl focus-visible:!outline-offset-[-6px] focus-visible:!shadow-[inset_0_0_0_3px_white]"
+                />
                 {isActive && (
                   <BorderBeam size={220} duration={8} colorFrom="#10b981" colorTo="#06b6d4" />
                 )}
@@ -231,6 +238,7 @@ export const SetupJourney: React.FC<SetupJourneyProps> = ({ mode = 'corporate', 
         </div>
 
         {/* Detailed Active Step Inspector Deck with Fluid Animation */}
+        <div id="setup-stage-details" role="region" aria-label={isArabic ? 'تفاصيل مرحلة الإعداد' : 'Setup stage details'}>
         <AnimatePresence mode="wait">
           <motion.div
             key={activeStep}
@@ -306,9 +314,9 @@ export const SetupJourney: React.FC<SetupJourneyProps> = ({ mode = 'corporate', 
             </div>
           </motion.div>
         </AnimatePresence>
+        </div>
 
       </div>
     </section>
   );
 };
-
