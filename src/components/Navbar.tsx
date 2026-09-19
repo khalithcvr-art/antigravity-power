@@ -180,32 +180,32 @@ export const Navbar: React.FC<NavbarProps> = ({
                   {mode === 'corporate' ? (
                     <div className="space-y-1">
                       <a 
-                        href="#business-setup" 
-                        onClick={(e) => handleServiceClick(e, 'business-setup')}
+                        href="#services" 
+                        onClick={(e) => handleServiceClick(e, 'services')}
                         className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-emerald-400 text-xs transition-colors"
                       >
                         <span className="font-semibold">{isArabic ? 'تأسيس الشركات والرخص الرئيسية' : 'Company Formation & Mainland'}</span>
                         <span className="text-[10px] text-emerald-400/80 font-mono">{isArabic ? 'ملك 100%' : '100% Own'}</span>
                       </a>
                       <a 
-                        href="#pro-government" 
-                        onClick={(e) => handleServiceClick(e, 'pro-government')}
+                        href="#services" 
+                        onClick={(e) => handleServiceClick(e, 'services')}
                         className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-emerald-400 text-xs transition-colors"
                       >
                         <span className="font-semibold">{isArabic ? 'علاقات الدوائر الحكومية وتم' : 'Corporate PRO & TAMM Liaison'}</span>
                         <span className="text-[10px] text-slate-400 font-mono">{isArabic ? '7 دوائر' : '7 Depts'}</span>
                       </a>
                       <a 
-                        href="#golden-visa" 
-                        onClick={(e) => handleServiceClick(e, 'golden-visa')}
+                        href="#services" 
+                        onClick={(e) => handleServiceClick(e, 'services')}
                         className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-emerald-400 text-xs transition-colors"
                       >
                         <span className="font-semibold">{isArabic ? 'الإقامة الذهبية 10 سنوات' : '10-Year UAE Golden Visa'}</span>
                         <span className="text-[10px] text-goldMuted font-mono">VIP</span>
                       </a>
                       <a 
-                        href="#corporate-tax" 
-                        onClick={(e) => handleServiceClick(e, 'corporate-tax')}
+                        href="#services" 
+                        onClick={(e) => handleServiceClick(e, 'services')}
                         className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-emerald-400 text-xs transition-colors"
                       >
                         <span className="font-semibold">{isArabic ? 'ضريبة الشركات والامتثال المالي' : 'Corporate Tax & Freezone 0%'}</span>
@@ -215,32 +215,32 @@ export const Navbar: React.FC<NavbarProps> = ({
                   ) : (
                     <div className="space-y-1">
                       <a 
-                        href="#bespoke-web" 
-                        onClick={(e) => handleServiceClick(e, 'bespoke-web')}
+                        href="#digital-services" 
+                        onClick={(e) => handleServiceClick(e, 'digital-services')}
                         className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-cyan-400 text-xs transition-colors"
                       >
                         <span className="font-semibold">{isArabic ? 'تطوير المواقع والمنصات الذكية' : 'Bespoke Web & App Engineering'}</span>
                         <span className="text-[10px] text-cyan-400 font-mono">Next.js 15</span>
                       </a>
                       <a 
-                        href="#fintech-ui" 
-                        onClick={(e) => handleServiceClick(e, 'fintech-ui')}
+                        href="#digital-services" 
+                        onClick={(e) => handleServiceClick(e, 'digital-services')}
                         className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-cyan-400 text-xs transition-colors"
                       >
                         <span className="font-semibold">{isArabic ? 'تصميم واجهات المستخدم الفاخرة' : 'Fintech-Grade UI/UX Design'}</span>
                         <span className="text-[10px] text-indigo-400 font-mono">Dark UI</span>
                       </a>
                       <a 
-                        href="#corporate-branding" 
-                        onClick={(e) => handleServiceClick(e, 'corporate-branding')}
+                        href="#digital-services" 
+                        onClick={(e) => handleServiceClick(e, 'digital-services')}
                         className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-cyan-400 text-xs transition-colors"
                       >
                         <span className="font-semibold">{isArabic ? 'بناء الهوية البصرية للشركات' : 'Corporate Brand Architecture'}</span>
                         <span className="text-[10px] text-purple-400 font-mono">Prestige</span>
                       </a>
                       <a 
-                        href="#business-automation" 
-                        onClick={(e) => handleServiceClick(e, 'business-automation')}
+                        href="#digital-services" 
+                        onClick={(e) => handleServiceClick(e, 'digital-services')}
                         className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-cyan-400 text-xs transition-colors"
                       >
                         <span className="font-semibold">{isArabic ? 'أنظمة إدارة علاقات العملاء والفواتير' : 'Automated CRM & Invoicing'}</span>

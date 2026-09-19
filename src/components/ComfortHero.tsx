@@ -16,7 +16,7 @@ export function ComfortHero({ isArabic }: { isArabic: boolean }) {
       </div>
       <p className="comfort-note">{isArabic ? 'مساعدة بالعربية والإنجليزية • عرض سعر حسب احتياجاتك' : 'English & Arabic support • Quotes tailored to your needs'}</p>
     </div>
-    <div className="comfort-photo"><img src="/hero-skyline-1.jpg" alt={isArabic ? 'أفق دبي عند الغروب' : 'Dubai skyline at sunset'} fetchPriority="high" width="720" height="1280" /><div><span>{isArabic ? 'ابدأ باستفسار بسيط' : 'START WITH A SIMPLE QUESTION'}</span><p>{isArabic ? 'أعمالك. طموحك. خطوتك القادمة.' : 'Your business. Your ambition. Your next chapter.'}</p></div></div>
+    <div className="comfort-photo"><img src="/hero-skyline-1.jpg" alt={isArabic ? 'أفق دبي عند الغروب' : 'Dubai skyline at sunset'} {...{ fetchpriority: 'high' }} width="720" height="1280" /><div><span>{isArabic ? 'ابدأ باستفسار بسيط' : 'START WITH A SIMPLE QUESTION'}</span><p>{isArabic ? 'أعمالك. طموحك. خطوتك القادمة.' : 'Your business. Your ambition. Your next chapter.'}</p></div></div>
     <nav className="comfort-services" aria-label={isArabic ? 'استفسر عن خدمة' : 'Enquire about a service'}>{services.map((service,i)=><a key={service} href="#contact" onClick={()=>window.dispatchEvent(new CustomEvent('enquiry-service',{detail:i}))}><span>0{i+1}</span>{service}<span aria-hidden="true">↗</span></a>)}</nav>
   </section>;
 }
