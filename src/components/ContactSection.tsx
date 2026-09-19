@@ -38,6 +38,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
     message: getEarlyEnquiry().message ?? ''
   }));
   const [visaType, setVisaType] = useState(() => getEarlyEnquiry().visaType ?? '');
+  // Honeypot: the edge function silently drops any enquiry where
+  // company_website is filled in. Humans never see this field.
+  const [companyWebsite, setCompanyWebsite] = useState('');
   useEffect(clearEarlyEnquiry, []);
   const visaService = isArabic ? 'تأشيرات الإقامة' : 'Residency visas';
   const [submitted, setSubmitted] = useState(false);
@@ -59,7 +62,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
     // submission was silently lost - the visitor saw success and nobody was
     // ever told. Await the POST, and only show success if it really landed.
     try {
-      const payload = JSON.stringify({ ...formData, message: [formData.service === visaService && visaType ? 'Visa type: ' + visaType : '', formData.message].filter(Boolean).join('\n') });
+      const payload = JSON.stringify({ ...formData, company_website: companyWebsite, message: [formData.service === visaService && visaType ? 'Visa type: ' + visaType : '', formData.message].filter(Boolean).join('\n') });
       if (!pendingRequest.current || pendingRequest.current.payload !== payload) {
         pendingRequest.current = {payload, id: crypto.randomUUID()};
       }
@@ -240,6 +243,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
+                  <div className="absolute w-px h-px overflow-hidden -m-px p-0 border-0" style={{ clip: 'rect(0 0 0 0)' }} aria-hidden="true">
+                    <label htmlFor="company-website-field">Company website</label>
+                    <input
+                      id="company-website-field"
+                      type="text"
+                      name="company_website"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={companyWebsite}
+                      onChange={(e) => setCompanyWebsite(e.target.value)}
+                    />
+                  </div>
                   <div>
                     <h3 className="text-2xl font-display font-bold text-white mb-1">
                       {t.formTitle}

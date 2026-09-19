@@ -186,7 +186,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ mode = 'corporate', isAr
                       aria-expanded={isOpen}
                       aria-controls={isOpen ? `faq-answer-${faq.id}` : undefined}
                       onClick={() => toggleAccordion(faq.id)}
-                      className="w-full p-6 text-left rtl:text-right flex items-center justify-between gap-4 focus:outline-none"
+                      className="w-full p-6 text-left rtl:text-right flex items-center justify-between gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/80"
                     >
                       <span className={`font-display font-bold text-base sm:text-lg transition-colors ${
                         isOpen 
