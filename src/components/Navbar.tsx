@@ -220,7 +220,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                         className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-cyan-400 text-xs transition-colors"
                       >
                         <span className="font-semibold">{isArabic ? 'تطوير المواقع والمنصات الذكية' : 'Bespoke Web & App Engineering'}</span>
-                        <span className="text-[10px] text-cyan-400 font-mono">Next.js 15</span>
+                        <span className="text-[10px] text-cyan-400 font-mono">Next.js</span>
                       </a>
                       <a 
                         href="#digital-services" 

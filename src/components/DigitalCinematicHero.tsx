@@ -52,9 +52,9 @@ const IDE_TABS: IdeTab[] = [
       { text: '', color: 'text-transparent' },
       { text: 'export const digitalStudio = new SovereignEngine({', color: 'text-cyan-300 font-bold' },
       { text: '  jurisdiction: "Abu Dhabi · Dubai, UAE",', color: 'text-emerald-300' },
-      { text: '  framework: "Next.js 15 + React 19 + Three.js 3D",', color: 'text-emerald-300' },
-      { text: '  performance: { lcp: "0.4s", lighthouse: 100, latency: "1.2ms" },', color: 'text-teal-300' },
-      { text: '  aiSearchEngine: { aeo: true, geo: true, llmIndexing: "Active" },', color: 'text-goldMuted' },
+      { text: '  framework: "React 18 + Vite + Three.js 3D",', color: 'text-emerald-300' },
+      { text: '  performance: { budget: "agreed per project", measured: true },', color: 'text-teal-300' },
+      { text: '  searchReadiness: { structuredData: true, sitemap: true },', color: 'text-goldMuted' },
       { text: '  intellectualProperty: "100% Client Source Code & Asset Handover"', color: 'text-cyan-300' },
       { text: '});', color: 'text-cyan-300 font-bold' },
       { text: 'await digitalStudio.materialize3DVisualEntity(); // [100% COMPILED]', color: 'text-emerald-400 font-mono font-bold animate-pulse' },
@@ -383,11 +383,11 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
                     </span>
                     <span className="px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-400/40 flex items-center space-x-1.5 shadow-sm">
                       <Gauge className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Sub-Second 0.4s LCP Speed</span>
+                      <span>Performance Budget Agreed Per Project</span>
                     </span>
                     <span className="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/40 flex items-center space-x-1.5 shadow-sm">
                       <Globe2 className="w-3.5 h-3.5 text-teal-300" />
-                      <span>AEO / GEO Search Indexed</span>
+                      <span>Structured Data & Sitemaps</span>
                     </span>
                   </div>
                 </div>
@@ -603,17 +603,17 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left rtl:text-right">
                 <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-cyan-500/20">
                   <div className="text-xs font-mono text-cyan-400 uppercase font-bold mb-1">01 · Architecture</div>
-                  <div className="text-sm font-bold text-white mb-1">Next.js 15 & React 19 Engine</div>
+                  <div className="text-sm font-bold text-white mb-1">Next.js & React Development</div>
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Zero-bloat server-side rendering, sub-second LCP, and bilingual Arabic/English responsive fluid layouts.
+                    Server-side rendering, an agreed performance budget, and bilingual Arabic/English responsive layouts.
                   </p>
                 </div>
 
                 <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-cyan-500/20">
                   <div className="text-xs font-mono text-emerald-400 uppercase font-bold mb-1">02 · Performance</div>
-                  <div className="text-sm font-bold text-white mb-1">100/100 Lighthouse & Core Web Vitals</div>
+                  <div className="text-sm font-bold text-white mb-1">Core Web Vitals Measured Per Build</div>
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Optimized for rapid customer conversion, frictionless WhatsApp checkout, and zero client bounce rates.
+                    Built around customer conversion and WhatsApp enquiry flows, with results measured after launch.
                   </p>
                 </div>
 
@@ -690,14 +690,14 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <div className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-bold">
-                    {isArabic ? 'مقارنة الأداء والسيادة البرمجية' : 'Live Architectural Benchmark'}
+                    {isArabic ? 'مقارنة في أسلوب البناء' : 'Architectural Approach Comparison'}
                   </div>
                   <div className="text-sm font-bold text-white">
-                    {isArabic ? 'وكالات القوالب التقليدية مقابل منظومة إكسبيديا السيادية' : 'Standard Agency Templates vs Expedia Sovereign NextGen'}
+                    {isArabic ? 'القوالب الجاهزة مقابل التطوير المخصص' : 'Off-the-shelf templates vs bespoke development'}
                   </div>
                 </div>
-                <span className="px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 font-mono text-[11px]">
-                  100% Verified Metrics
+                <span className="px-2.5 py-1 rounded-full bg-white/5 border border-white/15 text-slate-300 font-mono text-[11px]">
+                  {isArabic ? 'مقارنة وصفية وليست قياساً' : 'Descriptive, not a measured benchmark'}
                 </span>
               </div>
 
@@ -709,25 +709,25 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
                     <span className="text-xs font-mono font-bold text-slate-400">
                       {isArabic ? 'الوكالات التقليدية (قوالب جاهزة)' : 'Standard Agency (WordPress / Templates)'}
                     </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400/80 border border-amber-500/20">Limited ROI</span>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400/80 border border-amber-500/20">{isArabic ? 'قيود القوالب' : 'Template limits'}</span>
                   </div>
 
                   <div className="space-y-2 text-xs text-slate-400">
                     <div className="flex justify-between border-b border-white/5 pb-1.5">
                       <span>{isArabic ? 'سرعة التحميل (LCP):' : 'Loading Speed (LCP):'}</span>
-                      <span className="font-mono text-amber-400/80 font-semibold">4.2s (Slow)</span>
+                      <span className="font-mono text-amber-400/80 font-semibold">{isArabic ? 'يعتمد على القالب' : 'Theme-dependent'}</span>
                     </div>
                     <div className="flex justify-between border-b border-white/5 pb-1.5">
                       <span>{isArabic ? 'تقييم جوجل للأداء:' : 'Google Lighthouse Score:'}</span>
-                      <span className="font-mono text-amber-400/80 font-semibold">42 / 100</span>
+                      <span className="font-mono text-amber-400/80 font-semibold">{isArabic ? 'غير مُحسَّن عادةً' : 'Rarely optimised'}</span>
                     </div>
                     <div className="flex justify-between border-b border-white/5 pb-1.5">
                       <span>{isArabic ? 'ملكية الكود المصدري:' : 'Source Code Ownership:'}</span>
-                      <span className="font-mono text-slate-500">0% (Vendor Lock-in)</span>
+                      <span className="font-mono text-slate-500">{isArabic ? 'مقيد بالمنصة' : 'Platform lock-in'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>{isArabic ? 'الظهور في محركات الذكاء الاصطناعي:' : 'AI Search Citation (AEO):'}</span>
-                      <span className="font-mono text-slate-500">Not Indexed</span>
+                      <span>{isArabic ? 'البيانات المنظمة للمحتوى:' : 'Structured data markup:'}</span>
+                      <span className="font-mono text-slate-500">{isArabic ? 'محدودة' : 'Minimal'}</span>
                     </div>
                   </div>
                 </div>
@@ -739,7 +739,7 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
                   <div className="flex items-center justify-between relative z-10">
                     <span className="text-xs font-mono font-bold text-cyan-300 flex items-center space-x-1.5 rtl:space-x-reverse">
                       <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>{isArabic ? 'منظومة إكسبيديا السيادية' : 'Expedia Sovereign NextGen'}</span>
+                      <span>{isArabic ? 'تطوير مخصص من إكسبيديا' : 'Bespoke Expedia build'}</span>
                     </span>
                     <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">Enterprise Grade</span>
                   </div>
@@ -747,19 +747,19 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
                   <div className="space-y-2 text-xs text-slate-200 relative z-10">
                     <div className="flex justify-between border-b border-cyan-500/15 pb-1.5">
                       <span>{isArabic ? 'سرعة التحميل (LCP):' : 'Loading Speed (LCP):'}</span>
-                      <span className="font-mono text-emerald-400 font-bold">0.4s (Instant Sub-Second)</span>
+                      <span className="font-mono text-emerald-400 font-bold">{isArabic ? 'ميزانية متفق عليها وتُقاس' : 'Agreed budget, measured'}</span>
                     </div>
                     <div className="flex justify-between border-b border-cyan-500/15 pb-1.5">
                       <span>{isArabic ? 'تقييم جوجل للأداء:' : 'Google Lighthouse Score:'}</span>
-                      <span className="font-mono text-emerald-400 font-bold">100 / 100 Perfect</span>
+                      <span className="font-mono text-emerald-400 font-bold">{isArabic ? 'يُقاس بعد الإطلاق' : 'Measured after launch'}</span>
                     </div>
                     <div className="flex justify-between border-b border-cyan-500/15 pb-1.5">
                       <span>{isArabic ? 'ملكية الكود المصدري:' : 'Source Code Ownership:'}</span>
-                      <span className="font-mono text-cyan-300 font-bold">100% Full IP Transfer</span>
+                      <span className="font-mono text-cyan-300 font-bold">{isArabic ? 'نقل كامل للملكية' : 'Full IP transfer'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span>{isArabic ? 'الظهور في محركات الذكاء الاصطناعي:' : 'AI Search Citation (AEO):'}</span>
-                      <span className="font-mono text-teal-300 font-bold">Top Verified AI Answer</span>
+                      <span>{isArabic ? 'البيانات المنظمة للمحتوى:' : 'Structured data markup:'}</span>
+                      <span className="font-mono text-teal-300 font-bold">{isArabic ? 'JSON-LD كامل' : 'Complete JSON-LD'}</span>
                     </div>
                   </div>
                 </div>

@@ -29,14 +29,15 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
   const DIGITAL_TECH_STACK = [
     {
       id: 'nextjs-react',
-      name: 'Next.js 15 & React 19',
-      nameAr: 'محرك Next.js 15 و React 19',
+      // Offered to clients. This marketing site itself runs on Vite 6 + React 18.
+      name: 'Next.js & React Development',
+      nameAr: 'تطوير بـ Next.js و React',
       category: isArabic ? 'الأداء الفائق' : 'Performance Tier',
-      badge: 'LCP < 0.4s',
-      badgeAr: 'تحميل < 0.4 ثانية',
-      desc: 'Modern Server Components delivering sub-second page rendering, 60fps Framer Motion fluid animations, and high Google organic search velocity.',
-      descAr: 'مكونات خادم حديثة تمنح سرعة تصفح فائقة في أجزاء من الثانية، وتأثيرات حركية 60fps، وسرعة تصدر في محركات البحث.',
-      highlight: isArabic ? 'معايير السرعة العالمية' : 'Sub-Second Edge Rendering',
+      badge: 'Server Components',
+      badgeAr: 'مكونات خادم',
+      desc: 'Modern Server Components, smooth Framer Motion interactions, and crawlable markup. Real-world speed and search results are measured per project.',
+      descAr: 'مكونات خادم حديثة، وتأثيرات حركية سلسة، ومحتوى قابل للفهرسة. تُقاس السرعة الفعلية ونتائج البحث لكل مشروع.',
+      highlight: isArabic ? 'نشر على شبكة الحافة' : 'Edge-Deployed Rendering',
       popularFor: isArabic ? 'تطبيقات الويب والمواقع المؤسسية الفاخرة' : 'Bespoke Corporate Web Apps & Portals',
       popularForAr: 'تطبيقات الويب والمواقع المؤسسية الفاخرة',
       color: 'cyan'
@@ -74,11 +75,11 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
       name: 'Cloudflare & Vercel Edge',
       nameAr: 'شبكة الحافة السحابية العالمية',
       category: isArabic ? 'الانتشار السحابي' : 'Global Edge CDN',
-      badge: '< 12ms GCC Ping',
-      badgeAr: 'استجابة < 12ms بالخليج',
-      desc: 'Sovereign cloud deployment across local UAE & GCC edge nodes with automated SSL encryption, DDoS mitigation, and 99.99% uptime guarantee.',
-      descAr: 'استضافة سحابية موزعة على عقد محلية في الإمارات ودول الخليج تضمن أعلى مستويات الحماية وسرعة استجابة لا تتجاوز 12ms.',
-      highlight: isArabic ? 'أمان وسرعة فائقة' : '99.99% Guaranteed Uptime',
+      badge: 'GCC Edge Nodes',
+      badgeAr: 'عقد حافة في الخليج',
+      desc: 'Cloud deployment across UAE & GCC edge nodes with automated SSL encryption, DDoS mitigation, and monitored availability.',
+      descAr: 'استضافة سحابية موزعة على عقد في الإمارات ودول الخليج مع تشفير SSL وحماية من هجمات الحرمان من الخدمة ومراقبة الجاهزية.',
+      highlight: isArabic ? 'استضافة مراقَبة' : 'Monitored Availability',
       popularFor: isArabic ? 'المواقع ذات الزيارات العالية والأمان' : 'High-Traffic Sovereign Infrastructure',
       popularForAr: 'المواقع ذات الزيارات العالية والأمان',
       color: 'purple'
@@ -89,8 +90,8 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
     { name: 'TypeScript', nameAr: 'تايب سكريبت', role: 'Type-Safe Architecture', roleAr: 'هندسة آمنة برمجياً' },
     { name: 'Tailwind CSS v4', nameAr: 'تيلويند سي إس إس 4', role: 'Design Tokens', roleAr: 'أنظمة التصميم الحديثة' },
     { name: 'Stripe & Network Intl', nameAr: 'بوابات الدفع الإماراتية', role: 'UAE Payment Gateways', roleAr: 'معالجة المدفوعات' },
-    { name: 'Schema.org JSON-LD', nameAr: 'مخططات السكيما المنظمة', role: 'Google & ChatGPT AEO', roleAr: 'الظهور في محركات الذكاء' },
-    { name: 'Framer Motion', nameAr: 'فريمير موشن', role: '60FPS Micro-Animations', roleAr: 'مؤثرات بصرية 60fps' },
+    { name: 'Schema.org JSON-LD', nameAr: 'مخططات السكيما المنظمة', role: 'Structured Data', roleAr: 'بيانات منظمة للمحتوى' },
+    { name: 'Framer Motion', nameAr: 'فريمير موشن', role: 'Micro-Animations', roleAr: 'مؤثرات بصرية دقيقة' },
     { name: 'Python FastAPI', nameAr: 'بايثون فاست إيه بي آي', role: 'AI Microservices', roleAr: 'معالجة الذكاء الاصطناعي' },
     { name: 'REST & GraphQL', nameAr: 'واجهات الربط البرمجي', role: 'Seamless Integration', roleAr: 'تكامل الأنظمة السلس' }
   ];
@@ -137,15 +138,15 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
   
   const headerTitle = mode === 'corporate'
     ? tCorp.title
-    : (isArabic ? 'ركائز الهندسة الرقمية' : 'The 4 Core Pillars of');
+    : (isArabic ? 'ركائز الهندسة الرقمية' : 'The 4 Core Pillars of');  // client delivery stack
   
   const headerTitleHighlight = mode === 'corporate'
     ? tCorp.titleHighlight
-    : (isArabic ? 'لمنصتك السيادية' : 'Our Sovereign Tech Stack');
+    : (isArabic ? 'لمنصتك السيادية' : 'Our Client Delivery Stack');
   
   const headerSubtitle = mode === 'corporate'
     ? tCorp.subtitle
-    : (isArabic ? 'تقنيات حديثة تضمن سرعة التحميل الفائقة، وأعلى مستويات الأمان، وتكامل الذكاء الاصطناعي.' : 'Engineered with Next.js 15, PostgreSQL isolation, Cloudflare edge latency, and autonomous WhatsApp lead agents.');
+    : (isArabic ? 'نبني منصات عملائنا بتقنيات حديثة مع عزل للبيانات، واستضافة على شبكة الحافة، وأتمتة للواتساب.' : 'We build client platforms with modern React frameworks, PostgreSQL data isolation, edge hosting, and WhatsApp lead automation.');
 
   return (
     <section className={`py-20 relative bg-obsidian-950/70 border-t border-white/5 overflow-hidden ${isArabic ? 'font-arabic' : ''}`}>
@@ -194,7 +195,7 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
                         {city}
                       </span>
                       <span className="text-xs font-mono font-bold text-emerald-400">
-                        {isArabic ? 'تبدأ من ' : 'From '} {startingPrice}
+                        {startingPrice}
                       </span>
                     </div>
 
@@ -300,7 +301,7 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
             <div className="text-center mb-6">
               <span className="text-[11px] font-mono uppercase tracking-widest text-slate-400 block mb-1">
                 {mode === 'corporate'
-                  ? (isArabic ? 'تكامل حكومي معتمد ومباشر عبر 7 دوائر رسمية' : 'Direct Official API Integration Across 7 UAE Authorities')
+                  ? (isArabic ? 'ننسّق معاملات عملائنا مع 7 جهات حكومية إماراتية' : 'Applications Coordinated Across 7 UAE Government Authorities')
                   : (isArabic ? 'أطر العمل البرمجية المعتمدة في منصات إكسبيديا' : 'Core Sovereign Engineering Frameworks & Protocol Integrations')}
               </span>
             </div>

@@ -364,8 +364,8 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       "h1Ar": "تأسيس الشركات في مدينة مصدر الحرة أبوظبي",
       "highlightEn": "The Middle East’s Flagship Hub for Cleantech, AI & Advanced R&D",
       "highlightAr": "المركز الرائد في الشرق الأوسط لتقنيات المستقبل والطاقة النظيفة والذكاء الاصطناعي",
-      "subtitleEn": "Position your business in Abu Dhabi’s global sustainability district. Benefit from 100% foreign ownership, 0% import duties, access to ADIO grants, and direct synergy with government innovation ecosystems.",
-      "subtitleAr": "ضع شركتك في قلب عاصمة الاستدامة والابتكار في أبوظبي. استفد من ملكية أجنبية 100%، وإعفاء جمركي، وبرامج دعم مكتب أبوظبي للاستثمار وتكامل تام مع الجهات الحكومية.",
+      "subtitleEn": "Position your business in Abu Dhabi’s sustainability district. Benefit from 100% foreign ownership and 0% import duties. Abu Dhabi Investment Office support programmes exist for eligible companies; eligibility is decided by that office.",
+      "subtitleAr": "ضع شركتك في منطقة الاستدامة والابتكار في أبوظبي. استفد من ملكية أجنبية 100% وإعفاء جمركي. توجد برامج دعم من مكتب أبوظبي للاستثمار للشركات المؤهلة، وتحدد الأهلية من جانب المكتب.",
       "startingPriceAed": 11500,
       "turnaroundEn": "Confirmed after review",
       "turnaroundAr": "تُحدد بعد المراجعة",
@@ -549,7 +549,7 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
         "Authority: Masdar City Free Zone Authority (Abu Dhabi, UAE)",
         "Requirements, pricing and timing are confirmed after reviewing your activity, documents and the relevant authority conditions.",
         "Location: Masdar City, Abu Dhabi (Adjacent to Zayed International Airport)",
-        "Strategic Ecosystem: ADIO Grants, Mubadala ecosystem, Cleantech R&D",
+        "Ecosystem: ADIO support programmes and cleantech R&D activity in the district; participation depends on each programme’s own criteria",
         "Business setup support from Expedia",
         "Headquarters Office: Haibu, Level 1, Abu Dhabi Mall, Abu Dhabi, UAE"
       ],
@@ -557,7 +557,7 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
         "السلطة المانحة: سلطة مدينة مصدر الحرة (أبوظبي، الإمارات)",
         "تُحدد المتطلبات والأسعار والمدة بعد مراجعة النشاط والمستندات وشروط الجهة المعنية.",
         "الموقع: مدينة مصدر، أبوظبي (بجوار مطار زايد الدولي)",
-        "المنظومة الاستراتيجية: منح مكتب أبوظبي للاستثمار، منظومة مبادلة، أبحاث التكنولوجيا النظيفة",
+        "المنظومة: برامج دعم من مكتب أبوظبي للاستثمار ونشاط أبحاث التكنولوجيا النظيفة في المنطقة؛ تخضع المشاركة لشروط كل برنامج",
         "دعم تأسيس الأعمال من إكسبيديا",
         "المقر الرئيسي: هايبو، الطابق الأول، أبوظبي مول، أبوظبي، الإمارات"
       ]
@@ -629,8 +629,8 @@ export const DEDICATED_PAGES: Record<string, DedicatedPageData> = {
       {
         "titleEn": "Multi-Year Licensing Discounts",
         "titleAr": "خصومات مميزة على الرخص متعددة السنوات",
-        "descEn": "Save up to 30% on official authority fees when locking in 2, 3, or 5-year trade license renewals.",
-        "descAr": "وفّر حتى 30% من الرسوم الحكومية عند حجز رخص لمدة سنتين أو 3 أو 5 سنوات مقدماً.",
+        "descEn": "Multi-year trade licence terms of 2, 3 or 5 years may be offered. Any reduction is set by the authority and confirmed in your quotation.",
+        "descAr": "تتوفر رخص تجارية لمدة سنتين أو 3 أو 5 سنوات. تحدد الجهة المعنية أي تخفيض، ويُؤكّد في عرض السعر.",
         "iconName": "BadgePercent"
       },
       {

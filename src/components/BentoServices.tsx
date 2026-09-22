@@ -222,7 +222,7 @@ export const BentoServices: React.FC<BentoServicesProps> = ({
                       {/* Direct Answer AEO Definition Box (For AI Search & GEO) */}
                       <div className="p-3.5 rounded-xl bg-obsidian-950/80 border border-white/5 mb-5 text-xs text-slate-300 leading-relaxed font-mono">
                         <span className="text-emerald-400 font-bold uppercase tracking-wider block mb-1 text-[10px]">
-                          {isArabic ? 'معلومة تنظيمية معتمدة' : 'AEO Fast Fact'}
+                          {isArabic ? 'معلومة تنظيمية' : 'Regulatory Fast Fact'}
                         </span>
                         {directAEO}
                       </div>
@@ -337,10 +337,10 @@ export const BentoServices: React.FC<BentoServicesProps> = ({
               <div>
                 <div className="text-center max-w-2xl mx-auto mb-8">
                   <span className="text-xs font-mono uppercase tracking-widest text-cyan-400">
-                    {isArabic ? 'دراسات الحالة والمشاريع المنفذة' : 'Featured Case Studies'}
+                    {isArabic ? 'أنواع المشاريع التي ننفذها' : 'Project Types We Build'}
                   </span>
                   <h3 className="text-2xl sm:text-3xl font-display font-bold text-white mt-1">
-                    {isArabic ? 'حلول وتطبيقات رقمية عالية الأثر والقيمة' : 'High-Impact Digital Implementations'}
+                    {isArabic ? 'نماذج من المنصات الرقمية التي نطورها' : 'Examples of Digital Platforms We Develop'}
                   </h3>
                 </div>
 
@@ -385,7 +385,7 @@ export const BentoServices: React.FC<BentoServicesProps> = ({
                         <motion.button
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
-                          onClick={() => handleServiceWhatsApp(isArabic ? `دراسة حالة: ${title}` : `Portfolio Case Study: ${project.title}`)}
+                          onClick={() => handleServiceWhatsApp(isArabic ? `مشروع مماثل: ${title}` : `Similar project: ${project.title}`)}
                           className="w-full py-2.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-semibold text-slate-200 flex items-center justify-center space-x-1.5 rtl:space-x-reverse transition-colors shadow-sm"
                         >
                           <span>{isArabic ? 'استعراض البنية التقنية' : 'Explore Architecture'}</span>

@@ -192,10 +192,10 @@ export function DedicatedJurisdictionPage({
               </div>
             </div>
             <div>
-              <div className="text-xs font-mono text-slate-400 mb-1">{isArabic ? 'حالة الشريك' : 'Partner Status'}</div>
+              <div className="text-xs font-mono text-slate-400 mb-1">{isArabic ? 'دورنا' : 'Our Role'}</div>
               <div className="text-sm font-semibold text-emerald-400 flex items-center gap-1">
                 <CheckCircle2 className="w-4 h-4" />
-                {isArabic ? 'شريك رسمي معتمد' : 'Direct Authorized'}
+                {isArabic ? 'إعداد وتقديم الطلبات' : 'Application support'}
               </div>
             </div>
           </div>
