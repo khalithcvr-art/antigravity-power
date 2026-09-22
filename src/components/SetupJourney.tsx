@@ -294,7 +294,7 @@ export const SetupJourney: React.FC<SetupJourneyProps> = ({ mode = 'corporate', 
                   </div>
                   <p className="text-xs text-slate-400 leading-relaxed">
                     {isArabic 
-                      ? 'تُقدَّم المعاملات عبر البوابات الحكومية الرسمية. تختلف مدد المعالجة حسب الجهة المختصة.' 
+                      ? 'تُقدَّم المعاملات عبر البوابات الحكومية الرسمية. تختلف مدد المعالجة حسب الجهة المختصة.'
                       : 'Applications are submitted through the official government portals. Processing times are set by the relevant authority and vary by case.'}
                   </p>
                 </div>
