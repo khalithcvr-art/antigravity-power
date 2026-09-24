@@ -246,7 +246,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
           sla: { label: "Deployment Speed", value: "Sub-Second" },
           techStack: { label: "Modern Architecture", value: "Full-Stack" },
           aiNative: { label: "AI Workflows", value: "Automated" },
-          speed: { label: "Uptime & Performance", value: "99.9%" }
+          speed: { label: "Uptime & Performance", value: "Monitored" }
         }
       }
     },
@@ -485,7 +485,7 @@ export const TRANSLATIONS: { en: TranslationDictionary; ar: TranslationDictionar
           sla: { label: "سرعة الاستجابة", value: "فورية" },
           techStack: { label: "البنية البرمجية", value: "حديثة ومتكاملة" },
           aiNative: { label: "أتمتة الأعمال", value: "مدعومة بالذكاء الاصطناعي" },
-          speed: { label: "جاهزية واستقرار", value: "99.9%" }
+          speed: { label: "جاهزية واستقرار", value: "مراقَبة" }
         }
       }
     },

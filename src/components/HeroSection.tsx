@@ -70,7 +70,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     'Bespoke UAE Brand Architecture',
     'Bilingual Arabic/English Portals',
     'Enterprise Cloud CRM Automation',
-    'Sub-Second LCP Performance'
+    'Performance Budgets Measured Per Build'
   ];
 
   const digitalHeadlinesAr = [
@@ -78,7 +78,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     'هندسة الهوية البصرية والعلامات التجارية الفاخرة',
     'بوابات إلكترونية ثنائية اللغة (عربي / إنجليزي)',
     'أنظمة إدارة علاقات العملاء والأتمتة السحابية',
-    'أداء فائق وسرعة تحميل استثنائية'
+    'ميزانيات أداء تُقاس لكل مشروع'
   ];
 
   const reducedMotion = useMotionPreference();
@@ -445,10 +445,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="p-5 rounded-2xl glass-panel glass-panel-hover text-center relative overflow-hidden group border border-white/10"
               >
                 <div className="text-2xl sm:text-4xl font-display font-black text-white mb-1 group-hover:text-emerald-400 transition-colors">
-                  <AnimatedCounter value={COMPANY_INFO.stats.businessesLaunched} />
+                  <AnimatedCounter value={COMPANY_INFO.stats.governmentDepts} />
                 </div>
                 <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider mb-0.5">
-                  {isArabic ? 'الشركات المؤسسة' : 'Companies Formed'}
+                  {isArabic ? 'جهات حكومية ننسق معها' : 'Authorities Coordinated'}
                 </div>
                 <div className="text-[11px] text-slate-400">
                   {isArabic ? 'في أبوظبي ودبي' : 'Across Abu Dhabi & Dubai'}
@@ -466,7 +466,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                   {tHero.corporate.stats.experience.label}
                 </div>
                 <div className="text-[11px] text-slate-400">
-                  {isArabic ? 'اعتماد 7 دوائر وهيئات حكومية' : '7 UAE Government Ministries'}
+                  {isArabic ? 'خبرة في البر الرئيسي والمناطق الحرة' : 'Mainland & free zone casework'}
                 </div>
               </motion.div>
 

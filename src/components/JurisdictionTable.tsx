@@ -37,16 +37,16 @@ export const JurisdictionTable: React.FC<JurisdictionTableProps> = ({
     {
       feature: isArabic ? 'سرعة التحميل ومؤشرات الويب الأساسية (LCP)' : 'Page Speed & Core Web Vitals (LCP)',
       featureAr: 'سرعة التحميل ومؤشرات الويب الأساسية (LCP)',
-      generic: isArabic ? '3.5 - 5.0 ثوانٍ (بطيء / فقدان العملاء)' : '3.5s – 5.0s (Slow / High Bounce)',
-      agency: isArabic ? '2.5 - 3.5 ثوانٍ (متوسط)' : '2.5s – 3.5s (Average Agency Theme)',
-      expedia: isArabic ? '⚡ < 0.4 ثانية (تحميل فوري 60fps)' : '⚡ < 0.4s (Sub-Second 60FPS Edge)'
+      generic: isArabic ? 'يعتمد على القالب والإضافات' : 'Depends on theme and plugins',
+      agency: isArabic ? 'يختلف حسب التنفيذ' : 'Varies by implementation',
+      expedia: isArabic ? 'ميزانية أداء متفق عليها وتُقاس بعد الإطلاق' : 'Agreed performance budget, measured after launch'
     },
     {
       feature: isArabic ? 'الظهور في محركات الذكاء الاصطناعي (AEO/GEO)' : 'AEO & AI Search Readiness (ChatGPT/Perplexity)',
       featureAr: 'الظهور في محركات الذكاء الاصطناعي (AEO/GEO)',
       generic: isArabic ? 'غير مهيأ (نصوص غير منظمة)' : 'Zero Schema (Unstructured Data)',
       agency: isArabic ? 'وسوم ميتا تقليدية فقط' : 'Basic Meta Tags Only',
-      expedia: isArabic ? 'مخططات Schema.org و JSON-LD كاملة' : '100% JSON-LD Knowledge Graph'
+      expedia: isArabic ? 'مخططات Schema.org و JSON-LD منظمة' : 'Structured Schema.org JSON-LD markup'
     },
     {
       feature: isArabic ? 'مواءمة اللغة العربية والاتجاه من اليمين (RTL)' : 'Bilingual Arabic/English RTL Architecture',
@@ -60,7 +60,7 @@ export const JurisdictionTable: React.FC<JurisdictionTableProps> = ({
       featureAr: 'روبوتات واتساب الذكية وإدارة العملاء',
       generic: isArabic ? 'غير متصل / رابط واتساب عادي' : 'Standard Web Link Only',
       agency: isArabic ? 'استقبال رسائل يدوي' : 'Manual Lead Inbox',
-      expedia: isArabic ? 'أتمتة كاملة 24/7 مع إصدار عروض الأسعار' : '24/7 Autonomous Lead & Quote Engine'
+      expedia: isArabic ? 'أتمتة لاستقبال الطلبات وإعداد عروض الأسعار' : 'Automated lead capture and quotation drafting'
     },
     {
       feature: isArabic ? 'سيادة البيانات وعزل قواعد البيانات' : 'Data Sovereignty & Isolated PostgreSQL Database',
@@ -364,7 +364,7 @@ export const JurisdictionTable: React.FC<JurisdictionTableProps> = ({
                     <th className="p-5 w-1/3">{isArabic ? 'المعيار الهندسي والتقني' : 'Architectural Standard'}</th>
                     <th className="p-5 text-slate-500">{isArabic ? 'القوالب الجاهزة (WordPress / Wix)' : 'Generic Builders (Wix / WordPress)'}</th>
                     <th className="p-5 text-slate-400">{isArabic ? 'الوكالات التقليدية' : 'Standard Web Agency'}</th>
-                    <th className="p-5 text-cyan-300 bg-cyan-500/10 font-bold">{isArabic ? 'منصة إكسبيديا السيادية (Next.js & AI)' : 'Expedia Sovereign Stack (Next.js & AI)'}</th>
+                    <th className="p-5 text-cyan-300 bg-cyan-500/10 font-bold">{isArabic ? 'ما نبنيه لعملائنا (Next.js & AI)' : 'What We Build For Clients (Next.js & AI)'}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5 text-xs text-slate-200">

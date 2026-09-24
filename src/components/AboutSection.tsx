@@ -37,8 +37,8 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
   const handleConsultWhatsApp = () => {
     trackConversion('whatsapp_click', { source: 'about_section_cta' });
     const msg = isArabic
-      ? "مرحباً إكسبيديا، أود التعرف أكثر على خدماتكم المؤسسية واستشارة فريقكم المعتمد في أبوظبي."
-      : "Hello Expedia, I would like to learn more about your authorized corporate services and consult your licensed Abu Dhabi team.";
+      ? "مرحباً إكسبيديا، أود التعرف أكثر على خدماتكم المؤسسية والتحدث مع فريقكم في أبوظبي."
+      : "Hello Expedia, I would like to learn more about your corporate services and speak with your Abu Dhabi team.";
     window.open(generateWhatsAppUrl(msg), '_blank');
   };
 
@@ -47,22 +47,22 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
       id: 'pillar-1',
       icon: ShieldCheck,
       color: 'emerald',
-      title: isArabic ? 'ترخيص رسمي معتمد من حكومة أبوظبي' : 'Government-Licensed Legal Entity',
+      title: isArabic ? 'شركة مرخّصة من دائرة التنمية الاقتصادية في أبوظبي' : 'Government-Licensed Legal Entity',
       subtitle: isArabic ? 'رخصة تجارية رقم CN-6307408' : 'ADDED License No. CN-6307408',
       desc: isArabic
-        ? 'شركة مسجلة ومعتمدة رسمياً من دائرة التنمية الاقتصادية في أبوظبي (ADDED)، ومربوطة إلكترونياً بمنظومة "تم" الحكومية لتنفيذ كافة المعاملات دون وسطاء.'
-        : 'Officially registered and authorized by the Abu Dhabi Department of Economic Development (ADDED), integrated directly with the TAMM government ecosystem.',
-      badges: ['ADDED Abu Dhabi', 'TAMM Direct API', 'DED Dubai']
+        ? 'شركة مسجلة ومرخّصة من دائرة التنمية الاقتصادية في أبوظبي (ADDED). نقدّم معاملات عملائنا ونتابعها عبر بوابة "تم" الحكومية وقنوات الجهات المختصة.'
+        : 'Registered and licensed by the Abu Dhabi Department of Economic Development (ADDED). We prepare, submit and follow up client applications through the official TAMM portal and the relevant authority channels.',
+      badges: ['ADDED Abu Dhabi', 'TAMM Portal Submissions', 'DED Dubai']
     },
     {
       id: 'pillar-2',
       icon: Award,
       color: 'cyan',
-      title: isArabic ? 'شريك قنوات معتمد لـ 4 مناطق حرة كبرى' : '4 Tier-1 Free Zone Channel Partnerships',
+      title: isArabic ? 'أربع مناطق حرة نعمل معها بانتظام' : 'Four Free Zones We Work With Regularly',
       subtitle: isArabic ? 'ميدان، مدينة مصدر، إيفزا، عجمان' : 'Meydan, Masdar City, IFZA & Ajman',
       desc: isArabic
-        ? 'وكيل قنوات رسمي معتمد يتيح لك الوصول المباشر إلى أفضل باقات تأسيس الشركات والمكاتب الافتراضية مع إعفاءات ضريبية مؤهلة بنسبة 0% وتأشيرات سريعة.'
-        : 'Official authorized channel partner providing fast-track trade licensing, premium flexi-desk quotas, and 0% qualifying corporate tax structuring.',
+        ? 'نُعد ونقدّم طلبات الرخص التجارية، وننسّق باقات المكاتب المرنة وحصص التأشيرات، ونوضّح أوضاع ضريبة الشركات في المناطق الحرة التي يلزم تأكيدها مع مستشار ضريبي مرخص.'
+        : 'We prepare and submit trade licence applications, arrange flexi-desk packages and visa quotas, and explain qualifying free zone corporate tax positions, which should be confirmed with a licensed tax adviser.',
       badges: ['Meydan Free Zone', 'Masdar City Free Zone', 'IFZA Dubai', 'Ajman Free Zone']
     },
     {
@@ -70,11 +70,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
       icon: FileCheck2,
       color: 'indigo',
       title: isArabic ? '12+ عاماً من الخبرة التنظيمية في الإمارات' : '12+ Years Regulatory Track Record',
-      subtitle: isArabic ? 'أكثر من 500 شركة ناجحة' : '500+ Companies Launched',
+      subtitle: isArabic ? 'أعمال في البر الرئيسي والمناطق الحرة' : 'Mainland & Free Zone Casework',
       desc: isArabic
-        ? 'سجل حافل بالنجاح في تأسيس أكثر من 500 شركة وإصدار 1,200+ تأشيرة مستثمر وموظف بنسبة موافقة أولية 99.4% وشفافية كاملة دون أي رسوم خفية.'
-        : 'Over 500 commercial entities incorporated and 1,200+ investor/employee visas processed with a 99.4% first-time approval rate and zero hidden surcharges.',
-      badges: ['99.4% Approval', '1,200+ Visas', 'Zero Hidden Fees']
+        ? 'خبرة ممتدة في تأسيس الشركات في البر الرئيسي والمناطق الحرة، وملفات إقامة المستثمرين والموظفين، وتجديد الرخص. تُقدَّم الرسوم كتابةً قبل بدء العمل، والموافقات تعود للجهة المختصة.'
+        : 'Long-running experience across mainland and free zone formations, investor and employee residency files, and licence renewals. Fees are quoted in writing before work starts; approval decisions rest with the relevant authority.',
+      badges: ['Mainland & Free Zone', 'Residency & PRO Files', 'Written Quotations']
     },
     {
       id: 'pillar-4',
@@ -83,9 +83,9 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
       title: isArabic ? 'المحرك المزدوج: تأسيس قانوني + هندسة برمجية' : 'Sovereign Dual-Engine Architecture',
       subtitle: isArabic ? 'منظومة شاملة للنمو الرقمي' : 'Legal Compliance + Bespoke Next.js Tech',
       desc: isArabic
-        ? 'الجهة الوحيدة في أبوظبي التي تجمع بين استخراج الرخص التجارية وفتح الحسابات البنكية، وتطوير مواقع وتطبيقات Next.js فائقة السرعة مع أتمتة روبوتات الواتساب.'
-        : 'The UAE’s only hybrid corporate house combining statutory trade licensing with bespoke Next.js web engineering, autonomous CRM workflows, and WhatsApp AI bots.',
-      badges: ['Next.js 15 Full-Stack', 'WhatsApp Cloud API', '100% Code Handover']
+        ? 'نجمع بين استخراج الرخص التجارية ودعم طلبات فتح الحسابات البنكية، وبين تطوير مواقع وتطبيقات Next.js لعملائنا مع أنظمة إدارة العملاء وأتمتة الواتساب.'
+        : 'One practice covering both sides: statutory trade licensing and PRO work, plus bespoke Next.js web engineering, CRM workflows and WhatsApp automation built for clients.',
+      badges: ['Next.js Development Service', 'WhatsApp Cloud API', 'Full Code Handover']
     }
   ];
 
@@ -97,22 +97,22 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
       sub: isArabic ? 'في بر أبوظبي والمناطق الحرة' : 'Abu Dhabi & Dubai Mainland / Freezone'
     },
     {
-      value: 500,
-      suffix: '+',
-      label: isArabic ? 'شركة تم تأسيسها بنجاح' : 'Corporate Entities Launched',
-      sub: isArabic ? 'رخص تجارية نشطة ومرخصة' : 'Active Commercial Trade Licenses'
+      value: 4,
+      suffix: '',
+      label: isArabic ? 'مناطق حرة نعمل معها' : 'Free Zones We Work With',
+      sub: isArabic ? 'ميدان، إيفزا، مصدر، عجمان' : 'Meydan, IFZA, Masdar City & Ajman'
     },
     {
-      value: 99.4,
-      suffix: '%',
-      label: isArabic ? 'نسبة الموافقة من المرة الأولى' : 'First-Time Filing Approval Rate',
-      sub: isArabic ? 'مطابقة كاملة لضوابط الوزارات' : 'Zero Rejection Standard'
+      value: 7,
+      suffix: '',
+      label: isArabic ? 'جهات حكومية ننسق معها' : 'Authorities We Coordinate With',
+      sub: isArabic ? 'التنمية الاقتصادية، الموارد البشرية، الهوية، الإقامة، تم، الضرائب' : 'ADDED, DED, MoHRE, ICP, GDRFA, TAMM & FTA'
     },
     {
       value: 100,
       suffix: '%',
-      label: isArabic ? 'ملكية أجنبية وشفافية كاملة' : 'Foreign Ownership & Code IP',
-      sub: isArabic ? 'للمستثمرين والمنصات الرقمية' : 'Zero Intermediary Markups'
+      label: isArabic ? 'ملكية أجنبية وملكية الشيفرة البرمجية' : 'Foreign Ownership & Code IP',
+      sub: isArabic ? 'عرض سعر كتابي قبل بدء العمل' : 'Written Quotation Before Work Starts'
     }
   ];
 
@@ -140,13 +140,13 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
             <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight leading-tight">
               {isArabic ? (
                 <>
-                  القوة الاستراتيجية المعتمدة خلف <br className="hidden sm:inline" />
-                  <span className="text-gradient-emerald">أكثر من 500 قصة نجاح استثمارية في الإمارات</span>
+                  الفريق الاستراتيجي خلف <br className="hidden sm:inline" />
+                  <span className="text-gradient-emerald">تأسيس الشركات وخدمات العلاقات الحكومية في الإمارات</span>
                 </>
               ) : (
                 <>
-                  The Strategic Advisory Force Behind <br className="hidden sm:inline" />
-                  <span className="text-gradient-emerald">500+ UAE Commercial Success Stories</span>
+                  The Strategic Advisory Team Behind <br className="hidden sm:inline" />
+                  <span className="text-gradient-emerald">UAE Company Formation & PRO Services</span>
                 </>
               )}
             </h2>
@@ -158,7 +158,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                 </>
               ) : (
                 <>
-                  <strong className="text-white">Expedia Business and Services L.L.C</strong> is a licensed regulatory consultancy accredited by the <strong className="text-emerald-400">Abu Dhabi Department of Economic Development (ADDED)</strong>, headquartered at <strong className="text-white">Haibu, Level 1, Abu Dhabi Mall</strong>. We unite statutory legal governance with enterprise full-stack software engineering to accelerate commercial growth across the UAE.
+                  <strong className="text-white">Expedia Business and Services L.L.C</strong> is a business consultancy licensed by the <strong className="text-emerald-400">Abu Dhabi Department of Economic Development (ADDED)</strong>, headquartered at <strong className="text-white">Haibu, Level 1, Abu Dhabi Mall</strong>. We unite statutory legal governance with enterprise full-stack software engineering to accelerate commercial growth across the UAE.
                 </>
               )}
             </p>
@@ -252,11 +252,11 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                   {isArabic ? (
                     <>
-                      يقع مكتبنا في <strong>هايبو، الطابق الأول، أبوظبي مول، النادي السياحي، أبوظبي</strong>. نوفر لعملائنا غرف اجتماعات مجهزة بأعلى المعايير، ومستشارين قانونيين متخصصين، ومتابعة فورية ومباشرة لملفات الرخص والتأشيرات عبر بوابة تم الحكومية.
+                      يقع مكتبنا في <strong>هايبو، الطابق الأول، أبوظبي مول، النادي السياحي، أبوظبي</strong>. نوفر لعملائنا غرف اجتماعات، ومختصين في العلاقات الحكومية، ومتابعة لملفات الرخص والتأشيرات عبر بوابة تم الحكومية.
                     </>
                   ) : (
                     <>
-                      Located at <strong>Haibu, Level 1, Abu Dhabi Mall, Al Zahiya, Abu Dhabi</strong>. We provide executive meeting spaces, certified PRO legal specialists, and real-time statutory tracking directly via the TAMM governmental network.
+                      Located at <strong>Haibu, Level 1, Abu Dhabi Mall, Al Zahiya, Abu Dhabi</strong>. We provide meeting space, experienced PRO specialists, and application status updates coordinated through the official TAMM portal.
                     </>
                   )}
                 </p>

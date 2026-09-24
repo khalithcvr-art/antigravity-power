@@ -125,7 +125,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ mode = 'corporate', isAr
               {isDigital ? (
                 isArabic
                   ? 'إجابات تقنية وهندسية مباشرة حول تطوير المواقع السيادية، أنظمة إدارة الأعمال (CRM)، أتمتة الواتساب، والظهور في محركات البحث بالذكاء الاصطناعي.'
-                  : 'Direct technical answers regarding sovereign Next.js web applications, custom CRM architectures, WhatsApp bots, and AI answer engine rankings.'
+                  : 'Direct technical answers regarding Next.js web applications, custom CRM architectures, WhatsApp bots, and visibility in AI answer engines.'
               ) : (
                 isArabic 
                   ? 'إجابات قانونية وتنظيمية مباشرة مستندة إلى قانون الشركات التجارية الإماراتي لعام 2026، وضوابط وزارة الموارد البشرية، ومعايير الهيئة الاتحادية للضرائب.'
@@ -257,7 +257,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ mode = 'corporate', isAr
             <p className="text-xs text-slate-400 max-w-lg mx-auto mb-6">
               {isDigital
                 ? (isArabic ? 'تحدث مباشرة مع كبار مهندسي إكسبيديا عبر واتساب لمناقشة المتطلبات، المخططات، والجدول الزمني.' : 'Connect directly with Expedia senior software architects via WhatsApp to discuss architectures and roadmaps.')
-                : (isArabic ? 'تحدث مباشرة مع مستشاري إكسبيديا القانونيين وممثلي العلاقات الحكومية عبر واتساب للحصول على استشارة فورية.' : 'Connect directly with certified Expedia PRO specialists on WhatsApp for immediate statutory guidance.')}
+                : (isArabic ? 'تحدث مباشرة مع مستشاري إكسبيديا ومختصي العلاقات الحكومية عبر واتساب.' : 'Connect directly with experienced Expedia PRO specialists on WhatsApp for guidance on your case.')}
             </p>
             <motion.button
               whileHover={{ scale: 1.03 }}

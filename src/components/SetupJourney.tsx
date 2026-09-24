@@ -48,8 +48,8 @@ export const SetupJourney: React.FC<SetupJourneyProps> = ({ mode = 'corporate', 
       title: isArabic ? 'هندسة العلامة وتصميم واجهات المستخدم' : 'Brand Architecture & UI/UX Design System',
       subtitle: isArabic ? 'تصميم تجربة مستخدم فاخرة وثنائية اللغة' : 'Bespoke Figma Prototypes & RTL Typography',
       timeline: isArabic ? '1-3 أيام' : '1–3 Days',
-      authorityTag: isArabic ? 'معايير واجهات المستخدم 60fps' : '60FPS UI/UX Architecture',
-      summary: isArabic ? 'هندسة الهوية البصرية، واجهات تفاعلية 60fps، وخطوط عربية مخصصة تحاكي كبرى الشركات العالمية.' : 'High-fidelity interactive prototypes, responsive Arabic-English design tokens, and luxury UAE aesthetic.',
+      authorityTag: isArabic ? 'معايير واجهات المستخدم' : 'UI/UX Architecture',
+      summary: isArabic ? 'هندسة الهوية البصرية، وواجهات تفاعلية سلسة، وخطوط عربية مخصصة.' : 'High-fidelity interactive prototypes, responsive Arabic-English design tokens, and a considered UAE aesthetic.',
       details: isArabic ? [
         'نظام تصميم متكامل ومكونات تفاعلية في Figma',
         'مواءمة طباعية احترافية للغتين العربية والإنجليزية',
@@ -67,17 +67,17 @@ export const SetupJourney: React.FC<SetupJourneyProps> = ({ mode = 'corporate', 
     {
       number: '02',
       title: isArabic ? 'التطوير البرمجي والأتمتة الذكية' : 'Full-Stack Engineering & AI Automation',
-      subtitle: isArabic ? 'تطبيقات Next.js 15 وربط واتساب وقواعد البيانات' : 'Next.js 15, Supabase & WhatsApp Bots',
+      subtitle: isArabic ? 'تطبيقات Next.js وربط واتساب وقواعد البيانات' : 'Next.js, Supabase & WhatsApp Bots',
       timeline: isArabic ? '3-7 أيام' : '3–7 Days',
       authorityTag: isArabic ? 'هندسة السحابة الآمنة' : 'Sovereign Cloud & AI API',
       summary: isArabic ? 'برمجة خادم سريعة، ربط بوابات الدفع الإماراتية (Stripe/Network)، وتفعيل روبوتات واتساب الآلية للرد على العملاء.' : 'High-performance React/TypeScript frontend, PostgreSQL database isolation, and automated WhatsApp CRM pipelines.',
       details: isArabic ? [
-        'تطوير الواجهات بمحرك Next.js 15 فائق السرعة',
+        'تطوير الواجهات باستخدام Next.js',
         'عزل بيانات العملاء في قواعد بيانات Supabase PostgreSQL',
         'ربط واتساب للأعمال لاستقبال وتوزيع العملاء آلياً',
         'تكامل بوابات الدفع الإلكتروني المعتمدة في الإمارات'
       ] : [
-        'Sub-second Next.js 15 Server Components architecture',
+        'Next.js Server Components architecture',
         'Supabase PostgreSQL multi-tenant data isolation',
         'WhatsApp Cloud API autonomous lead response & booking',
         'Automated quotation, invoice, and payment gateway bridges'
@@ -88,19 +88,19 @@ export const SetupJourney: React.FC<SetupJourneyProps> = ({ mode = 'corporate', 
     {
       number: '03',
       title: isArabic ? 'النشر السحابي والسيطرة على محركات البحث' : 'Sovereign Cloud & SEO/AEO Domination',
-      subtitle: isArabic ? 'سرعة فائقة وتصدر نتائج الذكاء الاصطناعي' : 'Edge Deployment & AI Search Optimization',
+      subtitle: isArabic ? 'نشر سحابي وتهيئة المحتوى للبحث' : 'Edge Deployment & Search Readiness',
       timeline: isArabic ? '1-2 يوم' : '1–2 Days',
-      authorityTag: isArabic ? 'الظهور في Google و ChatGPT' : 'Google & ChatGPT AEO Ready',
-      summary: isArabic ? 'استضافة سحابية على شبكة Cloudflare/Vercel بزمن استجابة أقل من 15ms، وتضمين مخططات Schema لضمان الظهور في ChatGPT وPerplexity.' : 'Edge CDN deployment across GCC nodes (<12ms latency), complete JSON-LD semantic graphs, and 100% Core Web Vitals score.',
+      authorityTag: isArabic ? 'بيانات منظمة وخرائط موقع' : 'Structured Data & Sitemaps',
+      summary: isArabic ? 'استضافة سحابية على شبكة Cloudflare/Vercel، وتضمين مخططات Schema لتحسين فهم المحتوى. لا يمكن ضمان الظهور في نتائج الذكاء الاصطناعي.' : 'Edge CDN deployment across GCC nodes, complete JSON-LD structured data, and Core Web Vitals measured after launch. Placement in AI answers cannot be guaranteed.',
       details: isArabic ? [
-        'نشر على خوادم سريعة في الإمارات والخليج بزمن استجابة < 12ms',
-        'هيكلة بيانات Schema.org للتصدر في Google و ChatGPT و Perplexity',
-        'درجة 100% في مقاييس الأداء الأساسية (Core Web Vitals)',
+        'نشر على خوادم في الإمارات ودول الخليج',
+        'هيكلة بيانات Schema.org لتحسين فهم المحتوى في محركات البحث',
+        'قياس مؤشرات الأداء الأساسية (Core Web Vitals) بعد الإطلاق',
         'تسليم الشيفرة البرمجية والملكية الفكرية الكاملة 100% للعميل'
       ] : [
-        'GCC Edge deployment with sub-12ms latency',
-        'Complete JSON-LD semantic schema for Google & AI search engines',
-        'Sub-second Largest Contentful Paint (LCP < 0.4s)',
+        'GCC edge deployment',
+        'Complete JSON-LD structured data for search and AI crawlers',
+        'Core Web Vitals measured on the live build',
         '100% Full source code handover and client IP ownership'
       ],
       icon: Rocket,
@@ -294,8 +294,8 @@ export const SetupJourney: React.FC<SetupJourneyProps> = ({ mode = 'corporate', 
                   </div>
                   <p className="text-xs text-slate-400 leading-relaxed">
                     {isArabic 
-                      ? 'تتم كافة المعاملات والتوثيقات عبر بوابات الربط الإلكتروني المباشر دون أي تأخير.' 
-                      : 'All submissions are executed directly via governmental API connections with zero intermediary delays.'}
+                      ? 'تُقدَّم المعاملات عبر البوابات الحكومية الرسمية. تختلف مدد المعالجة حسب الجهة المختصة.'
+                      : 'Applications are submitted through the official government portals. Processing times are set by the relevant authority and vary by case.'}
                   </p>
                 </div>
 
