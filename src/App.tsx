@@ -1,4 +1,6 @@
-import { preferredScrollBehavior } from './hooks/useMotionPreference';
+import { flushSync } from 'react-dom';
+import { preferredScrollBehavior, prefersReducedMotion } from './hooks/useMotionPreference';
+import { usePresence } from './hooks/usePresence';
 import { ComfortHero } from './components/ComfortHero';
 import React, { useState, useEffect, lazy, Suspense } from 'react';
 import { DualEngineMode } from './types';
@@ -27,6 +29,10 @@ export function App({initialPath = typeof window === 'undefined' ? '/' : window.
   const [isArabic, setIsArabic] = useState<boolean>(initialPath === '/ar' || initialPath.startsWith('/ar/'));
   const [currentSlug, setCurrentSlug] = useState<string>(initialPath.replace(/^\/ar(?=\/|$)/, '').replace(/^\/+|\/+$/g, ''));
   const [isLogoDocked, setIsLogoDocked] = useState<boolean>(true);
+  // The corporate hero only plays its entrance after a mode switch, never over the prerendered first paint.
+  const [modeSwitched, setModeSwitched] = useState<boolean>(false);
+  const estimatorPresence = usePresence(isEstimatorOpen, 260);
+  const trackerPresence = usePresence(isTrackerOpen, 260);
 
   // Initial path detection
   useEffect(() => {
@@ -65,13 +71,20 @@ export function App({initialPath = typeof window === 'undefined' ? '/' : window.
   };
 
   const handleToggleMode = (newMode: DualEngineMode) => {
-    setMode(newMode);
-    if (newMode === 'digital') {
-      setIsLogoDocked(false);
-    } else {
-      setIsLogoDocked(true);
-    }
+    if (newMode === mode) return;
+    const apply = () => {
+      setMode(newMode);
+      setIsLogoDocked(newMode !== 'digital');
+      setModeSwitched(true);
+    };
     trackConversion('dual_engine_switch', { newMode });
+    // Short native crossfade where View Transitions exist; an instant swap everywhere else.
+    const viewTransitions = document as Document & { startViewTransition?: (update: () => void) => unknown };
+    if (viewTransitions.startViewTransition && !prefersReducedMotion()) {
+      viewTransitions.startViewTransition(() => flushSync(apply));
+    } else {
+      apply();
+    }
   };
 
   const handleToggleArabic = () => {
@@ -103,15 +116,16 @@ export function App({initialPath = typeof window === 'undefined' ? '/' : window.
   const isDedicatedPage = Boolean(currentSlug && DEDICATED_PAGES[currentSlug]);
 
   return (
-    <div className={`min-h-screen bg-obsidian-950 text-slate-100 relative selection:bg-emerald-500/30 selection:text-emerald-300 ${
-      mode === 'corporate' ? 'neo-mesh-gradient' : 'neo-mesh-digital'
-    } transition-colors duration-1000`}>
-      
-      {/* Background Interactive Particle Canvas */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        {mode === 'digital' && <HeroCanvas mode={mode} />}
-        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-      </div>
+    <div data-mode={mode} className="app-ground relative min-h-screen text-white">
+      <div className="app-wash pointer-events-none absolute inset-x-0 top-0 z-0 h-[56rem]" aria-hidden="true" />
+
+      {/* Digital studio only: a faint grid and a quiet particle field. Corporate mode stays clean. */}
+      {mode === 'digital' && (
+        <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
+          <HeroCanvas mode={mode} />
+          <div className="bg-lines absolute inset-0 opacity-60" />
+        </div>
+      )}
 
       <div className="relative z-10 flex flex-col min-h-screen">
         
@@ -129,6 +143,7 @@ export function App({initialPath = typeof window === 'undefined' ? '/' : window.
           onNavigateSlug={handleNavigateSlug}
           onNavigateHome={handleNavigateHome}
           isLogoDocked={isLogoDocked}
+          currentSlug={isDedicatedPage ? currentSlug : ''}
         />
 
         {/* Main Content View (Dedicated Page vs Full Homepage) */}
@@ -144,7 +159,7 @@ export function App({initialPath = typeof window === 'undefined' ? '/' : window.
             />
           ) : (
             <>
-              {mode === 'corporate' ? <ComfortHero isArabic={isArabic} /> : <Suspense fallback={<p>Loading…</p>}><HeroSection
+              {mode === 'corporate' ? <ComfortHero isArabic={isArabic} animateIn={modeSwitched} /> : <Suspense fallback={<p role="status" className="px-4 pb-24 pt-40 text-center text-slate-400">Loading…</p>}><HeroSection
                 mode={mode}
                 onOpenEstimator={() => setIsEstimatorOpen(true)}
                 onOpenTracker={() => setIsTrackerOpen(true)}
@@ -218,13 +233,13 @@ export function App({initialPath = typeof window === 'undefined' ? '/' : window.
         />
 
         {/* Interactive Modals */}
-        <Suspense fallback={null}>{isEstimatorOpen && <CostEstimatorModal
+        <Suspense fallback={null}>{estimatorPresence.mounted && <CostEstimatorModal
           isOpen={isEstimatorOpen}
           onClose={() => setIsEstimatorOpen(false)}
           isArabic={isArabic}
         />}</Suspense>
 
-        <Suspense fallback={null}>{isTrackerOpen && <StatusTrackerModal
+        <Suspense fallback={null}>{trackerPresence.mounted && <StatusTrackerModal
           isOpen={isTrackerOpen}
           onClose={() => setIsTrackerOpen(false)}
           isArabic={isArabic}

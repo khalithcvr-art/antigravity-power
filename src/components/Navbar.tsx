@@ -1,23 +1,22 @@
 import { preferredScrollBehavior } from '../hooks/useMotionPreference';
-import React, { useState, useEffect } from 'react';
-import { 
-  Building2, 
-  Sparkles, 
-  PhoneCall, 
-  MessageSquare, 
-  Calculator, 
-  Search, 
-  Menu, 
-  X, 
-  ChevronDown, 
-  Globe, 
-  ShieldCheck, 
+import { usePresence } from '../hooks/usePresence';
+import { useScrolled } from '../hooks/useScrolled';
+import React, { useRef, useState } from 'react';
+import {
+  Building2,
+  Sparkles,
+  PhoneCall,
+  Calculator,
+  Search,
+  Menu,
+  X,
+  ChevronDown,
+  Globe,
   ArrowRight,
-  Zap
 } from 'lucide-react';
 import { COMPANY_INFO } from '../data/siteData';
 import { DualEngineMode } from '../types';
-import { trackConversion, generateWhatsAppUrl, generateCallUrl } from '../lib/tracking';
+import { trackConversion, generateCallUrl } from '../lib/tracking';
 import { TRANSLATIONS } from '../data/translations';
 
 interface NavbarProps {
@@ -30,7 +29,28 @@ interface NavbarProps {
   onNavigateSlug?: (slug: string) => void;
   onNavigateHome?: () => void;
   isLogoDocked?: boolean;
+  currentSlug?: string;
 }
+
+const isHomePath = () => /^\/(ar\/?)?$/.test(window.location.pathname);
+
+/** A dropdown menu: opens on hover, ArrowDown or click; closes on Escape, focus-out or mouse-out. */
+function useMenu() {
+  const [open, setOpen] = useState(false);
+  const presence = usePresence(open, 170);
+  return { open, setOpen, ...presence };
+}
+
+const NAV_LINK =
+  'relative whitespace-nowrap rounded-lg px-1.5 py-2 text-[0.9375rem] font-medium text-slate-300 transition-colors hover:text-white xl:px-3 ' +
+  'after:absolute after:inset-x-1.5 after:bottom-0.5 xl:after:inset-x-3 after:h-px after:origin-center after:scale-x-0 after:bg-gold-400 after:transition-transform after:duration-300 after:ease-out ' +
+  'hover:after:scale-x-100 aria-expanded:text-white aria-expanded:after:scale-x-100 aria-[current=page]:text-white aria-[current=page]:after:scale-x-100';
+
+const MENU_PANEL =
+  'pop absolute top-full z-50 mt-2 w-80 rounded-2xl border border-white/10 bg-obsidian-900/95 p-3 shadow-pop backdrop-blur-2xl start-0';
+
+const MENU_ITEM =
+  'flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-sm text-slate-200 transition-colors hover:bg-white/5 hover:text-white aria-[current=page]:bg-white/5 aria-[current=page]:text-white';
 
 export const Navbar: React.FC<NavbarProps> = ({
   mode,
@@ -42,26 +62,19 @@ export const Navbar: React.FC<NavbarProps> = ({
   onNavigateSlug,
   onNavigateHome,
   isLogoDocked = true,
+  currentSlug = '',
 }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
+  const scrolled = useScrolled(12);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
-  const [jurisdictionsDropdownOpen, setJurisdictionsDropdownOpen] = useState(false);
+  const mobile = usePresence(mobileMenuOpen, 170);
+  const services = useMenu();
+  const jurisdictions = useMenu();
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const jurisdictionsRef = useRef<HTMLDivElement>(null);
+  const mobileToggleRef = useRef<HTMLButtonElement>(null);
 
   const t = isArabic ? TRANSLATIONS.ar.navbar : TRANSLATIONS.en.navbar;
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const handleWhatsApp = () => {
-    trackConversion('whatsapp_click', { source: 'navbar' });
-    window.open(generateWhatsAppUrl(), '_blank');
-  };
+  const accentText = mode === 'corporate' ? 'text-emerald-400' : 'text-cyan-400';
 
   const handleCall = () => {
     trackConversion('call_click', { source: 'navbar' });
@@ -79,430 +92,435 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const handleSlugClick = (e: React.MouseEvent, slug: string) => {
     e.preventDefault();
-    setJurisdictionsDropdownOpen(false);
+    jurisdictions.setOpen(false);
     setMobileMenuOpen(false);
     if (onNavigateSlug) {
       onNavigateSlug(slug);
     } else {
-      window.location.href = `${isArabic ? "/ar" : ""}/${slug}`;
+      window.location.href = `${isArabic ? '/ar' : ''}/${slug}`;
     }
   };
 
-  const handleServiceClick = (e: React.MouseEvent, targetId: string) => {
+  /** Scroll to a home-page section, returning to the home page first when on a dedicated page. */
+  const goToSection = (e: React.MouseEvent, targetId: string, fallbackId?: string) => {
     e.preventDefault();
-    setServicesDropdownOpen(false);
-    if (window.location.pathname !== '/' && onNavigateHome) {
+    services.setOpen(false);
+    setMobileMenuOpen(false);
+    const scroll = () => {
+      const element = document.getElementById(targetId) ?? (fallbackId ? document.getElementById(fallbackId) : null);
+      element?.scrollIntoView({ behavior: preferredScrollBehavior(), block: 'start' });
+    };
+    if (!isHomePath() && onNavigateHome) {
       onNavigateHome();
-      setTimeout(() => {
-        const element = document.getElementById(targetId);
-        element?.scrollIntoView({ behavior: preferredScrollBehavior(), block: 'start' });
-      }, 100);
+      setTimeout(scroll, 100);
       return;
     }
-    const element = document.getElementById(targetId);
-    if (element) {
-      element.scrollIntoView({ behavior: preferredScrollBehavior(), block: 'start' });
-    } else {
-      const s = document.getElementById('services');
-      s?.scrollIntoView({ behavior: preferredScrollBehavior() });
+    scroll();
+  };
+
+  const handleMenuKeyDown = (
+    e: React.KeyboardEvent<HTMLElement>,
+    menu: ReturnType<typeof useMenu>,
+    wrapper: React.RefObject<HTMLDivElement>,
+  ) => {
+    const items = () => Array.from(wrapper.current?.querySelectorAll<HTMLElement>('[role="menuitem"]') ?? []);
+    const target = e.target as HTMLElement;
+    const index = items().indexOf(target);
+    const move = (to: number) => {
+      const list = items();
+      if (!list.length) return;
+      e.preventDefault();
+      list[(to + list.length) % list.length].focus();
+    };
+
+    if (e.key === 'ArrowDown' && target.tagName === 'BUTTON') {
+      e.preventDefault();
+      menu.setOpen(true);
+      // Land on the first item once the menu has mounted.
+      requestAnimationFrame(() => items()[0]?.focus());
+    } else if (e.key === 'ArrowDown' && index >= 0) {
+      move(index + 1);
+    } else if (e.key === 'ArrowUp' && index >= 0) {
+      move(index - 1);
+    } else if (e.key === 'Home' && index >= 0) {
+      move(0);
+    } else if (e.key === 'End' && index >= 0) {
+      move(-1);
+    } else if (e.key === 'Escape' && menu.open) {
+      e.preventDefault();
+      menu.setOpen(false);
+      wrapper.current?.querySelector<HTMLButtonElement>('button[aria-haspopup]')?.focus();
     }
   };
 
-  const handleDropdownKeyDown = (
-    e: React.KeyboardEvent<HTMLButtonElement>,
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
-  ) => {
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setOpen(true);
-    } else if (e.key === 'Escape') {
-      e.preventDefault();
-      setOpen(false);
-    }
+  const closeOnFocusOut = (e: React.FocusEvent<HTMLElement>, menu: ReturnType<typeof useMenu>) => {
+    if (!e.currentTarget.contains(e.relatedTarget as Node | null)) menu.setOpen(false);
+  };
+
+  const servicesItems =
+    mode === 'corporate'
+      ? [
+          { label: isArabic ? 'تأسيس الشركات والرخص الرئيسية' : 'Company Formation & Mainland', tag: isArabic ? 'ملك 100%' : '100% Own', tagClass: 'text-emerald-400' },
+          { label: isArabic ? 'علاقات الدوائر الحكومية وتم' : 'Corporate PRO & TAMM Liaison', tag: isArabic ? '7 دوائر' : '7 Depts', tagClass: 'text-slate-400' },
+          { label: isArabic ? 'الإقامة الذهبية 10 سنوات' : '10-Year UAE Golden Visa', tag: 'VIP', tagClass: 'text-gold-400' },
+          { label: isArabic ? 'ضريبة الشركات والامتثال المالي' : 'Corporate Tax & Freezone 0%', tag: 'FTA TRN', tagClass: 'text-emerald-400' },
+        ]
+      : [
+          { label: isArabic ? 'تطوير المواقع والمنصات الذكية' : 'Bespoke Web & App Engineering', tag: 'Next.js', tagClass: 'text-cyan-400' },
+          { label: isArabic ? 'تصميم واجهات المستخدم الفاخرة' : 'Fintech-Grade UI/UX Design', tag: 'Dark UI', tagClass: 'text-cyan-400' },
+          { label: isArabic ? 'بناء الهوية البصرية للشركات' : 'Corporate Brand Architecture', tag: 'Prestige', tagClass: 'text-gold-400' },
+          { label: isArabic ? 'أنظمة إدارة علاقات العملاء والفواتير' : 'Automated CRM & Invoicing', tag: 'Cloud', tagClass: 'text-emerald-400' },
+        ];
+  const servicesTarget = mode === 'corporate' ? 'services' : 'digital-services';
+
+  const jurisdictionItems = [
+    { slug: 'meydan-free-zone', titleEn: 'Meydan Free Zone (Dubai)', titleAr: 'منطقة ميدان الحرة (دبي)', tag: 'From 12.5k' },
+    { slug: 'masdar-city-free-zone', titleEn: 'Masdar City Free Zone (Abu Dhabi)', titleAr: 'مدينة مصدر الحرة (أبوظبي)', tag: 'AI & Tech' },
+    { slug: 'ifza', titleEn: 'IFZA Dubai Free Zone', titleAr: 'سلطة إيفزا دبي الحرة', tag: '1500+ Act' },
+    { slug: 'ajman-free-zone', titleEn: 'Ajman Free Zone (AFZ)', titleAr: 'منطقة عجمان الحرة', tag: 'From 5.9k' },
+    { slug: 'mainland-business-setup', titleEn: 'UAE Mainland Setup (ADDED/DED)', titleAr: 'البر الرئيسي (أبوظبي ودبي)', tag: '100% Own' },
+    { slug: 'ifza-vs-meydan', titleEn: 'IFZA vs. Meydan Comparison', titleAr: 'مقارنة إيفزا وميدان', tag: 'AEO Guide' },
+  ];
+
+  const modeButton = (target: DualEngineMode, Icon: typeof Building2, label: string, compact: boolean) => {
+    const active = mode === target;
+    return (
+      <button
+        type="button"
+        onClick={() => onToggleMode(target)}
+        aria-pressed={active}
+        title={label}
+        className={`flex items-center gap-2 rounded-full text-sm font-semibold transition-colors duration-300 ${
+          compact ? `h-9 w-9 justify-center ${active ? 'xl:w-auto xl:px-4' : ''}` : 'px-4 py-1.5'
+        } ${active ? 'bg-accent text-obsidian-950' : 'text-slate-400 hover:text-white'}`}
+      >
+        <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
+        <span className={compact ? (active ? 'sr-only xl:not-sr-only' : 'sr-only') : ''}>{label}</span>
+      </button>
+    );
   };
 
   return (
-    <header className={`comfort-navbar fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled 
-        ? 'bg-obsidian-950/85 backdrop-blur-xl border-b border-white/10 shadow-2xl shadow-black/60 py-3' 
-        : 'bg-transparent py-5'
-    }`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          
-          {/* Clean Prominent Logo (With Cinematic Landing Target in Digital Mode) */}
-          <div id="navbar-logo-target" className="flex items-center min-w-[160px] sm:min-w-[220px]">
-            <a 
-              href="/" 
-              onClick={handleHomeClick} 
-              className={`group flex items-center text-left rtl:text-right py-1 transition-all duration-500 ${
-                mode === 'digital' && !isLogoDocked ? 'opacity-0 pointer-events-none' : 'opacity-100'
-              }`}
-            >
-              <img 
-                src="/expedia-latest-logo.png" 
-                alt="Expedia Business Services" 
-                className="h-12 sm:h-14 md:h-16 w-auto max-w-[220px] sm:max-w-[270px] md:max-w-[320px] object-contain brightness-110 drop-shadow-xl transition-transform duration-300 group-hover:scale-105"
-              />
-            </a>
-          </div>
-
-          {/* Desktop Dual-Engine Switcher (Fintech Center Capsule) */}
-          <div className="hidden lg:flex items-center p-1 rounded-full bg-obsidian-900/90 border border-white/10 shadow-inner">
-            <button
-              onClick={() => onToggleMode('corporate')}
-              className={`flex items-center space-x-2 rtl:space-x-reverse px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 ${
-                mode === 'corporate'
-                  ? 'bg-emerald-500 text-obsidian-950 shadow-md shadow-emerald-500/30'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Building2 className="w-3.5 h-3.5" />
-              <span>{t.corporateMode}</span>
-            </button>
-            <button
-              onClick={() => onToggleMode('digital')}
-              className={`flex items-center space-x-2 rtl:space-x-reverse px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-300 ${
-                mode === 'digital'
-                  ? 'bg-gradient-to-r from-cyan-400 to-indigo-500 text-obsidian-950 shadow-md shadow-cyan-500/30'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>{t.digitalMode}</span>
-            </button>
-          </div>
-
-          {/* Navigation Links */}
-          <nav className="hidden md:flex items-center space-x-6 rtl:space-x-reverse text-sm font-medium text-slate-300">
-            <div className="relative group" onMouseEnter={() => setServicesDropdownOpen(true)} onMouseLeave={() => setServicesDropdownOpen(false)}>
-              <button 
-                aria-haspopup="menu"
-                aria-expanded={servicesDropdownOpen}
-                aria-controls="services-navigation-menu"
-                className="flex items-center space-x-1 rtl:space-x-reverse hover:text-white transition-colors py-2"
-                onClick={(e) => handleServiceClick(e, mode === 'corporate' ? 'services' : 'digital-services')}
-                onKeyDown={(e) => handleDropdownKeyDown(e, setServicesDropdownOpen)}
-              >
-                <span>{t.services}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:rotate-180 transition-transform" />
-              </button>
-
-              {/* Mega Dropdown Preview */}
-              {servicesDropdownOpen && (
-                <div id="services-navigation-menu" role="menu" className="absolute top-full left-0 rtl:left-auto rtl:right-0 w-80 p-3 bg-obsidian-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-black/80 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-3 py-1 mb-1">
-                    {mode === 'corporate' ? (isArabic ? 'الخدمات الحكومية وتأسيس الشركات' : 'Core Government & PRO Units') : (isArabic ? 'الهندسة الرقمية والعلامة التجارية' : 'Digital Engineering & Brand')}
-                  </div>
-                  {mode === 'corporate' ? (
-                    <div className="space-y-1">
-                      <a 
-                        href="#services" 
-                        onClick={(e) => handleServiceClick(e, 'services')}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-emerald-400 text-xs transition-colors"
-                      >
-                        <span className="font-semibold">{isArabic ? 'تأسيس الشركات والرخص الرئيسية' : 'Company Formation & Mainland'}</span>
-                        <span className="text-[10px] text-emerald-400/80 font-mono">{isArabic ? 'ملك 100%' : '100% Own'}</span>
-                      </a>
-                      <a 
-                        href="#services" 
-                        onClick={(e) => handleServiceClick(e, 'services')}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-emerald-400 text-xs transition-colors"
-                      >
-                        <span className="font-semibold">{isArabic ? 'علاقات الدوائر الحكومية وتم' : 'Corporate PRO & TAMM Liaison'}</span>
-                        <span className="text-[10px] text-slate-400 font-mono">{isArabic ? '7 دوائر' : '7 Depts'}</span>
-                      </a>
-                      <a 
-                        href="#services" 
-                        onClick={(e) => handleServiceClick(e, 'services')}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-emerald-400 text-xs transition-colors"
-                      >
-                        <span className="font-semibold">{isArabic ? 'الإقامة الذهبية 10 سنوات' : '10-Year UAE Golden Visa'}</span>
-                        <span className="text-[10px] text-goldMuted font-mono">VIP</span>
-                      </a>
-                      <a 
-                        href="#services" 
-                        onClick={(e) => handleServiceClick(e, 'services')}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-emerald-400 text-xs transition-colors"
-                      >
-                        <span className="font-semibold">{isArabic ? 'ضريبة الشركات والامتثال المالي' : 'Corporate Tax & Freezone 0%'}</span>
-                        <span className="text-[10px] text-teal-400 font-mono">FTA TRN</span>
-                      </a>
-                    </div>
-                  ) : (
-                    <div className="space-y-1">
-                      <a 
-                        href="#digital-services" 
-                        onClick={(e) => handleServiceClick(e, 'digital-services')}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-cyan-400 text-xs transition-colors"
-                      >
-                        <span className="font-semibold">{isArabic ? 'تطوير المواقع والمنصات الذكية' : 'Bespoke Web & App Engineering'}</span>
-                        <span className="text-[10px] text-cyan-400 font-mono">Next.js</span>
-                      </a>
-                      <a 
-                        href="#digital-services" 
-                        onClick={(e) => handleServiceClick(e, 'digital-services')}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-cyan-400 text-xs transition-colors"
-                      >
-                        <span className="font-semibold">{isArabic ? 'تصميم واجهات المستخدم الفاخرة' : 'Fintech-Grade UI/UX Design'}</span>
-                        <span className="text-[10px] text-indigo-400 font-mono">Dark UI</span>
-                      </a>
-                      <a 
-                        href="#digital-services" 
-                        onClick={(e) => handleServiceClick(e, 'digital-services')}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-cyan-400 text-xs transition-colors"
-                      >
-                        <span className="font-semibold">{isArabic ? 'بناء الهوية البصرية للشركات' : 'Corporate Brand Architecture'}</span>
-                        <span className="text-[10px] text-purple-400 font-mono">Prestige</span>
-                      </a>
-                      <a 
-                        href="#digital-services" 
-                        onClick={(e) => handleServiceClick(e, 'digital-services')}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-cyan-400 text-xs transition-colors"
-                      >
-                        <span className="font-semibold">{isArabic ? 'أنظمة إدارة علاقات العملاء والفواتير' : 'Automated CRM & Invoicing'}</span>
-                        <span className="text-[10px] text-emerald-400 font-mono">Cloud</span>
-                      </a>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            {/* Free Zones & Comparison Dropdown */}
-            <div className="relative group" onMouseEnter={() => setJurisdictionsDropdownOpen(true)} onMouseLeave={() => setJurisdictionsDropdownOpen(false)}>
-              <button 
-                aria-haspopup="menu"
-                aria-expanded={jurisdictionsDropdownOpen}
-                aria-controls="jurisdictions-navigation-menu"
-                className="flex items-center space-x-1 rtl:space-x-reverse hover:text-white transition-colors py-2"
-                onClick={(e) => {
-                  e.preventDefault();
-                  const el = document.getElementById('jurisdictions');
-                  el?.scrollIntoView({ behavior: preferredScrollBehavior() });
-                }}
-                onKeyDown={(e) => handleDropdownKeyDown(e, setJurisdictionsDropdownOpen)}
-              >
-                <span>{t.jurisdictions}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:rotate-180 transition-transform" />
-              </button>
-
-              {jurisdictionsDropdownOpen && (
-                <div id="jurisdictions-navigation-menu" role="menu" className="absolute top-full left-0 rtl:left-auto rtl:right-0 w-80 p-3 bg-obsidian-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-black/80 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-3 py-1 mb-1">
-                    {isArabic ? 'المناطق الحرة والرخص المعتمدة' : 'Official Free Zones & DED Hubs'}
-                  </div>
-                  <div className="space-y-1">
-                    {[
-                      { slug: 'meydan-free-zone', titleEn: 'Meydan Free Zone (Dubai)', titleAr: 'منطقة ميدان الحرة (دبي)', tag: 'From 12.5k' },
-                      { slug: 'masdar-city-free-zone', titleEn: 'Masdar City Free Zone (Abu Dhabi)', titleAr: 'مدينة مصدر الحرة (أبوظبي)', tag: 'AI & Tech' },
-                      { slug: 'ifza', titleEn: 'IFZA Dubai Free Zone', titleAr: 'سلطة إيفزا دبي الحرة', tag: '1500+ Act' },
-                      { slug: 'ajman-free-zone', titleEn: 'Ajman Free Zone (AFZ)', titleAr: 'منطقة عجمان الحرة', tag: 'From 5.9k' },
-                      { slug: 'mainland-business-setup', titleEn: 'UAE Mainland Setup (ADDED/DED)', titleAr: 'البر الرئيسي (أبوظبي ودبي)', tag: '100% Own' },
-                      { slug: 'ifza-vs-meydan', titleEn: 'IFZA vs. Meydan Comparison', titleAr: 'مقارنة إيفزا وميدان', tag: 'AEO Guide' },
-                    ].map(j => (
-                      <a
-                        key={j.slug}
-                        href={`${isArabic ? "/ar" : ""}/${j.slug}`}
-                        onClick={(e) => handleSlugClick(e, j.slug)}
-                        className="flex items-center justify-between p-2.5 rounded-xl hover:bg-white/5 text-slate-200 hover:text-emerald-400 text-xs transition-colors"
-                      >
-                        <span className="font-semibold">{isArabic ? j.titleAr : j.titleEn}</span>
-                        <span className="text-[10px] text-emerald-400/80 font-mono">{j.tag}</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {mode === 'corporate' && (
-              <a href="#about" onClick={(e) => {
-                if (window.location.pathname !== '/' && onNavigateHome) {
-                  e.preventDefault();
-                  onNavigateHome();
-                  setTimeout(() => document.getElementById('about')?.scrollIntoView({ behavior: preferredScrollBehavior() }), 100);
-                }
-              }} className="hover:text-white transition-colors">{t.about}</a>
-            )}
-            <a href="#faq" onClick={(e) => {
-              if (window.location.pathname !== '/' && onNavigateHome) {
-                e.preventDefault();
-                onNavigateHome();
-                setTimeout(() => document.getElementById('faq')?.scrollIntoView({ behavior: preferredScrollBehavior() }), 100);
-              }
-            }} className="hover:text-white transition-colors">{t.faq}</a>
-            <a href="#contact" onClick={(e) => {
-              if (window.location.pathname !== '/' && onNavigateHome) {
-                e.preventDefault();
-                onNavigateHome();
-                setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: preferredScrollBehavior() }), 100);
-              }
-            }} className="hover:text-white transition-colors">{t.contact}</a>
-          </nav>
-
-          {/* Quick Actions (Calculator, Status Tracker, Arabic, WhatsApp) */}
-          <div className="hidden sm:flex items-center space-x-3 rtl:space-x-reverse">
-            
-            {/* Live PRO Tracker Trigger Button */}
-            <button
-              onClick={onOpenTracker}
-              title={t.trackStatus}
-              className="flex items-center space-x-1.5 rtl:space-x-reverse px-3 py-1.5 rounded-lg bg-obsidian-900/80 hover:bg-white/10 border border-white/10 text-xs font-medium text-slate-300 hover:text-white transition-all shadow-sm"
-            >
-              <Search className="w-3.5 h-3.5 text-cyan-400" />
-              <span>{t.trackStatus}</span>
-            </button>
-
-            {/* Cost Estimator Modal Trigger */}
-            <button
-              onClick={onOpenEstimator}
-              className="flex items-center space-x-1.5 rtl:space-x-reverse px-3 py-1.5 rounded-lg bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 text-xs font-medium text-emerald-300 hover:text-emerald-200 transition-all shadow-sm shadow-emerald-950"
-            >
-              <Calculator className="w-3.5 h-3.5 text-emerald-400" />
-              <span>{t.costEstimator}</span>
-            </button>
-
-            {/* Language Switcher */}
-            <button
-              onClick={onToggleArabic}
-              className="flex items-center space-x-1 rtl:space-x-reverse px-2.5 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-slate-300 hover:text-white transition-all"
-            >
-              <Globe className="w-3.5 h-3.5 text-slate-400" />
-              <span className="font-arabic font-bold">{isArabic ? 'English' : 'عربي'}</span>
-            </button>
-
-            {/* Direct Phone Call & Contact Action (+971 56 4425 950) */}
-            <button
-              onClick={handleCall}
-              title={isArabic ? 'اتصل بنا مباشرة: +971 56 4425 950' : 'Call Expedia Direct: +971 56 4425 950'}
-              className={`flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 rounded-xl text-xs font-bold text-obsidian-950 transition-all duration-300 shadow-lg ${
-                mode === 'corporate'
-                  ? 'bg-gradient-to-r from-emerald-400 to-teal-300 hover:from-emerald-300 hover:to-teal-200 shadow-emerald-500/25 hover:shadow-emerald-500/40 hover:scale-[1.02]'
-                  : 'bg-gradient-to-r from-cyan-400 to-indigo-400 hover:from-cyan-300 hover:to-indigo-300 shadow-cyan-500/25 hover:shadow-cyan-500/40 hover:scale-[1.02]'
-              }`}
-            >
-              <PhoneCall className="w-3.5 h-3.5 fill-obsidian-950" />
-              <span className="font-mono">{COMPANY_INFO.phone}</span>
-            </button>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <div className="flex md:hidden items-center space-x-2 rtl:space-x-reverse">
-            <button
-              onClick={onOpenTracker}
-              className="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300"
-              title={t.trackStatus}
-            >
-              <Search className="w-4 h-4 text-cyan-400" />
-            </button>
-            <button
-              aria-label={isArabic ? (mobileMenuOpen ? "إغلاق القائمة" : "فتح القائمة") : (mobileMenuOpen ? "Close menu" : "Open menu")}
-              aria-expanded={mobileMenuOpen}
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+    <header
+      onKeyDown={(e) => {
+        if (e.key === 'Escape' && mobileMenuOpen) {
+          setMobileMenuOpen(false);
+          mobileToggleRef.current?.focus();
+        }
+      }}
+      className={`fixed inset-x-0 top-0 z-50 h-[var(--header-h)] border-b border-gold-400/15 bg-obsidian-950/85 backdrop-blur-xl transition-shadow duration-300 ${
+        scrolled ? 'shadow-[0_14px_30px_-22px_rgb(0_0_0/0.9)]' : ''
+      }`}
+    >
+      <div className="mx-auto flex h-full max-w-7xl items-center gap-3 px-4 sm:px-6 lg:gap-3 lg:px-8 xl:gap-4 2xl:max-w-[88rem]">
+        {/* Logo (also the landing target for the digital-studio intro) */}
+        <div id="navbar-logo-target" className="flex shrink-0 items-center">
+          <a
+            href="/"
+            onClick={handleHomeClick}
+            className={`group flex items-center transition-opacity duration-500 ${
+              mode === 'digital' && !isLogoDocked ? 'pointer-events-none opacity-0' : 'opacity-100'
+            }`}
+          >
+            <img
+              src="/expedia-latest-logo.png"
+              alt="Expedia Business Services"
+              width="940"
+              height="420"
+              className="h-12 w-auto object-contain sm:h-14 xl:h-16"
+            />
+          </a>
         </div>
 
-        {/* Mobile Slide Drawer */}
-        {mobileMenuOpen && (
-          <div className="md:hidden mt-4 p-4 rounded-2xl bg-obsidian-900 border border-white/10 shadow-2xl space-y-4 animate-in fade-in slide-in-from-top-4 duration-200">
-            {/* Dual Engine Switch Mobile */}
-            <div className="grid grid-cols-2 gap-2 p-1 rounded-xl bg-obsidian-950 border border-white/10">
-              <button
-                onClick={() => { onToggleMode('corporate'); setMobileMenuOpen(false); }}
-                className={`py-2 text-xs font-bold rounded-lg text-center ${
-                  mode === 'corporate' ? 'bg-emerald-500 text-obsidian-950' : 'text-slate-400'
-                }`}
-              >
-                {t.corporateMode}
-              </button>
-              <button
-                onClick={() => { onToggleMode('digital'); setMobileMenuOpen(false); }}
-                className={`py-2 text-xs font-bold rounded-lg text-center ${
-                  mode === 'digital' ? 'bg-gradient-to-r from-cyan-400 to-indigo-500 text-obsidian-950' : 'text-slate-400'
-                }`}
-              >
-                {t.digitalMode}
-              </button>
-            </div>
+        {/* Engine switch: icons at lg, labels from xl */}
+        <div
+          role="group"
+          aria-label={isArabic ? 'وضع العرض' : 'Site mode'}
+          className="hidden items-center gap-0.5 rounded-full border border-white/10 bg-obsidian-900/90 p-0.5 lg:flex"
+        >
+          {modeButton('corporate', Building2, t.corporateMode, true)}
+          {modeButton('digital', Sparkles, t.digitalMode, true)}
+        </div>
 
-            <div className="flex flex-col space-y-3 pt-2 text-sm text-slate-300">
-              <a 
-                href="#services" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1.5 border-b border-white/5 flex items-center justify-between"
-              >
-                <span>{t.services} ({mode === 'corporate' ? (isArabic ? '11 خدمة' : '11 Modules') : (isArabic ? '4 ركائز' : '4 Pillars')})</span>
-                <ArrowRight className="w-4 h-4 text-slate-500 rtl:rotate-180" />
-              </a>
-              <a 
-                href="#jurisdictions" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1.5 border-b border-white/5 flex items-center justify-between"
-              >
-                <span>{t.jurisdictions}</span>
-                <ArrowRight className="w-4 h-4 text-slate-500 rtl:rotate-180" />
-              </a>
-              {mode === 'corporate' && (
-                <a 
-                  href="#about" 
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="py-1.5 border-b border-white/5 flex items-center justify-between"
+        {/* Primary navigation */}
+        <nav
+          aria-label={isArabic ? 'التنقل الرئيسي' : 'Primary'}
+          className="hidden min-w-0 flex-1 items-center justify-center gap-0.5 lg:flex"
+        >
+          <div
+            ref={servicesRef}
+            className="relative"
+            onMouseEnter={() => services.setOpen(true)}
+            onMouseLeave={() => services.setOpen(false)}
+            onBlur={(e) => closeOnFocusOut(e, services)}
+            onKeyDown={(e) => handleMenuKeyDown(e, services, servicesRef)}
+          >
+            <button
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded={services.open}
+              aria-controls="services-navigation-menu"
+              className={`${NAV_LINK} flex items-center gap-1`}
+              onClick={(e) => goToSection(e, servicesTarget, 'services')}
+            >
+              <span>{t.services}</span>
+              <ChevronDown
+                className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-300 ${services.open ? 'rotate-180' : ''}`}
+                aria-hidden="true"
+              />
+            </button>
+
+            {services.mounted && (
+              <div id="services-navigation-menu" role="menu" data-state={services.state} className={MENU_PANEL}>
+                <div className="px-3 pb-2 pt-1 text-sm font-semibold text-slate-400">
+                  {mode === 'corporate'
+                    ? isArabic ? 'الخدمات الحكومية وتأسيس الشركات' : 'Core Government & PRO Units'
+                    : isArabic ? 'الهندسة الرقمية والعلامة التجارية' : 'Digital Engineering & Brand'}
+                </div>
+                <div className="space-y-0.5">
+                  {servicesItems.map((item) => (
+                    <a
+                      key={item.label}
+                      href={`#${servicesTarget}`}
+                      onClick={(e) => goToSection(e, servicesTarget, 'services')}
+                      role="menuitem"
+                      className={MENU_ITEM}
+                    >
+                      <span className="font-semibold">{item.label}</span>
+                      <span className={`text-xs font-semibold ${item.tagClass}`}>{item.tag}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div
+            ref={jurisdictionsRef}
+            className="relative"
+            onMouseEnter={() => jurisdictions.setOpen(true)}
+            onMouseLeave={() => jurisdictions.setOpen(false)}
+            onBlur={(e) => closeOnFocusOut(e, jurisdictions)}
+            onKeyDown={(e) => handleMenuKeyDown(e, jurisdictions, jurisdictionsRef)}
+          >
+            <button
+              type="button"
+              aria-haspopup="menu"
+              aria-expanded={jurisdictions.open}
+              aria-controls="jurisdictions-navigation-menu"
+              className={`${NAV_LINK} flex items-center gap-1`}
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('jurisdictions')?.scrollIntoView({ behavior: preferredScrollBehavior() });
+              }}
+            >
+              <span>{t.jurisdictions}</span>
+              <ChevronDown
+                className={`h-3.5 w-3.5 text-slate-400 transition-transform duration-300 ${jurisdictions.open ? 'rotate-180' : ''}`}
+                aria-hidden="true"
+              />
+            </button>
+
+            {jurisdictions.mounted && (
+              <div id="jurisdictions-navigation-menu" role="menu" data-state={jurisdictions.state} className={MENU_PANEL}>
+                <div className="px-3 pb-2 pt-1 text-sm font-semibold text-slate-400">
+                  {isArabic ? 'المناطق الحرة والرخص المعتمدة' : 'Official Free Zones & DED Hubs'}
+                </div>
+                <div className="space-y-0.5">
+                  {jurisdictionItems.map((j) => (
+                    <a
+                      key={j.slug}
+                      href={`${isArabic ? '/ar' : ''}/${j.slug}`}
+                      onClick={(e) => handleSlugClick(e, j.slug)}
+                      aria-current={currentSlug === j.slug ? 'page' : undefined}
+                      role="menuitem"
+                      className={MENU_ITEM}
+                    >
+                      <span className="font-semibold">{isArabic ? j.titleAr : j.titleEn}</span>
+                      <span className="text-xs font-semibold text-emerald-400">{j.tag}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {mode === 'corporate' && (
+            <a href="#about" onClick={(e) => goToSection(e, 'about')} className={NAV_LINK}>
+              {t.about}
+            </a>
+          )}
+          <a href="#faq" onClick={(e) => goToSection(e, 'faq')} className={NAV_LINK}>
+            {t.faq}
+          </a>
+          <a href="#contact" onClick={(e) => goToSection(e, 'contact')} className={NAV_LINK}>
+            {t.contact}
+          </a>
+        </nav>
+
+        {/* Actions: the quotation request is always labelled; the rest shrink to icons before they can clip */}
+        <div className="hidden shrink-0 items-center gap-2 lg:flex">
+          <button
+            type="button"
+            onClick={onOpenTracker}
+            title={t.trackStatus}
+            className="btn btn-ghost btn-sm h-10 min-h-0 w-10 p-0"
+          >
+            <Search className={`h-[1.125rem] w-[1.125rem] ${accentText}`} aria-hidden="true" />
+            <span className="sr-only">{t.trackStatus}</span>
+          </button>
+
+          <button type="button" onClick={onOpenEstimator} className="btn btn-primary btn-sm lg:px-3 xl:px-4">
+            <Calculator className="h-4 w-4" aria-hidden="true" />
+            <span>{t.costEstimator}</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={onToggleArabic}
+            className="btn btn-secondary btn-sm gap-1.5 px-2.5"
+          >
+            <Globe className="h-4 w-4 text-slate-400" aria-hidden="true" />
+            <span lang={isArabic ? 'en' : 'ar'} className="font-arabic font-bold">
+              {isArabic ? 'English' : 'عربي'}
+            </span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleCall}
+            title={isArabic ? 'اتصل بنا مباشرة: +971 56 4425 950' : 'Call Expedia Direct: +971 56 4425 950'}
+            className="btn btn-secondary btn-sm hidden gap-2 2xl:inline-flex"
+          >
+            <PhoneCall className="h-4 w-4 text-emerald-400" aria-hidden="true" />
+            <span className="tnum" dir="ltr">{COMPANY_INFO.phone}</span>
+          </button>
+        </div>
+
+        {/* Mobile and tablet */}
+        <div className="ms-auto flex items-center gap-2 lg:hidden">
+          <button
+            type="button"
+            onClick={onOpenTracker}
+            title={t.trackStatus}
+            className="btn btn-secondary h-11 w-11 min-h-0 p-0"
+          >
+            <Search className={`h-[1.125rem] w-[1.125rem] ${accentText}`} aria-hidden="true" />
+            <span className="sr-only">{t.trackStatus}</span>
+          </button>
+          <button
+            ref={mobileToggleRef}
+            type="button"
+            aria-label={isArabic ? (mobileMenuOpen ? 'إغلاق القائمة' : 'فتح القائمة') : (mobileMenuOpen ? 'Close menu' : 'Open menu')}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="btn btn-secondary h-11 w-11 min-h-0 p-0"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" aria-hidden="true" /> : <Menu className="h-5 w-5" aria-hidden="true" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile and tablet sheet */}
+      {mobile.mounted && (
+        <div
+          id="mobile-navigation"
+          data-state={mobile.state}
+          className="sheet absolute inset-x-0 top-full max-h-[calc(100dvh-var(--header-h))] overflow-y-auto border-b border-white/10 bg-obsidian-950/95 shadow-pop backdrop-blur-2xl lg:hidden"
+        >
+          <div className="mx-auto max-w-2xl space-y-5 px-4 py-5 sm:px-6">
+            <div role="group" aria-label={isArabic ? 'وضع العرض' : 'Site mode'} className="grid grid-cols-2 gap-1 rounded-xl border border-white/10 bg-obsidian-900 p-1">
+              {(
+                [
+                  ['corporate', t.corporateMode],
+                  ['digital', t.digitalMode],
+                ] as const
+              ).map(([target, label]) => (
+                <button
+                  key={target}
+                  type="button"
+                  aria-pressed={mode === target}
+                  onClick={() => {
+                    onToggleMode(target);
+                    setMobileMenuOpen(false);
+                  }}
+                  className={`min-h-11 rounded-lg px-3 text-sm font-semibold ${
+                    mode === target ? 'bg-accent text-obsidian-950' : 'text-slate-400'
+                  }`}
                 >
-                  <span>{t.about}</span>
-                  <ArrowRight className="w-4 h-4 text-slate-500 rtl:rotate-180" />
-                </a>
-              )}
-              <a 
-                href="#faq" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1.5 border-b border-white/5 flex items-center justify-between"
-              >
-                <span>{t.faq}</span>
-                <ArrowRight className="w-4 h-4 text-slate-500 rtl:rotate-180" />
-              </a>
-              <a 
-                href="#contact" 
-                onClick={() => setMobileMenuOpen(false)}
-                className="py-1.5 flex items-center justify-between"
-              >
-                <span>{t.contact}</span>
-                <ArrowRight className="w-4 h-4 text-slate-500 rtl:rotate-180" />
-              </a>
+                  {label}
+                </button>
+              ))}
             </div>
 
-            {/* Mobile Actions */}
-            <div className="grid grid-cols-2 gap-2 pt-2">
+            <nav aria-label={isArabic ? 'التنقل الرئيسي' : 'Primary'} className="flex flex-col text-base text-slate-200">
+              {[
+                {
+                  href: '#services',
+                  id: mode === 'corporate' ? 'services' : 'digital-services',
+                  fallback: 'services',
+                  label: `${t.services} (${mode === 'corporate' ? (isArabic ? '11 خدمة' : '11 Modules') : (isArabic ? '4 ركائز' : '4 Pillars')})`,
+                },
+                { href: '#jurisdictions', id: 'jurisdictions', label: t.jurisdictions },
+                ...(mode === 'corporate' ? [{ href: '#about', id: 'about', label: t.about }] : []),
+                { href: '#faq', id: 'faq', label: t.faq },
+                { href: '#contact', id: 'contact', label: t.contact },
+              ].map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => goToSection(e, link.id, (link as { fallback?: string }).fallback)}
+                  className="flex min-h-12 items-center justify-between border-b border-white/5 py-2 last:border-b-0"
+                >
+                  <span>{link.label}</span>
+                  <ArrowRight className="h-4 w-4 text-slate-500 rtl:rotate-180" aria-hidden="true" />
+                </a>
+              ))}
+            </nav>
+
+            <div className="grid grid-cols-2 gap-2">
               <button
-                onClick={() => { onOpenEstimator(); setMobileMenuOpen(false); }}
-                className="py-2.5 px-3 rounded-xl bg-white/10 border border-white/10 text-xs font-semibold text-white flex items-center justify-center space-x-1.5 rtl:space-x-reverse"
+                type="button"
+                onClick={() => {
+                  onOpenEstimator();
+                  setMobileMenuOpen(false);
+                }}
+                className="btn btn-primary"
               >
-                <Calculator className="w-3.5 h-3.5 text-emerald-400" />
+                <Calculator className="h-4 w-4" aria-hidden="true" />
                 <span>{t.costEstimator}</span>
               </button>
               <button
-                onClick={() => { onToggleArabic(); setMobileMenuOpen(false); }}
-                className="py-2.5 px-3 rounded-xl bg-white/10 border border-white/10 text-xs font-semibold text-white flex items-center justify-center space-x-1.5 rtl:space-x-reverse"
+                type="button"
+                onClick={() => {
+                  onToggleArabic();
+                  setMobileMenuOpen(false);
+                }}
+                className="btn btn-secondary"
               >
-                <Globe className="w-3.5 h-3.5 text-cyan-400" />
-                <span className="font-arabic">{isArabic ? 'English' : 'عربي'}</span>
+                <Globe className="h-4 w-4 text-slate-400" aria-hidden="true" />
+                <span lang={isArabic ? 'en' : 'ar'} className="font-arabic">{isArabic ? 'English' : 'عربي'}</span>
               </button>
             </div>
 
             <button
-              onClick={() => { handleCall(); setMobileMenuOpen(false); }}
-              className="w-full py-3 rounded-xl bg-gradient-to-r from-emerald-400 to-teal-400 font-bold text-obsidian-950 flex items-center justify-center space-x-2 rtl:space-x-reverse shadow-lg shadow-emerald-500/20"
+              type="button"
+              onClick={() => {
+                handleCall();
+                setMobileMenuOpen(false);
+              }}
+              className="btn btn-secondary w-full"
             >
-              <PhoneCall className="w-4 h-4 fill-obsidian-950" />
-              <span className="font-mono">{isArabic ? 'اتصل بنا: ' : 'Call Us: '}{COMPANY_INFO.phone}</span>
+              <PhoneCall className="h-4 w-4 text-emerald-400" aria-hidden="true" />
+              <span>
+                {isArabic ? 'اتصل بنا: ' : 'Call Us: '}
+                <span className="tnum" dir="ltr">{COMPANY_INFO.phone}</span>
+              </span>
             </button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </header>
   );
 };

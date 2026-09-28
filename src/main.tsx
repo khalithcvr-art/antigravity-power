@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
+import './styles/tokens.css';
 import './index.css';
 import { MotionConfig } from 'motion/react';
 import { captureEarlyEnquiry } from './lib/earlyEnquiry';

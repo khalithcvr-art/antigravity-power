@@ -1,9 +1,96 @@
-import { useMotionPreference } from '../../hooks/useMotionPreference';
-import React, { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform, useSpring, useInView } from 'motion/react';
+import { useMotionPreference, prefersReducedMotion } from '../../hooks/useMotionPreference';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+
+/*
+ * Motion primitives. Scroll reveals, hover lift and the cursor glow are plain CSS plus
+ * IntersectionObserver / one rAF-throttled pointer listener; nothing here needs a
+ * JavaScript animation library.
+ *
+ * Rules every primitive follows:
+ *  - Content is visible by default. The server-rendered HTML carries no hidden state.
+ *  - A block is only hidden once a real person has interacted (wheel, touch, key, pointer), motion
+ *    is allowed and the block is below the fold. Crawlers, audits, print and screenshots never
+ *    interact, so they always see the finished page (no half-faded text mid-measurement).
+ *  - Only opacity and transform change, so document flow never moves.
+ *  - Reduced motion is checked before any observer or listener is created.
+ */
+
+const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+let armed = false;
+let listening = false;
+const waiting = new Set<() => void>();
+
+function arm() {
+  if (armed) return;
+  armed = true;
+  waiting.forEach((engage) => engage());
+  waiting.clear();
+}
+
+/** Runs `engage` once a real person has interacted with the page (immediately if they already have). */
+function whenInteracting(engage: () => void): () => void {
+  if (armed) {
+    engage();
+    return () => {};
+  }
+  waiting.add(engage);
+  if (!listening && typeof window !== 'undefined') {
+    listening = true;
+    for (const type of ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const) {
+      window.addEventListener(type, arm, { once: true, passive: true, capture: true });
+    }
+  }
+  return () => {
+    waiting.delete(engage);
+  };
+}
+
+/** Hide-until-seen. Returns a ref for the element to reveal. */
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+
+  useIsoLayoutEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === 'undefined' || prefersReducedMotion()) return;
+
+    let observer: IntersectionObserver | undefined;
+    // Keyboard focus landing inside a hidden block shows it at once, so a focus ring is never half-faded.
+    const showNow = () => {
+      el.style.transitionDuration = '0ms';
+      el.dataset.reveal = 'done';
+    };
+    const engage = () => {
+      // Already reachable on screen: leave it visible, so nothing flashes.
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.92) return;
+      el.dataset.reveal = 'pending';
+      el.addEventListener('focusin', showNow, { once: true });
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((entry) => entry.isIntersecting)) {
+            el.dataset.reveal = 'done';
+            observer?.disconnect();
+          }
+        },
+        { rootMargin: '0px 0px -8% 0px', threshold: 0.01 },
+      );
+      observer.observe(el);
+    };
+
+    const stop = whenInteracting(engage);
+    return () => {
+      stop();
+      observer?.disconnect();
+      el.removeEventListener('focusin', showNow);
+    };
+  }, []);
+
+  return ref;
+}
 
 /**
- * BorderBeam - Orbiting laser gradient border for luxury cards
+ * BorderBeam: a light that travels a card edge. Reserve it for one selected element per
+ * view; it is a continuous animation and the global reduced-motion rule freezes it.
  */
 interface BorderBeamProps {
   className?: string;
@@ -22,12 +109,13 @@ export const BorderBeam: React.FC<BorderBeamProps> = ({
   duration = 12,
   anchor = 90,
   borderWidth = 1.5,
-  colorFrom = '#10b981',
-  colorTo = '#06b6d4',
+  colorFrom = 'rgb(var(--c-emerald-500))',
+  colorTo = 'rgb(var(--c-cyan-500))',
   delay = 0,
 }) => {
   return (
     <div
+      aria-hidden="true"
       style={
         {
           '--size': size,
@@ -45,91 +133,66 @@ export const BorderBeam: React.FC<BorderBeamProps> = ({
 };
 
 /**
- * TiltCard - 3D Gyroscopic & Cursor-tracking card with specular lighting
+ * InteractiveCard: a calm surface with a 2px hover lift (fine pointers only, in CSS).
+ * `glow` adds a cursor-following highlight for selected digital-studio cards; the
+ * pointer listener is created only for fine pointers and skipped under reduced motion.
  */
-interface TiltCardProps {
+interface InteractiveCardProps {
   children: React.ReactNode;
   className?: string;
-  maxTilt?: number;
-  glowColor?: string;
+  glow?: boolean;
   onClick?: () => void;
   id?: string;
 }
 
-export const TiltCard: React.FC<TiltCardProps> = ({
+export const InteractiveCard: React.FC<InteractiveCardProps> = ({
   children,
   className = '',
-  maxTilt = 8,
-  glowColor = 'rgba(16, 185, 129, 0.15)',
+  glow = false,
   onClick,
   id,
 }) => {
-  const reducedMotion = useMotionPreference();
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-  const [isHovered, setIsHovered] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
-  const rotateX = useSpring(0, { stiffness: 260, damping: 20 });
-  const rotateY = useSpring(0, { stiffness: 260, damping: 20 });
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (reducedMotion || !cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    setMousePos({ x, y });
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    const tiltX = ((y - centerY) / centerY) * -maxTilt;
-    const tiltY = ((x - centerX) / centerX) * maxTilt;
-
-    rotateX.set(tiltX);
-    rotateY.set(tiltY);
-  };
-
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    rotateX.set(0);
-    rotateY.set(0);
-  };
+  useEffect(() => {
+    const el = ref.current;
+    if (!glow || !el || prefersReducedMotion() || !window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+    let frame = 0;
+    let x = 0;
+    let y = 0;
+    const paint = () => {
+      frame = 0;
+      el.style.setProperty('--mx', `${x}px`);
+      el.style.setProperty('--my', `${y}px`);
+    };
+    const onMove = (event: PointerEvent) => {
+      const rect = el.getBoundingClientRect();
+      x = event.clientX - rect.left;
+      y = event.clientY - rect.top;
+      if (!frame) frame = requestAnimationFrame(paint);
+    };
+    el.addEventListener('pointermove', onMove, { passive: true });
+    return () => {
+      el.removeEventListener('pointermove', onMove);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [glow]);
 
   return (
-    <motion.div
-      ref={cardRef}
+    <div
+      ref={ref}
       id={id}
-      style={{
-        perspective: 1000,
-        rotateX: reducedMotion ? 0 : rotateX,
-        rotateY: reducedMotion ? 0 : rotateY,
-        transformStyle: 'preserve-3d',
-      }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       onClick={onClick}
-      className={`relative overflow-hidden transition-shadow duration-300 ${className}`}
+      className={`card card-interactive ${glow ? 'spotlight' : ''} ${className}`}
     >
-      {/* Dynamic Specular Spotlight Following Cursor */}
-      {isHovered && !reducedMotion && (
-        <div
-          className="pointer-events-none absolute -inset-px transition-opacity duration-300 z-10"
-          style={{
-            background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, ${glowColor}, transparent 70%)`,
-          }}
-        />
-      )}
-      <div className="relative z-0 h-full">{children}</div>
-    </motion.div>
+      {children}
+    </div>
   );
 };
 
 /**
- * AnimatedCounter - Smooth odometer rolling animation for numbers
+ * AnimatedCounter: rolls a number up once when it scrolls into view. The real value is
+ * always in the markup (server HTML, reduced motion, already-visible), so it is never "0".
  */
 interface AnimatedCounterProps {
   value: string | number;
@@ -139,65 +202,58 @@ interface AnimatedCounterProps {
 export const AnimatedCounter: React.FC<AnimatedCounterProps> = ({ value, className = '' }) => {
   const reducedMotion = useMotionPreference();
   const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-  const [displayValue, setDisplayValue] = useState('0');
+  const [display, setDisplay] = useState(String(value));
 
   useEffect(() => {
-    if (reducedMotion) { setDisplayValue(String(value)); return; }
-    if (!isInView) return;
-
+    setDisplay(String(value));
+    const el = ref.current;
     const strVal = String(value);
     const numericMatch = strVal.match(/\d+/);
-    if (!numericMatch) {
-      setDisplayValue(strVal);
-      return;
-    }
+    if (!el || reducedMotion || !numericMatch || typeof IntersectionObserver === 'undefined') return;
 
-    const targetNum = parseInt(numericMatch[0], 10);
+    const target = parseInt(numericMatch[0], 10);
     const prefix = strVal.slice(0, numericMatch.index);
     const suffix = strVal.slice((numericMatch.index || 0) + numericMatch[0].length);
-
     let frame = 0;
-    let start = 0;
-    const duration = 1400;
-    const startTime = performance.now();
+    let observer: IntersectionObserver | undefined;
 
-    const updateCounter = (currentTime: number) => {
-      const elapsed = currentTime - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      // Ease out cubic
-      const easeProgress = 1 - Math.pow(1 - progress, 3);
-      const current = Math.floor(start + (targetNum - start) * easeProgress);
-
-      setDisplayValue(`${prefix}${current}${suffix}`);
-
-      if (progress < 1) {
-        frame = requestAnimationFrame(updateCounter);
-      } else {
-        setDisplayValue(strVal);
-      }
+    const engage = () => {
+      if (el.getBoundingClientRect().top < window.innerHeight * 0.92) return;
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (!entries.some((entry) => entry.isIntersecting)) return;
+          observer?.disconnect();
+          const start = performance.now();
+          const duration = 1100;
+          const tick = (now: number) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setDisplay(progress < 1 ? `${prefix}${Math.floor(target * eased)}${suffix}` : strVal);
+            if (progress < 1) frame = requestAnimationFrame(tick);
+          };
+          frame = requestAnimationFrame(tick);
+        },
+        { rootMargin: '0px 0px -10% 0px' },
+      );
+      observer.observe(el);
     };
 
-    frame = requestAnimationFrame(updateCounter);
-    return () => cancelAnimationFrame(frame);
-  }, [isInView, value, reducedMotion]);
+    const stop = whenInteracting(engage);
+    return () => {
+      stop();
+      observer?.disconnect();
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [value, reducedMotion]);
 
   return (
-    <motion.span
-      ref={ref}
-      initial={{ opacity: 0, y: 10 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      className={className}
-    >
-      {reducedMotion ? String(value) : displayValue}
-    </motion.span>
+    <span ref={ref} className={`tnum ${className}`}>
+      {display}
+    </span>
   );
 };
 
-/**
- * ScrollReveal - Smooth viewport entry animation with stagger & spring easing
- */
+/** ScrollReveal: fade and rise once, when the block scrolls into view. */
 interface ScrollRevealProps {
   children: React.ReactNode;
   className?: string;
@@ -211,99 +267,30 @@ export const ScrollReveal: React.FC<ScrollRevealProps> = ({
   className = '',
   delay = 0,
   direction = 'up',
-  distance = 30,
+  distance = 14,
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-60px' });
-
-  const getInitialOffset = () => {
-    switch (direction) {
-      case 'up':
-        return { y: distance, x: 0 };
-      case 'down':
-        return { y: -distance, x: 0 };
-      case 'left':
-        return { x: distance, y: 0 };
-      case 'right':
-        return { x: -distance, y: 0 };
-      default:
-        return { x: 0, y: 0 };
-    }
-  };
-
-  const offset = getInitialOffset();
+  const ref = useReveal<HTMLDivElement>();
+  const offset = {
+    up: [0, distance],
+    down: [0, -distance],
+    left: [distance, 0],
+    right: [-distance, 0],
+    none: [0, 0],
+  }[direction];
 
   return (
-    <motion.div
+    <div
       ref={ref}
-      initial={{ opacity: 0, ...offset }}
-      animate={isInView ? { opacity: 1, x: 0, y: 0 } : { opacity: 0, ...offset }}
-      transition={{
-        duration: 0.7,
-        delay,
-        ease: [0.21, 0.47, 0.32, 0.98],
-      }}
-      className={className}
+      className={`reveal ${className}`}
+      style={
+        {
+          '--reveal-delay': `${Math.round(delay * 1000)}ms`,
+          '--reveal-x': `${offset[0]}px`,
+          '--reveal-y': `${offset[1]}px`,
+        } as React.CSSProperties
+      }
     >
       {children}
-    </motion.div>
-  );
-};
-
-/**
- * StaggerContainer - Container to stagger child animations
- */
-interface StaggerContainerProps {
-  children: React.ReactNode;
-  className?: string;
-  staggerDelay?: number;
-}
-
-export const StaggerContainer: React.FC<StaggerContainerProps> = ({
-  children,
-  className = '',
-  staggerDelay = 0.08,
-}) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-50px' });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial="hidden"
-      animate={isInView ? 'visible' : 'hidden'}
-      variants={{
-        hidden: {},
-        visible: {
-          transition: {
-            staggerChildren: staggerDelay,
-          },
-        },
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
-
-export const StaggerItem: React.FC<{ children: React.ReactNode; className?: string }> = ({
-  children,
-  className = '',
-}) => {
-  return (
-    <motion.div
-      variants={{
-        hidden: { opacity: 0, y: 24 },
-        visible: {
-          opacity: 1,
-          y: 0,
-          transition: { duration: 0.6, ease: [0.21, 0.47, 0.32, 0.98] },
-        },
-      }}
-      className={className}
-    >
-      {children}
-    </motion.div>
+    </div>
   );
 };

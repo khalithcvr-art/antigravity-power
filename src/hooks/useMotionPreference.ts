@@ -11,3 +11,7 @@ const getSnapshot = () => window.matchMedia(query).matches;
 export const useMotionPreference = () => useSyncExternalStore(subscribe, getSnapshot, () => false);
 export const preferredScrollBehavior = (): ScrollBehavior =>
   window.matchMedia(query).matches ? 'instant' : 'smooth';
+
+/** One-off read for code that must decide before starting a timer or listener. */
+export const prefersReducedMotion = (): boolean =>
+  typeof window !== 'undefined' && window.matchMedia(query).matches;

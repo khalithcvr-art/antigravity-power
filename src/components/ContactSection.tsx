@@ -1,16 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
-  Building2, 
-  MapPin, 
-  Phone, 
-  Mail, 
-  Clock, 
-  Send, 
-  MessageSquare, 
-  CheckCircle2, 
-  ShieldCheck, 
-  ArrowRight
-} from 'lucide-react';
+import { MapPin, Phone, Mail, Send, MessageSquare, CircleCheck, ShieldCheck } from 'lucide-react';
+import { ScrollReveal } from './motion/MotionPrimitives';
+import { SectionHeader } from './SectionHeader';
 import { COMPANY_INFO } from '../data/siteData';
 import { generateWhatsAppUrl, generateCallUrl, trackConversion } from '../lib/tracking';
 import { TRANSLATIONS } from '../data/translations';
@@ -123,126 +114,102 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
     return () => window.removeEventListener('enquiry-service', selectService);
   }, [isArabic]);
 
+  const label = 'mb-1.5 block text-sm font-semibold text-ink-2';
+  const tile = 'grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/5 text-emerald-400';
+
   return (
-    <section id="contact" className="comfort-contact py-24 relative bg-obsidian-950 border-t border-white/5">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
-          
-          {/* Left Column: Office & Direct Liaison Details (5 cols) */}
-          <div className="lg:col-span-5 space-y-8">
-            <div>
-              <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-wider text-slate-300 mb-3">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400" />
-                <span>{t.badge}</span>
-              </div>
-              <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
-                {t.title} <br />
-                <span className="text-gradient-emerald">{t.titleHighlight}</span>
-              </h2>
-              <p className="text-slate-400 text-xs sm:text-sm mt-3 leading-relaxed">
-                {t.subtitle}
-              </p>
-            </div>
+    <section id="contact" className="section border-t border-white/5">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-            {/* Verified Entity Details */}
-            <div className="contact-details-card p-6 rounded-3xl bg-obsidian-900 border border-white/10 space-y-5">
-              
-              <div className="flex items-start space-x-3.5 rtl:space-x-reverse">
-                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-emerald-400 shrink-0">
-                  <MapPin className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-mono uppercase text-slate-400">{t.headquartersTitle}</div>
-                  <div className="text-sm font-bold text-white mt-0.5">{t.headquartersAddress}</div>
-                  <div className="text-[11px] text-slate-400">{t.country}</div>
-                </div>
-              </div>
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-14">
 
-              <div className="flex items-start space-x-3.5 rtl:space-x-reverse">
-                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-emerald-400 shrink-0">
-                  <Phone className="w-5 h-5" />
-                </div>
-                <div>
-                  <div className="text-xs font-mono uppercase text-slate-400">{t.phoneTitle}</div>
-                  <a href={generateCallUrl()} className="text-sm font-bold text-white hover:text-emerald-400 transition-colors mt-0.5 block font-mono">
-                    {COMPANY_INFO.phone}
-                  </a>
-                  <div className="text-[11px] text-slate-400">{t.phoneHours}</div>
-                </div>
-              </div>
+          {/* Office and direct channels */}
+          <div className="space-y-8 lg:col-span-5">
+            <SectionHeader eyebrow={t.badge} title={<>{t.title} {t.titleHighlight}</>} subtitle={t.subtitle} />
 
-              <div className="flex items-start space-x-3.5 rtl:space-x-reverse">
-                <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-emerald-400 shrink-0">
-                  <Mail className="w-5 h-5" />
+            <ScrollReveal>
+              <div className="card space-y-6 p-6 sm:p-7">
+                <div className="flex items-start gap-4">
+                  <span className={tile}><MapPin className="h-5 w-5" aria-hidden="true" /></span>
+                  <div>
+                    <div className="text-sm text-slate-400">{t.headquartersTitle}</div>
+                    <div className="mt-0.5 font-bold text-white">{t.headquartersAddress}</div>
+                    <div className="text-sm text-slate-400">{t.country}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-xs font-mono uppercase text-slate-400">{t.emailTitle}</div>
-                  <a href={`mailto:${COMPANY_INFO.email}`} className="text-sm font-bold text-white hover:text-emerald-400 transition-colors mt-0.5 block font-mono">
-                    {COMPANY_INFO.email}
-                  </a>
-                  <div className="text-[11px] text-slate-400">{t.emailResponseTime}</div>
+
+                <div className="flex items-start gap-4">
+                  <span className={tile}><Phone className="h-5 w-5" aria-hidden="true" /></span>
+                  <div>
+                    <div className="text-sm text-slate-400">{t.phoneTitle}</div>
+                    <a href={generateCallUrl()} className="mt-0.5 block font-bold text-white transition-colors hover:text-emerald-400">
+                      <span dir="ltr" className="tnum">{COMPANY_INFO.phone}</span>
+                    </a>
+                    <div className="text-sm text-slate-400">{t.phoneHours}</div>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <span className={tile}><Mail className="h-5 w-5" aria-hidden="true" /></span>
+                  <div className="min-w-0">
+                    <div className="text-sm text-slate-400">{t.emailTitle}</div>
+                    <a href={`mailto:${COMPANY_INFO.email}`} className="mt-0.5 block break-all font-bold text-white transition-colors hover:text-emerald-400">
+                      <span dir="ltr">{COMPANY_INFO.email}</span>
+                    </a>
+                    <div className="text-sm text-slate-400">{t.emailResponseTime}</div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between gap-4 border-t border-white/10 pt-5 text-sm text-slate-400">
+                  <span>{t.tradeLicenseTitle}:</span>
+                  <span className="font-mono font-semibold text-gold-300">{COMPANY_INFO.tradeLicense}</span>
                 </div>
               </div>
+            </ScrollReveal>
 
-              <div className="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-slate-400">
-                <span>{t.tradeLicenseTitle}:</span>
-                <span className="font-mono text-emerald-400 font-semibold">{COMPANY_INFO.tradeLicense}</span>
-              </div>
-            </div>
-
-            {/* WhatsApp Immediate Connect Box */}
-            <div className="contact-whatsapp-card p-6 rounded-3xl bg-gradient-to-br from-emerald-950/40 via-obsidian-900 to-obsidian-900 border border-emerald-500/30 flex flex-col justify-between">
-              <div>
-                <div className="flex items-center space-x-2 rtl:space-x-reverse text-emerald-400 text-xs font-mono font-bold uppercase mb-1">
-                  <MessageSquare className="w-4 h-4" />
-                  <span>{isArabic ? 'قناة الرد الفوري' : 'Immediate Response Channel'}</span>
-                </div>
-                <h4 className="text-lg font-display font-bold text-white mb-2">
+            <ScrollReveal>
+              <div className="rounded-[var(--radius-card)] border border-emerald-500/30 bg-emerald-950/40 p-6 sm:p-7">
+                <p className="flex items-center gap-2 text-sm font-semibold text-emerald-400">
+                  <MessageSquare className="h-4 w-4" aria-hidden="true" />
+                  {isArabic ? 'قناة الرد الفوري' : 'Immediate Response Channel'}
+                </p>
+                <h4 className="mt-2 text-lg font-bold text-white">
                   {isArabic ? 'أسرع طريقة للحصول على عرض أسعار' : 'Fastest Way to Get Quotes'}
                 </h4>
-                <p className="text-xs text-slate-300 mb-4">
-                  {t.orDirectWhatsApp}
-                </p>
+                <p className="mb-5 mt-1.5 text-sm leading-6 text-slate-300">{t.orDirectWhatsApp}</p>
+                <button
+                  type="button"
+                  onClick={handleDirectWhatsApp}
+                  className="btn w-full bg-emerald-500 text-obsidian-950 hover:bg-emerald-400"
+                >
+                  <MessageSquare className="h-4 w-4" aria-hidden="true" />
+                  <span>{t.directWhatsAppBtn}</span>
+                </button>
               </div>
-
-              <button
-                type="button"
-                onClick={handleDirectWhatsApp}
-                className="w-full py-3 px-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-display font-bold text-xs flex items-center justify-center space-x-2 rtl:space-x-reverse transition-all shadow-md shadow-emerald-500/20"
-              >
-                <MessageSquare className="w-4 h-4 fill-obsidian-950" />
-                <span>{t.directWhatsAppBtn}</span>
-              </button>
-            </div>
-
+            </ScrollReveal>
           </div>
 
-          {/* Right Column: High-Converting Lead Capture Form (7 cols) */}
-          <div className="lg:col-span-7">
-            <div className="p-8 sm:p-10 rounded-3xl glass-panel border border-white/10 shadow-2xl">
-              
+          {/* Enquiry form: a paper card, so the place where people write is the most readable surface on the page */}
+          <ScrollReveal className="lg:col-span-7">
+            <div data-surface="paper" className="paper rounded-[var(--radius-panel)] p-7 shadow-pop sm:p-10">
+
               {submitted ? (
-                <div className="text-center py-12 space-y-4 animate-in fade-in duration-300">
-                  <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-8 h-8" />
+                <div className="space-y-4 py-10 text-center">
+                  <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald-500/20 text-emerald-800">
+                    <CircleCheck className="h-8 w-8" aria-hidden="true" />
                   </div>
-                  <h3 className="text-2xl font-display font-bold text-white">
-                    {t.successTitle}
-                  </h3>
-                  <p className="text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-                    {t.successMessage}
-                  </p>
+                  <h3 className="text-2xl font-bold text-ink">{t.successTitle}</h3>
+                  <p className="mx-auto max-w-md text-base leading-7 text-ink-2">{t.successMessage}</p>
                   <button
                     type="button"
                     onClick={() => setSubmitted(false)}
-                    className="px-6 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white transition-colors"
+                    className="btn btn-sm border-ink/25 bg-transparent text-ink hover:bg-ink/5"
                   >
                     {t.sendAnother}
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="relative space-y-5">
                   <div className="absolute w-px h-px overflow-hidden -m-px p-0 border-0" style={{ clip: 'rect(0 0 0 0)' }} aria-hidden="true">
                     <label htmlFor="company-website-field">Company website</label>
                     <input
@@ -256,78 +223,75 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
                     />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-display font-bold text-white mb-1">
-                      {t.formTitle}
-                    </h3>
-                    <p className="text-xs text-slate-400">
-                      {t.formSubtitle}
-                    </p>
+                    <h3 className="text-2xl font-bold text-ink">{t.formTitle}</h3>
+                    <p className="mt-1 text-sm text-ink-3">{t.formSubtitle}</p>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <div>
-                      <label className="block text-xs font-mono uppercase text-slate-300 mb-2">
-                        {t.nameLabel} *
+                      <label htmlFor="enquiry-name" className={label}>
+                        {t.nameLabel} <span aria-hidden="true">*</span>
                       </label>
                       <input
                         type="text"
                         required
+                        autoComplete="name"
                         id="enquiry-name" aria-label={t.nameLabel} value={formData.name}
                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         placeholder={t.namePlaceholder}
-                        className="w-full px-4 py-3 rounded-xl bg-obsidian-950 border border-white/10 text-sm text-white focus:outline-none focus:border-emerald-500"
+                        className="field-paper"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-xs font-mono uppercase text-slate-300 mb-2">
-                        {t.phoneLabel} *
+                      <label htmlFor="enquiry-phone" className={label}>
+                        {t.phoneLabel} <span aria-hidden="true">*</span>
                       </label>
                       <input
                         type="tel"
                         required
+                        autoComplete="tel"
                         id="enquiry-phone" aria-label={t.phoneLabel} value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         placeholder={t.phonePlaceholder}
-                        className="w-full px-4 py-3 rounded-xl bg-obsidian-950 border border-white/10 text-sm text-white focus:outline-none focus:border-emerald-500 text-left rtl:text-right"
+                        className="field-paper text-left rtl:text-right"
                       />
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-xs font-mono uppercase text-slate-300 mb-2">
-                        {t.emailLabel} *
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        id="enquiry-email" aria-label={t.emailLabel} value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        placeholder={t.emailPlaceholder}
-                        className="w-full px-4 py-3 rounded-xl bg-obsidian-950 border border-white/10 text-sm text-white focus:outline-none focus:border-emerald-500"
-                      />
-                    </div>
+                  <div>
+                    <label htmlFor="enquiry-email" className={label}>
+                      {t.emailLabel} <span aria-hidden="true">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      autoComplete="email"
+                      id="enquiry-email" aria-label={t.emailLabel} value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      placeholder={t.emailPlaceholder}
+                      className="field-paper"
+                    />
+                  </div>
 
-                    <div>
-                      <label className="block text-xs font-mono uppercase text-slate-300 mb-2">
-                        {t.serviceLabel} *
-                      </label>
-                      <select
-                        id="enquiry-service" aria-label={t.serviceLabel} value={formData.service}
-                        onChange={(e) => setFormData({ ...formData, service: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-obsidian-950 border border-white/10 text-sm text-white focus:outline-none focus:border-emerald-500"
-                      >
-                        {serviceOptions.map((opt, i) => (
-                          <option key={i} value={opt}>{opt}</option>
-                        ))}
-                      </select>
-                    </div>
+                  <div>
+                    <label htmlFor="enquiry-service" className={label}>
+                      {t.serviceLabel} <span aria-hidden="true">*</span>
+                    </label>
+                    <select
+                      id="enquiry-service" aria-label={t.serviceLabel} value={formData.service}
+                      onChange={(e) => setFormData({ ...formData, service: e.target.value })}
+                      className="field-paper"
+                    >
+                      {serviceOptions.map((opt, i) => (
+                        <option key={i} value={opt}>{opt}</option>
+                      ))}
+                    </select>
                   </div>
 
                   {formData.service === visaService && <div>
-                    <label htmlFor="visa-type">{isArabic ? 'ما نوع الإقامة المطلوبة؟' : 'Which type of residency are you looking for?'}</label>
-                    <select id="visa-type" required value={visaType} onChange={e => setVisaType(e.target.value)}>
+                    <label htmlFor="visa-type" className={label}>{isArabic ? 'ما نوع الإقامة المطلوبة؟' : 'Which type of residency are you looking for?'}</label>
+                    <select id="visa-type" required value={visaType} onChange={e => setVisaType(e.target.value)} className="field-paper">
                       <option value="">{isArabic ? 'اختر نوع الإقامة' : 'Choose a visa type'}</option>
                       <option value="Employee">{isArabic ? 'موظف' : 'Employee'}</option>
                       <option value="Owner / investor">{isArabic ? 'مالك / مستثمر' : 'Owner / investor'}</option>
@@ -336,40 +300,35 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
                     </select>
                   </div>}
                   <div>
-                    <label className="block text-xs font-mono uppercase text-slate-300 mb-2">
-                      {t.messageLabel}
-                    </label>
+                    <label htmlFor="enquiry-message" className={label}>{t.messageLabel}</label>
                     <textarea
                       rows={4}
                       id="enquiry-message" aria-label={t.messageLabel} value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                       placeholder={t.messagePlaceholder}
-                      className="w-full px-4 py-3 rounded-xl bg-obsidian-950 border border-white/10 text-sm text-white focus:outline-none focus:border-emerald-500 resize-none"
+                      className="field-paper resize-y"
                     />
                   </div>
 
-                  {sendError && <p role="alert">{isArabic ? 'تعذر إرسال الاستفسار. بياناتك ما زالت موجودة؛ حاول مرة أخرى أو تواصل عبر واتساب.' : 'We couldn’t send your enquiry. Your details are still here—please retry or contact us on WhatsApp.'}</p>}
-                  <button
-                    type="submit" disabled={sending}
-                    className="w-full py-4 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-display font-bold text-sm flex items-center justify-center space-x-2 rtl:space-x-reverse transition-all shadow-xl shadow-emerald-500/25 hover:scale-[1.01]"
-                  >
-                    <Send className="w-4 h-4 rtl:rotate-180" />
+                  {sendError && <p role="alert" className="rounded-xl border border-danger-700/30 bg-danger-700/10 px-4 py-3 text-sm font-medium leading-6 text-danger-700">{isArabic ? 'تعذر إرسال الاستفسار. بياناتك ما زالت موجودة؛ حاول مرة أخرى أو تواصل عبر واتساب.' : 'We couldn’t send your enquiry. Your details are still here—please retry or contact us on WhatsApp.'}</p>}
+                  <button type="submit" disabled={sending} className="btn btn-lg btn-paper w-full">
+                    <Send className="h-4 w-4 rtl:rotate-180" aria-hidden="true" />
                     <span>{sending ? (isArabic ? 'جارٍ الإرسال…' : 'Sending…') : t.submitBtn}</span>
                   </button>
 
-                  <div className="flex items-center justify-center space-x-2 rtl:space-x-reverse text-[11px] text-slate-400 text-center pt-2">
-                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                  <p className="flex items-center justify-center gap-2 pt-1 text-center text-sm text-ink-3">
+                    <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-800" aria-hidden="true" />
                     <span>
-                      {isArabic 
-                        ? 'كافة بياناتك سرية ومحمية وفق قوانين حماية البيانات التجارية في دولة الإمارات.' 
+                      {isArabic
+                        ? 'كافة بياناتك سرية ومحمية وفق قوانين حماية البيانات التجارية في دولة الإمارات.'
                         : 'Your data is confidential and protected under UAE Commercial Data Protection laws.'}
                     </span>
-                  </div>
+                  </p>
                 </form>
               )}
 
             </div>
-          </div>
+          </ScrollReveal>
 
         </div>
 
