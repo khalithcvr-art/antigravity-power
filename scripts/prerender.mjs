@@ -19,7 +19,7 @@ try {
   for (const [property, value] of Object.entries({'og:title':title,'og:description':desc,'og:locale':ar?'ar_AE':'en_AE'})) {
    html=html.replace(new RegExp('(<meta property="'+property+'" content=")[^"]*'), (_match,prefix)=>prefix+esc(value));
   }
-  html=html.replace('</head>',`<link rel="alternate" hreflang="en" href="https://www.expediaservices.ae/${slug}"/><link rel="alternate" hreflang="ar" href="https://www.expediaservices.ae/ar/${slug}"/></head>`);
+  html=html.replace('</head>',`<link rel="alternate" hreflang="en" href="https://www.expediaservices.ae/${slug}"/><link rel="alternate" hreflang="ar" href="https://www.expediaservices.ae/ar/${slug}"/><link rel="alternate" hreflang="x-default" href="https://www.expediaservices.ae/${slug}"/></head>`);
   const dir='dist'+(path==='/'?'':path.replace(/\/$/,''));await mkdir(dir,{recursive:true});html=html.replace('</head>','<noscript><style>[style*="opacity"]{opacity:1!important;transform:none!important}</style></noscript></head>');await writeFile(dir+'/index.html',html);urls.push(url);
  }
  urls.push(...await writeRestoredPages());

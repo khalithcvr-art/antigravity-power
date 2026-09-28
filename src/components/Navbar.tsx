@@ -108,6 +108,19 @@ export const Navbar: React.FC<NavbarProps> = ({
     }
   };
 
+  const handleDropdownKeyDown = (
+    e: React.KeyboardEvent<HTMLButtonElement>,
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>,
+  ) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      setOpen(true);
+    } else if (e.key === 'Escape') {
+      e.preventDefault();
+      setOpen(false);
+    }
+  };
+
   return (
     <header className={`comfort-navbar fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
       isScrolled 
@@ -164,8 +177,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           <nav className="hidden md:flex items-center space-x-6 rtl:space-x-reverse text-sm font-medium text-slate-300">
             <div className="relative group" onMouseEnter={() => setServicesDropdownOpen(true)} onMouseLeave={() => setServicesDropdownOpen(false)}>
               <button 
+                aria-haspopup="menu"
+                aria-expanded={servicesDropdownOpen}
+                aria-controls="services-navigation-menu"
                 className="flex items-center space-x-1 rtl:space-x-reverse hover:text-white transition-colors py-2"
                 onClick={(e) => handleServiceClick(e, mode === 'corporate' ? 'services' : 'digital-services')}
+                onKeyDown={(e) => handleDropdownKeyDown(e, setServicesDropdownOpen)}
               >
                 <span>{t.services}</span>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:rotate-180 transition-transform" />
@@ -173,7 +190,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
               {/* Mega Dropdown Preview */}
               {servicesDropdownOpen && (
-                <div className="absolute top-full left-0 rtl:left-auto rtl:right-0 w-80 p-3 bg-obsidian-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-black/80 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div id="services-navigation-menu" role="menu" className="absolute top-full left-0 rtl:left-auto rtl:right-0 w-80 p-3 bg-obsidian-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-black/80 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-3 py-1 mb-1">
                     {mode === 'corporate' ? (isArabic ? 'الخدمات الحكومية وتأسيس الشركات' : 'Core Government & PRO Units') : (isArabic ? 'الهندسة الرقمية والعلامة التجارية' : 'Digital Engineering & Brand')}
                   </div>
@@ -255,19 +272,23 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Free Zones & Comparison Dropdown */}
             <div className="relative group" onMouseEnter={() => setJurisdictionsDropdownOpen(true)} onMouseLeave={() => setJurisdictionsDropdownOpen(false)}>
               <button 
+                aria-haspopup="menu"
+                aria-expanded={jurisdictionsDropdownOpen}
+                aria-controls="jurisdictions-navigation-menu"
                 className="flex items-center space-x-1 rtl:space-x-reverse hover:text-white transition-colors py-2"
                 onClick={(e) => {
                   e.preventDefault();
                   const el = document.getElementById('jurisdictions');
                   el?.scrollIntoView({ behavior: preferredScrollBehavior() });
                 }}
+                onKeyDown={(e) => handleDropdownKeyDown(e, setJurisdictionsDropdownOpen)}
               >
                 <span>{t.jurisdictions}</span>
                 <ChevronDown className="w-3.5 h-3.5 text-slate-400 group-hover:rotate-180 transition-transform" />
               </button>
 
               {jurisdictionsDropdownOpen && (
-                <div className="absolute top-full left-0 rtl:left-auto rtl:right-0 w-80 p-3 bg-obsidian-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-black/80 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div id="jurisdictions-navigation-menu" role="menu" className="absolute top-full left-0 rtl:left-auto rtl:right-0 w-80 p-3 bg-obsidian-900/95 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-black/80 animate-in fade-in slide-in-from-top-2 duration-200">
                   <div className="text-[10px] font-mono uppercase tracking-wider text-slate-400 px-3 py-1 mb-1">
                     {isArabic ? 'المناطق الحرة والرخص المعتمدة' : 'Official Free Zones & DED Hubs'}
                   </div>
@@ -485,4 +506,3 @@ export const Navbar: React.FC<NavbarProps> = ({
     </header>
   );
 };
-
