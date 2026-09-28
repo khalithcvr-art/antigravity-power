@@ -1,12 +1,12 @@
 import { preferredScrollBehavior } from '../hooks/useMotionPreference';
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  MessageSquare, 
-  Calculator, 
-  Search, 
-  ArrowUp, 
-  Sparkles, 
+import { useScrolled } from '../hooks/useScrolled';
+import React from 'react';
+import {
+  MessageSquare,
+  Calculator,
+  Search,
+  ArrowUp,
+  Sparkles,
   Building2,
   PhoneCall
 } from 'lucide-react';
@@ -22,6 +22,10 @@ interface FloatingDockProps {
   isArabic?: boolean;
 }
 
+// Round, icon-first buttons. Labels appear only where the dock has room for them.
+const DOCK_BUTTON =
+  'inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 text-sm font-medium text-slate-200 transition-colors hover:bg-white/10 hover:text-white';
+
 export const FloatingDock: React.FC<FloatingDockProps> = ({
   mode,
   onToggleMode,
@@ -29,16 +33,8 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
   onOpenTracker,
   isArabic = false,
 }) => {
-  const [showScrollTop, setShowScrollTop] = useState(false);
+  const showScrollTop = useScrolled(350);
   const t = isArabic ? TRANSLATIONS.ar.dock : TRANSLATIONS.en.dock;
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setShowScrollTop(window.scrollY > 350);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleWhatsApp = () => {
     trackConversion('whatsapp_click', { source: 'floating_dock' });
@@ -54,103 +50,64 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
     window.scrollTo({ top: 0, behavior: preferredScrollBehavior() });
   };
 
+  const modeLabel = mode === 'corporate' ? t.digital : t.corporate;
+  const callLabel = isArabic ? 'اتصال هاتفي مباشر: +971 56 4425 950' : 'Direct Call: +971 56 4425 950';
+
   return (
-    <motion.div 
-      initial={{ y: 80, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.7, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 max-w-xl w-[92%] sm:w-auto print:hidden"
-    >
-      <div className="flex items-center justify-between sm:justify-center p-2 rounded-full bg-obsidian-950/90 border border-white/20 backdrop-blur-2xl shadow-[0_10px_35px_rgba(0,0,0,0.85)] gap-1.5 sm:gap-2">
-        
-        {/* WhatsApp Fast Action with glowing pulse */}
-        <motion.button
-          whileHover={{ scale: 1.05, y: -1 }}
-          whileTap={{ scale: 0.95 }}
+    // Centred with auto margins, not a transform: nothing here can be overwritten by an animation.
+    <div className="pointer-events-none fixed inset-x-0 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40 flex justify-center px-3 print:hidden sm:bottom-6">
+      <div className="pointer-events-auto flex max-w-full items-center gap-1.5 rounded-full border border-white/15 bg-obsidian-950/90 p-1.5 shadow-pop backdrop-blur-2xl sm:gap-2">
+        <button
+          type="button"
           onClick={handleWhatsApp}
           aria-label={t.whatsapp}
-          className="relative flex items-center space-x-2 rtl:space-x-reverse px-4 py-2.5 rounded-full bg-gradient-to-r from-emerald-500 to-emerald-400 text-obsidian-950 text-xs font-bold transition-all shadow-lg shadow-emerald-500/30 overflow-hidden group"
+          className="inline-flex h-11 min-w-11 items-center justify-center gap-2 rounded-full bg-emerald-500 px-3 text-sm font-bold text-obsidian-950 transition-colors hover:bg-emerald-400 sm:px-4"
         >
-          <span className="animate-ping absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-300 opacity-60 pointer-events-none" />
-          <MessageSquare className="w-4 h-4 fill-obsidian-950" />
-          <span className="hidden sm:inline font-display font-black tracking-wide">{t.whatsapp}</span>
-        </motion.button>
+          <MessageSquare className="h-4 w-4 fill-obsidian-950" aria-hidden="true" />
+          <span className="hidden sm:inline">{t.whatsapp}</span>
+        </button>
 
-        {/* Direct Call Button */}
-        <motion.button
-          whileHover={{ scale: 1.08, y: -1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={handleCall}
-          className="p-2.5 rounded-full bg-white/5 hover:bg-emerald-500/20 text-slate-300 hover:text-emerald-400 transition-all border border-white/10 relative"
-          title={isArabic ? 'اتصال هاتفي مباشر: +971 56 4425 950' : 'Direct Call: +971 56 4425 950'}
-        >
-          <PhoneCall className="w-4 h-4 text-emerald-400" />
-        </motion.button>
+        <button type="button" onClick={handleCall} aria-label={callLabel} title={callLabel} className={DOCK_BUTTON}>
+          <PhoneCall className="h-4 w-4 text-emerald-400" aria-hidden="true" />
+        </button>
 
-        {/* Cost Estimator */}
-        <motion.button
-          whileHover={{ scale: 1.04, y: -1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onOpenEstimator}
-          aria-label={t.estimator}
-          className="flex items-center space-x-1.5 rtl:space-x-reverse px-3.5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-medium border border-white/10 transition-all hover:text-white"
-        >
-          <Calculator className="w-4 h-4 text-emerald-400" />
-          <span className="hidden xs:inline">{t.estimator}</span>
-        </motion.button>
+        <button type="button" onClick={onOpenEstimator} aria-label={t.estimator} title={t.estimator} className={DOCK_BUTTON}>
+          <Calculator className="h-4 w-4 text-emerald-400" aria-hidden="true" />
+          <span className="hidden lg:inline">{t.estimator}</span>
+        </button>
 
-        {/* Live Status Tracker */}
-        <motion.button
-          whileHover={{ scale: 1.04, y: -1 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={onOpenTracker}
-          aria-label={t.tracker}
-          className="flex items-center space-x-1.5 rtl:space-x-reverse px-3.5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-medium border border-white/10 transition-all hover:text-white"
-        >
-          <Search className="w-4 h-4 text-cyan-400" />
-          <span className="hidden xs:inline">{t.tracker}</span>
-        </motion.button>
+        <button type="button" onClick={onOpenTracker} aria-label={t.tracker} title={t.tracker} className={DOCK_BUTTON}>
+          <Search className="h-4 w-4 text-cyan-400" aria-hidden="true" />
+          <span className="hidden lg:inline">{t.tracker}</span>
+        </button>
 
-        {/* Quick Mode Toggle */}
-        <motion.button
-          whileHover={{ scale: 1.04, y: -1 }}
-          whileTap={{ scale: 0.95 }}
+        <button
+          type="button"
           onClick={() => onToggleMode(mode === 'corporate' ? 'digital' : 'corporate')}
+          aria-label={modeLabel}
           title="Switch Engine View"
-          className="flex items-center space-x-1.5 rtl:space-x-reverse px-3.5 py-2.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 text-xs font-medium border border-white/10 transition-all"
+          className={DOCK_BUTTON}
         >
           {mode === 'corporate' ? (
-            <>
-              <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-              <span className="hidden md:inline">{t.digital}</span>
-            </>
+            <Sparkles className="h-4 w-4 text-cyan-400" aria-hidden="true" />
           ) : (
-            <>
-              <Building2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span className="hidden md:inline">{t.corporate}</span>
-            </>
+            <Building2 className="h-4 w-4 text-emerald-400" aria-hidden="true" />
           )}
-        </motion.button>
+          <span className="hidden md:inline">{modeLabel}</span>
+        </button>
 
-        {/* Scroll To Top Action (Conditional) */}
-        <AnimatePresence>
-          {showScrollTop && (
-            <motion.button
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0, opacity: 0 }}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={scrollToTop}
-              className="p-2.5 rounded-full bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white transition-all border border-white/10"
-              title={isArabic ? 'العودة للأعلى' : 'Scroll To Top'}
-            >
-              <ArrowUp className="w-4 h-4" />
-            </motion.button>
-          )}
-        </AnimatePresence>
-
+        {showScrollTop && (
+          <button
+            type="button"
+            onClick={scrollToTop}
+            aria-label={isArabic ? 'العودة للأعلى' : 'Scroll To Top'}
+            title={isArabic ? 'العودة للأعلى' : 'Scroll To Top'}
+            className={DOCK_BUTTON}
+          >
+            <ArrowUp className="h-4 w-4" aria-hidden="true" />
+          </button>
+        )}
       </div>
-    </motion.div>
+    </div>
   );
 };

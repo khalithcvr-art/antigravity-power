@@ -27,60 +27,54 @@ export const StatusTrackerModal: React.FC<StatusTrackerModalProps> = ({ isOpen, 
   return (
     <AnimatePresence>
       {isOpen && (
-        <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto ${isArabic ? 'font-arabic' : ''}`}>
-          
+        <div className="fixed inset-0 z-[60] flex items-center justify-center overflow-y-auto p-4 sm:p-6">
+
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.22 }}
             onClick={onClose}
             className="fixed inset-0 bg-black/80 backdrop-blur-xl"
           />
-          
-          {/* Modal Container */}
+
+          {/* Dialog */}
           <motion.div
             ref={dialogRef} role="dialog" aria-modal="true" aria-label={t.title}
-            initial={{ opacity: 0, scale: 0.94, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.94, y: 20 }}
-            transition={{ type: 'spring', stiffness: 350, damping: 28 }}
-            className="relative w-full max-w-4xl bg-obsidian-900 border border-white/15 rounded-3xl shadow-2xl shadow-black overflow-hidden flex flex-col my-8 z-10"
+            initial={{ opacity: 0, y: 14, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.985 }}
+            transition={{ duration: 0.26, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-10 my-8 flex w-full max-w-3xl flex-col overflow-hidden rounded-[var(--radius-panel)] border border-white/15 bg-obsidian-900 shadow-pop"
           >
-            
-            {/* Modal Top Header */}
-            <div className="p-6 sm:px-8 border-b border-white/10 flex items-center justify-between bg-obsidian-950/90">
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
+
+            <div className="flex items-center justify-between gap-4 border-b border-white/10 bg-obsidian-950/80 p-6 sm:px-8">
+              <div className="flex items-center gap-4">
+                <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-400">
+                  <ShieldCheck className="h-5 w-5" aria-hidden="true" />
+                </span>
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-display font-bold text-white">
-                    {t.title}
-                  </h3>
-                  <p className="text-xs text-slate-400 font-medium">
-                    {t.subtitle}
-                  </p>
+                  <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl">{t.title}</h3>
+                  <p className="mt-0.5 text-sm text-slate-400">{t.subtitle}</p>
                 </div>
               </div>
 
-              <motion.button
-                whileHover={{ scale: 1.1, rotate: 90 }}
-                whileTap={{ scale: 0.9 }}
+              <button
+                type="button"
                 aria-label={isArabic ? "إغلاق" : "Close"}
                 onClick={onClose}
-                className="p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-colors"
+                className="btn btn-secondary h-11 min-h-0 w-11 shrink-0 p-0"
               >
-                <X className="w-5 h-5" />
-              </motion.button>
+                <X className="h-5 w-5" aria-hidden="true" />
+              </button>
             </div>
 
-            <div className="p-6 sm:p-8 overflow-y-auto max-h-[75vh] space-y-6">
-              
-              {/* Tracking Search Input */}
-              <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-2">
+            <div className="max-h-[75vh] space-y-6 overflow-y-auto p-6 sm:p-8">
+
+              <form onSubmit={handleSearch} className="flex flex-col gap-3 sm:flex-row">
                 <div className="relative flex-1">
-                  <Search className="absolute left-4 rtl:left-auto rtl:right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <Search className="pointer-events-none absolute start-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" aria-hidden="true" />
                   <input
                     type="text"
                     id="status-reference"
@@ -90,27 +84,21 @@ export const StatusTrackerModal: React.FC<StatusTrackerModalProps> = ({ isOpen, 
                     value={trackingInput}
                     onChange={(e) => setTrackingInput(e.target.value)}
                     placeholder={t.searchPlaceholder}
-                    className="w-full pl-11 rtl:pl-4 rtl:pr-11 pr-4 py-3 rounded-2xl bg-obsidian-950 border border-white/15 text-sm text-white focus:outline-none focus:border-cyan-500 font-mono uppercase tracking-wider text-left rtl:text-right"
+                    className="field ps-11 font-mono text-start"
                   />
                 </div>
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  type="submit"
-                  className="px-6 py-3 rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-obsidian-950 font-bold text-sm transition-all shadow-md shadow-cyan-500/20"
-                >
+                <button type="submit" className="btn btn-primary btn-lg sm:min-h-12">
                   {t.searchBtn}
-                </motion.button>
+                </button>
               </form>
 
-
-              <p role="status" className="text-base text-slate-200 leading-relaxed">
+              <p role="status" className="text-base leading-7 text-slate-200">
                 {isArabic
                   ? 'لا يمكن التحقق من حالة معاملتك عبر هذه الصفحة حالياً. تواصل مع مستشارنا للحصول على تحديث موثّق.'
                   : 'Your application status cannot currently be verified on this page. Contact our consultant for a verified update.'}
               </p>
               {searched && <a href={generateWhatsAppUrl(message)} target="_blank" rel="noopener noreferrer"
-                className="inline-block px-6 py-3 rounded-2xl bg-cyan-500 text-obsidian-950 font-bold">
+                className="btn btn-primary btn-lg">
                 {isArabic ? 'اطلب تحديثاً عبر واتساب' : 'Request an update on WhatsApp'}
               </a>}
             </div>

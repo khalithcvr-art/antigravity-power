@@ -1,14 +1,10 @@
 import React from 'react';
-import { motion } from 'motion/react';
-import { 
-  Award, 
-  ArrowRight, 
-  ArrowLeft
-} from 'lucide-react';
+import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { CHANNEL_PARTNERS, UAE_AUTHORITIES } from '../data/siteData';
 import { generateWhatsAppUrl, trackConversion } from '../lib/tracking';
 import { TRANSLATIONS } from '../data/translations';
-import { TiltCard, ScrollReveal } from './motion/MotionPrimitives';
+import { InteractiveCard, ScrollReveal } from './motion/MotionPrimitives';
+import { SectionHeader } from './SectionHeader';
 import { DualEngineMode } from '../types';
 
 interface TrustPartnersProps {
@@ -18,11 +14,11 @@ interface TrustPartnersProps {
   onOpenEstimator?: () => void;
 }
 
-export const TrustPartners: React.FC<TrustPartnersProps> = ({ 
-  mode = 'corporate', 
-  isArabic = false, 
+export const TrustPartners: React.FC<TrustPartnersProps> = ({
+  mode = 'corporate',
+  isArabic = false,
   onNavigateSlug,
-  onOpenEstimator 
+  onOpenEstimator
 }) => {
   const tCorp = isArabic ? TRANSLATIONS.ar.trustPartners : TRANSLATIONS.en.trustPartners;
 
@@ -116,7 +112,7 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
   const handlePartnerInquiry = (e: React.MouseEvent, name: string) => {
     e.stopPropagation();
     trackConversion('whatsapp_click', { partner: name });
-    const msg = isArabic 
+    const msg = isArabic
       ? `مرحباً إكسبيديا، أود تأسيس شركتي في *${name}*. أرجو تزويدي بالأنشطة المتاحة وعرض الأسعار.`
       : `Hello Expedia, I want to establish my entity in *${name}*. Please send me the activity list and promotional package.`;
     window.open(generateWhatsAppUrl(msg), '_blank');
@@ -124,7 +120,7 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
 
   const handleTechInquiry = (techName: string) => {
     trackConversion('whatsapp_click', { tech: techName });
-    const msg = isArabic 
+    const msg = isArabic
       ? `مرحباً إكسبيديا الرقمية، أود استشارة خبرائكم التقنيين بخصوص تطبيق معايير *${techName}* في مشروعي.`
       : `Hello Expedia Digital, I would like to consult your engineers regarding *${techName}* integration for my project.`;
     window.open(generateWhatsAppUrl(msg), '_blank');
@@ -132,48 +128,34 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
 
   const ArrowIcon = isArabic ? ArrowLeft : ArrowRight;
 
-  const headerBadge = mode === 'corporate' 
-    ? tCorp.badge 
+  const headerBadge = mode === 'corporate'
+    ? tCorp.badge
     : (isArabic ? 'البنية التحتية والهندسة البرمجية' : 'Enterprise Technology & Cloud Stack');
-  
+
   const headerTitle = mode === 'corporate'
     ? tCorp.title
     : (isArabic ? 'ركائز الهندسة الرقمية' : 'The 4 Core Pillars of');  // client delivery stack
-  
+
   const headerTitleHighlight = mode === 'corporate'
     ? tCorp.titleHighlight
     : (isArabic ? 'لمنصتك السيادية' : 'Our Client Delivery Stack');
-  
+
   const headerSubtitle = mode === 'corporate'
     ? tCorp.subtitle
     : (isArabic ? 'نبني منصات عملائنا بتقنيات حديثة مع عزل للبيانات، واستضافة على شبكة الحافة، وأتمتة للواتساب.' : 'We build client platforms with modern React frameworks, PostgreSQL data isolation, edge hosting, and WhatsApp lead automation.');
 
   return (
-    <section className={`py-20 relative bg-obsidian-950/70 border-t border-white/5 overflow-hidden ${isArabic ? 'font-arabic' : ''}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Header */}
-        <ScrollReveal>
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-wider text-slate-300 mb-3">
-              <Award className={`w-3.5 h-3.5 ${mode === 'corporate' ? 'text-goldMuted' : 'text-cyan-400'}`} />
-              <span>{headerBadge}</span>
-            </div>
-            <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
-              {headerTitle} <br className="hidden sm:inline" />
-              <span className={mode === 'corporate' ? 'text-gradient-emerald' : 'bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400'}>
-                {headerTitleHighlight}
-              </span>
-            </h2>
-            <p className="text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto">
-              {headerSubtitle}
-            </p>
-          </div>
-        </ScrollReveal>
+    <section className="section border-t border-white/5">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-        {/* Dynamic Cards Grid: Corporate Partners vs Digital Tech Pillars */}
+        <SectionHeader
+          eyebrow={headerBadge}
+          title={<>{headerTitle} {headerTitleHighlight}</>}
+          subtitle={headerSubtitle}
+        />
+
         {mode === 'corporate' ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
             {CHANNEL_PARTNERS.slice(0, 4).map((partner) => {
               const name = isArabic && partner.nameAr ? partner.nameAr : partner.name;
               const city = isArabic && partner.cityAr ? partner.cityAr : partner.city;
@@ -183,62 +165,45 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
               const popularFor = isArabic && partner.popularForAr ? partner.popularForAr : partner.popularFor;
 
               return (
-                <TiltCard
-                  key={partner.id}
-                  maxTilt={6}
-                  glowColor="rgba(16, 185, 129, 0.15)"
-                  className="p-6 rounded-3xl glass-panel glass-panel-hover flex flex-col justify-between group cursor-pointer"
-                >
-                  <div onClick={() => handlePartnerClick(partner)}>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-mono text-slate-300">
-                        {city}
-                      </span>
-                      <span className="text-xs font-mono font-bold text-emerald-400">
-                        {startingPrice}
-                      </span>
+                <InteractiveCard key={partner.id} className="group flex flex-col p-6">
+                  <div className="flex-1 cursor-pointer" onClick={() => handlePartnerClick(partner)}>
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="chip">{city}</span>
+                      <span className="text-sm font-semibold text-emerald-400">{startingPrice}</span>
                     </div>
 
-                    <h3 className="text-xl font-display font-bold text-white mb-1 group-hover:text-emerald-300 transition-colors flex items-center justify-between">
+                    <h3 className="mt-5 flex items-start justify-between gap-3 text-xl font-bold leading-snug text-white">
                       <span>{name}</span>
-                      <ArrowIcon className="w-4 h-4 text-slate-400 group-hover:text-emerald-400 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-all" />
+                      <ArrowIcon
+                        className="mt-1 h-4 w-4 shrink-0 text-slate-500 transition-all group-hover:text-emerald-400 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5"
+                        aria-hidden="true"
+                      />
                     </h3>
-                    <div className="text-[11px] text-goldMuted font-medium mb-3">
-                      {badge}
-                    </div>
+                    <div className="mt-1 text-sm font-semibold text-gold-300">{badge}</div>
 
-                    <p className="text-xs text-slate-300 leading-relaxed mb-4 line-clamp-3">
-                      {desc}
-                    </p>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">{desc}</p>
 
-                    <div className="p-2.5 rounded-xl bg-obsidian-950/60 border border-white/5 text-[10px] text-slate-400 mb-5">
-                      <span className="font-semibold text-slate-200 block mb-0.5">{isArabic ? 'الأنسب لـ:' : 'Ideal for:'}</span>
+                    <div className="note mb-6 mt-5 text-slate-400">
+                      <span className="note-label">{isArabic ? 'الأنسب لـ:' : 'Ideal for:'}</span>
                       {popularFor}
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-white/10 flex flex-col space-y-2">
-                    <button
-                      onClick={() => handlePartnerClick(partner)}
-                      className="w-full py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-bold text-xs flex items-center justify-center space-x-1.5 rtl:space-x-reverse shadow-md shadow-emerald-500/20 transition-all duration-200"
-                    >
+                  <div className="flex flex-col gap-2 border-t border-white/10 pt-4">
+                    <button type="button" onClick={() => handlePartnerClick(partner)} className="btn btn-primary btn-sm">
                       <span>{isArabic ? 'تفاصيل التأسيس والتكاليف' : 'View Setup Details & Costs'}</span>
-                      <ArrowIcon className="w-3.5 h-3.5" />
+                      <ArrowIcon className="h-3.5 w-3.5" aria-hidden="true" />
                     </button>
-                    
-                    <button
-                      onClick={(e) => handlePartnerInquiry(e, name)}
-                      className="w-full py-1.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white font-medium text-[11px] text-center border border-white/10 transition-colors"
-                    >
+                    <button type="button" onClick={(e) => handlePartnerInquiry(e, name)} className="btn btn-secondary btn-sm">
                       {isArabic ? 'استفسار واتساب سريع' : 'Quick WhatsApp Inquire'}
                     </button>
                   </div>
-                </TiltCard>
+                </InteractiveCard>
               );
             })}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <div className="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
             {DIGITAL_TECH_STACK.map((tech) => {
               const name = isArabic ? tech.nameAr : tech.name;
               const desc = isArabic ? tech.descAr : tech.desc;
@@ -246,91 +211,67 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
               const popularFor = isArabic ? tech.popularForAr : tech.popularFor;
 
               return (
-                <TiltCard
-                  key={tech.id}
-                  maxTilt={6}
-                  glowColor="rgba(6, 182, 212, 0.15)"
-                  className="p-6 rounded-3xl glass-panel glass-panel-hover flex flex-col justify-between group cursor-pointer border-cyan-500/20 hover:border-cyan-500/50"
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-[10px] font-mono text-cyan-300">
-                        {tech.category}
-                      </span>
-                      <span className="text-xs font-mono font-bold text-cyan-400">
-                        {badge}
-                      </span>
+                <InteractiveCard key={tech.id} glow className="group flex flex-col p-6">
+                  <div className="flex-1">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="chip chip-accent">{tech.category}</span>
+                      <span className="text-sm font-semibold text-cyan-400">{badge}</span>
                     </div>
 
-                    <h3 className="text-xl font-display font-bold text-white mb-1 group-hover:text-cyan-300 transition-colors flex items-center justify-between">
-                      <span>{name}</span>
-                      <ArrowIcon className="w-4 h-4 text-slate-400 group-hover:text-cyan-400 group-hover:translate-x-1 rtl:group-hover:-translate-x-1 transition-all" />
-                    </h3>
-                    <div className="text-[11px] text-indigo-400 font-medium mb-3">
-                      {tech.highlight}
-                    </div>
+                    <h3 className="mt-5 text-xl font-bold leading-snug text-white">{name}</h3>
+                    <div className="mt-1 text-sm font-semibold text-gold-300">{tech.highlight}</div>
 
-                    <p className="text-xs text-slate-300 leading-relaxed mb-4 line-clamp-3">
-                      {desc}
-                    </p>
+                    <p className="mt-3 text-sm leading-6 text-slate-300">{desc}</p>
 
-                    <div className="p-2.5 rounded-xl bg-obsidian-950/60 border border-white/5 text-[10px] text-slate-400 mb-5">
-                      <span className="font-semibold text-slate-200 block mb-0.5">{isArabic ? 'الاستخدام في النظام:' : 'System Implementation:'}</span>
+                    <div className="note mb-6 mt-5 text-slate-400">
+                      <span className="note-label">{isArabic ? 'الاستخدام في النظام:' : 'System Implementation:'}</span>
                       {popularFor}
                     </div>
                   </div>
 
-                  <div className="pt-3 border-t border-white/10 flex flex-col space-y-2">
-                    <button
-                      onClick={() => handleTechInquiry(name)}
-                      className="w-full py-2 px-3 rounded-xl bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-obsidian-950 font-bold text-xs flex items-center justify-center space-x-1.5 rtl:space-x-reverse shadow-md shadow-cyan-500/20 transition-all duration-200"
-                    >
+                  <div className="border-t border-white/10 pt-4">
+                    <button type="button" onClick={() => handleTechInquiry(name)} className="btn btn-primary btn-sm w-full">
                       <span>{isArabic ? 'طلب استشارة معمارية' : 'Consult System Architect'}</span>
-                      <ArrowIcon className="w-3.5 h-3.5" />
+                      <ArrowIcon className="h-3.5 w-3.5" aria-hidden="true" />
                     </button>
                   </div>
-                </TiltCard>
+                </InteractiveCard>
               );
             })}
           </div>
         )}
 
-        {/* Marquee Footprint: Government Authorities (Corporate) vs Tech Frameworks (Digital) */}
-        <ScrollReveal>
-          <div className="p-6 sm:p-8 rounded-3xl bg-obsidian-900/60 border border-white/5 backdrop-blur-md">
-            <div className="text-center mb-6">
-              <span className="text-[11px] font-mono uppercase tracking-widest text-slate-400 block mb-1">
-                {mode === 'corporate'
-                  ? (isArabic ? 'ننسّق معاملات عملائنا مع 7 جهات حكومية إماراتية' : 'Applications Coordinated Across 7 UAE Government Authorities')
-                  : (isArabic ? 'أطر العمل البرمجية المعتمدة في منصات إكسبيديا' : 'Core Sovereign Engineering Frameworks & Protocol Integrations')}
-              </span>
-            </div>
+        {/* Authorities (corporate) or frameworks (digital) */}
+        <ScrollReveal className="mt-14">
+          <div>
+            <h3 className="text-base font-semibold text-slate-300">
+              {mode === 'corporate'
+                ? (isArabic ? 'ننسّق معاملات عملائنا مع 7 جهات حكومية إماراتية' : 'Applications Coordinated Across 7 UAE Government Authorities')
+                : (isArabic ? 'أطر العمل البرمجية المعتمدة في منصات إكسبيديا' : 'Core Sovereign Engineering Frameworks & Protocol Integrations')}
+            </h3>
 
             {mode === 'corporate' ? (
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3">
+              <ul className="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-[var(--radius-card)] border border-white/10 bg-white/10 sm:grid-cols-4">
                 {UAE_AUTHORITIES.map((auth, idx) => (
-                  <div 
-                    key={idx}
-                    className="flex flex-col items-center justify-center p-3 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-500/40 hover:bg-white/10 transition-all text-center"
-                  >
-                    <span className="font-mono font-bold text-xs text-emerald-400">{auth.name}</span>
-                    <span className="text-[10px] text-slate-400 mt-0.5">{isArabic ? auth.badgeAr : auth.badge}</span>
-                  </div>
+                  <li key={idx} className="bg-obsidian-950 px-4 py-4">
+                    <span className="block text-base font-bold text-gold-300">{auth.name}</span>
+                    <span className="mt-0.5 block text-sm text-slate-400">{isArabic ? auth.badgeAr : auth.badge}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             ) : (
-              <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4">
+              <ul className="mt-5 flex flex-wrap gap-3">
                 {DIGITAL_FRAMEWORKS.map((fw) => (
-                  <div 
+                  <li
                     key={fw.name}
-                    className="flex items-center space-x-2 rtl:space-x-reverse px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/40 hover:bg-white/10 transition-all text-xs text-slate-300 hover:text-white"
+                    className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 text-sm transition-colors hover:border-cyan-500/40"
                   >
-                    <span className="font-mono font-bold text-cyan-400">{fw.name}</span>
-                    <span className="text-slate-400">|</span>
-                    <span className="text-[11px] font-medium text-slate-300">{isArabic ? fw.roleAr : fw.role}</span>
-                  </div>
+                    <span className="font-mono font-semibold text-cyan-400">{fw.name}</span>
+                    <span className="text-slate-500" aria-hidden="true">/</span>
+                    <span className="text-slate-300">{isArabic ? fw.roleAr : fw.role}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             )}
           </div>
         </ScrollReveal>
@@ -339,4 +280,3 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
     </section>
   );
 };
-

@@ -9,7 +9,7 @@ import {
   HelpCircle, ChevronDown, FileText, Download, Share2
 } from 'lucide-react';
 import { DEDICATED_PAGES, DedicatedPageData } from '../data/jurisdictionPages';
-import { TiltCard, BorderBeam, AnimatedCounter, ScrollReveal, StaggerContainer, StaggerItem } from './motion/MotionPrimitives';
+import { InteractiveCard, ScrollReveal } from './motion/MotionPrimitives';
 import { trackConversion } from '../lib/tracking';
 
 interface DedicatedJurisdictionPageProps {
@@ -104,305 +104,258 @@ export function DedicatedJurisdictionPage({
     window.open(`https://wa.me/971585858816?text=${encoded}`, '_blank');
   };
 
+  const HIGHLIGHT_ICONS: Record<string, React.ElementType> = {
+    ShieldCheck, Building2, Landmark, ReceiptPercent: Percent, Sparkles, Award, Coins, Layers, Globe,
+    BadgePercent, UserCheck, Anchor, CreditCard, Users, Zap,
+  };
   const getHighlightIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'ShieldCheck': return <ShieldCheck className="w-5 h-5 text-emerald-400" />;
-      case 'Building2': return <Building2 className="w-5 h-5 text-sky-400" />;
-      case 'Landmark': return <Landmark className="w-5 h-5 text-amber-400" />;
-      case 'ReceiptPercent': return <Percent className="w-5 h-5 text-emerald-400" />;
-      case 'Sparkles': return <Sparkles className="w-5 h-5 text-purple-400" />;
-      case 'Award': return <Award className="w-5 h-5 text-amber-400" />;
-      case 'Coins': return <Coins className="w-5 h-5 text-emerald-400" />;
-      case 'Layers': return <Layers className="w-5 h-5 text-blue-400" />;
-      case 'Globe': return <Globe className="w-5 h-5 text-teal-400" />;
-      case 'BadgePercent': return <BadgePercent className="w-5 h-5 text-emerald-400" />;
-      case 'UserCheck': return <UserCheck className="w-5 h-5 text-sky-400" />;
-      case 'Anchor': return <Anchor className="w-5 h-5 text-indigo-400" />;
-      case 'CreditCard': return <CreditCard className="w-5 h-5 text-emerald-400" />;
-      case 'Users': return <Users className="w-5 h-5 text-amber-400" />;
-      case 'Zap': return <Zap className="w-5 h-5 text-amber-400" />;
-      default: return <Building2 className="w-5 h-5 text-emerald-400" />;
-    }
+    const Icon = HIGHLIGHT_ICONS[iconName] || Building2;
+    return <Icon className="h-5 w-5 text-gold-400" aria-hidden="true" />;
   };
 
+  const H2 = 'font-display text-2xl font-bold leading-tight text-white sm:text-3xl';
+  const SUB = 'mt-2 text-base leading-7 text-slate-400';
+
   return (
-    <div className="pt-28 pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      
-      {/* Breadcrumb Navigation */}
-      <nav className="flex items-center space-x-2 rtl:space-x-reverse text-xs font-mono text-slate-400 mb-8 overflow-x-auto pb-2">
-        <button 
-          onClick={onNavigateHome}
-          className="hover:text-emerald-400 transition-colors flex items-center gap-1 shrink-0"
-        >
+    <div className="mx-auto max-w-7xl px-4 pb-24 pt-[calc(var(--header-h)+2rem)] sm:px-6 lg:px-8">
+
+      {/* Breadcrumb */}
+      <nav aria-label={isArabic ? 'مسار التنقل' : 'Breadcrumb'} className="mb-8 flex items-center gap-2 overflow-x-auto pb-2 text-sm text-slate-400">
+        <button type="button" onClick={onNavigateHome} className="shrink-0 py-1 transition-colors hover:text-white">
           {isArabic ? 'الرئيسية' : 'Home'}
         </button>
-        <span>/</span>
-        <button 
-          onClick={onNavigateHome}
-          className="hover:text-emerald-400 transition-colors shrink-0"
-        >
+        <span aria-hidden="true">/</span>
+        <button type="button" onClick={onNavigateHome} className="shrink-0 py-1 transition-colors hover:text-white">
           {isArabic ? 'المناطق الحرة والتراخيص' : 'Jurisdictions'}
         </button>
-        <span>/</span>
-        <span className="text-emerald-400 font-semibold truncate shrink-0">
+        <span aria-hidden="true">/</span>
+        <span aria-current="page" className="shrink-0 font-semibold text-gold-300">
           {isArabic ? hero.h1Ar : hero.h1En}
         </span>
       </nav>
 
-      {/* Hero Section */}
-      <div className="relative rounded-3xl p-8 lg:p-12 neo-glass-card border border-white/10 overflow-hidden mb-16 shadow-2xl">
-        <BorderBeam size={400} duration={12} colorFrom="#10b981" colorTo="#06b6d4" />
-        
-        <div className="max-w-4xl">
-          <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-mono mb-6">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>{isArabic ? hero.badgeAr : hero.badgeEn}</span>
-          </div>
+      {/* Hero */}
+      <div className="relative mb-16 overflow-hidden rounded-[var(--radius-panel)] border border-white/10 bg-obsidian-900/80 p-8 shadow-card lg:p-12">
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-gold-400/70 to-transparent" aria-hidden="true" />
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-display font-bold text-white tracking-tight leading-tight mb-4">
+        <div className="max-w-4xl">
+          <span className="chip chip-accent mb-6">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden="true" />
+            {isArabic ? hero.badgeAr : hero.badgeEn}
+          </span>
+
+          <h1 className="text-[clamp(2rem,4.2vw,3.25rem)] font-bold leading-[1.1] tracking-[-0.025em] text-white">
             {isArabic ? hero.h1Ar : hero.h1En}
           </h1>
 
-          <p className="text-xl sm:text-2xl font-display font-semibold text-gradient-gold mb-6">
+          <p className="mt-5 text-xl font-semibold leading-snug text-gold-300 sm:text-2xl">
             {isArabic ? hero.highlightAr : hero.highlightEn}
           </p>
 
-          <p className="text-base sm:text-lg text-slate-300 leading-relaxed mb-8">
+          <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
             {isArabic ? hero.subtitleAr : hero.subtitleEn}
           </p>
 
-          {/* Quick Metrics Bar */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-obsidian-950/80 border border-white/5 mb-8">
+          {/* Key facts */}
+          <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 rounded-2xl border border-white/10 bg-obsidian-950/60 p-5 sm:grid-cols-4">
             <div>
-              <div className="text-xs font-mono text-slate-400 mb-1">{isArabic ? 'عرض أسعار' : 'Quotation'}</div>
-              <div className="text-xl font-mono font-bold text-emerald-400">
+              <dt className="text-sm text-slate-400">{isArabic ? 'عرض أسعار' : 'Quotation'}</dt>
+              <dd className="mt-1 text-lg font-bold text-emerald-400">
                 {isArabic ? "اطلب عرض أسعار" : "Request a quotation"}
-              </div>
+              </dd>
             </div>
             <div>
-              <div className="text-xs font-mono text-slate-400 mb-1">{isArabic ? 'مدة الإصدار' : 'Turnaround'}</div>
-              <div className="text-sm font-semibold text-white">
+              <dt className="text-sm text-slate-400">{isArabic ? 'مدة الإصدار' : 'Turnaround'}</dt>
+              <dd className="mt-1 text-base font-semibold text-white">
                 {isArabic ? hero.turnaroundAr : hero.turnaroundEn}
-              </div>
+              </dd>
             </div>
             <div>
-              <div className="text-xs font-mono text-slate-400 mb-1">{isArabic ? 'نسبة الملكية' : 'Ownership'}</div>
-              <div className="text-sm font-semibold text-white">
+              <dt className="text-sm text-slate-400">{isArabic ? 'نسبة الملكية' : 'Ownership'}</dt>
+              <dd className="mt-1 text-base font-semibold text-white">
                 {isArabic ? hero.ownershipAr : hero.ownershipEn}
-              </div>
+              </dd>
             </div>
             <div>
-              <div className="text-xs font-mono text-slate-400 mb-1">{isArabic ? 'دورنا' : 'Our Role'}</div>
-              <div className="text-sm font-semibold text-emerald-400 flex items-center gap-1">
-                <CheckCircle2 className="w-4 h-4" />
+              <dt className="text-sm text-slate-400">{isArabic ? 'دورنا' : 'Our Role'}</dt>
+              <dd className="mt-1 flex items-center gap-1.5 text-base font-semibold text-emerald-400">
+                <CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true" />
                 {isArabic ? 'إعداد وتقديم الطلبات' : 'Application support'}
-              </div>
+              </dd>
             </div>
-          </div>
+          </dl>
 
-          {/* Dual CTAs */}
-          <div className="flex flex-wrap gap-4">
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => handleWhatsAppQuote()}
-              className="py-4 px-8 rounded-2xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-display font-bold text-sm flex items-center space-x-2 rtl:space-x-reverse shadow-xl shadow-emerald-500/25 transition-all"
-            >
-              <MessageSquare className="w-4 h-4 fill-obsidian-950" />
+          <div className="mt-8 flex flex-wrap gap-3">
+            <button type="button" onClick={() => handleWhatsAppQuote()} className="btn btn-primary btn-lg">
+              <MessageSquare className="h-4 w-4 fill-obsidian-950" aria-hidden="true" />
               <span>{isArabic ? 'احصل على عرض سعر رسمي عبر واتساب' : 'Get Official WhatsApp Quotation'}</span>
-              <ArrowIcon className="w-4 h-4" />
-            </motion.button>
+              <ArrowIcon className="h-4 w-4" aria-hidden="true" />
+            </button>
 
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={onOpenEstimator}
-              className="py-4 px-6 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-display font-semibold text-sm flex items-center space-x-2 rtl:space-x-reverse transition-all"
-            >
-              <Calculator className="w-4 h-4 text-emerald-400" />
+            <button type="button" onClick={onOpenEstimator} className="btn btn-secondary btn-lg">
+              <Calculator className="h-4 w-4 text-emerald-400" aria-hidden="true" />
               <span>{isArabic ? 'احسب التكلفة المخصصة' : 'Calculate Custom Cost'}</span>
-            </motion.button>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* AEO / GEO Search Engine Direct Answer Box */}
-      <div className="mb-16 rounded-2xl p-6 bg-emerald-950/20 border border-emerald-500/30">
-        <div className="flex items-center gap-2 mb-3">
-          <Sparkles className="w-5 h-5 text-emerald-400" />
-          <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-emerald-400">
-            {isArabic ? aeoStructuredSummary.headingAr : aeoStructuredSummary.headingEn}
-          </h2>
-        </div>
-        <p className="text-slate-200 text-sm sm:text-base font-medium leading-relaxed mb-4">
+      {/* Direct answer (kept in the markup for search and AI answer engines) */}
+      <div className="note mb-16 p-6 sm:p-7">
+        <h2 className="mb-2 text-base font-bold text-gold-300">
+          {isArabic ? aeoStructuredSummary.headingAr : aeoStructuredSummary.headingEn}
+        </h2>
+        <p className="text-base font-medium leading-7 text-slate-100">
           {isArabic ? aeoStructuredSummary.directAnswerAr : aeoStructuredSummary.directAnswerEn}
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-3 border-t border-emerald-500/20 text-xs font-mono text-slate-300">
+        <ul className="mt-4 grid grid-cols-1 gap-2 border-t border-white/10 pt-4 text-sm text-slate-300 md:grid-cols-2">
           {(isArabic ? aeoStructuredSummary.bulletFactsAr : aeoStructuredSummary.bulletFactsEn).map((fact, idx) => (
-            <div key={idx} className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
+            <li key={idx} className="flex items-start gap-2.5">
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-gold-400" aria-hidden="true" />
               <span>{fact}</span>
-            </div>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
 
-      {/* Key Strategic Advantages */}
+      {/* Key advantages */}
       <section className="mb-16">
-        <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mb-2">
-            {isArabic ? 'أبرز المزايا الاستراتيجية والتنظيمية' : 'Key Strategic & Regulatory Advantages'}
-          </h2>
-          <p className="text-slate-400 text-sm">
+        <ScrollReveal>
+          <h2 className={H2}>{isArabic ? 'أبرز المزايا الاستراتيجية والتنظيمية' : 'Key Strategic & Regulatory Advantages'}</h2>
+          <p className={SUB}>
             {isArabic ? 'لماذا تختار تأسيس شركتك في هذه الوجهة مع إكسبيديا لخدمات الأعمال؟' : 'Why incorporate in this jurisdiction with Expedia Business Services?'}
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4">
           {keyHighlights.map((item, idx) => (
-            <TiltCard key={idx} className="p-6 rounded-2xl bg-obsidian-950/60 border border-white/5 flex flex-col justify-between">
-              <div>
-                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center mb-4 border border-white/10">
-                  {getHighlightIcon(item.iconName)}
-                </div>
-                <h3 className="text-base font-display font-bold text-white mb-2">
-                  {isArabic ? item.titleAr : item.titleEn}
-                </h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  {isArabic ? item.descAr : item.descEn}
-                </p>
-              </div>
-            </TiltCard>
+            <InteractiveCard key={idx} className="p-6">
+              <span className="grid h-11 w-11 place-items-center rounded-xl border border-gold-400/25 bg-gold-400/10">
+                {getHighlightIcon(item.iconName)}
+              </span>
+              <h3 className="mt-4 text-lg font-bold leading-snug text-white">
+                {isArabic ? item.titleAr : item.titleEn}
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                {isArabic ? item.descAr : item.descEn}
+              </p>
+            </InteractiveCard>
           ))}
         </div>
       </section>
 
-      {/* 2026 Transparent Tariff Breakdown Table */}
+      {/* Tariff table */}
       <section className="mb-16">
-        <div className="rounded-3xl p-8 bg-obsidian-950/80 border border-white/10 shadow-xl overflow-hidden">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
-            <div>
-              <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mb-2">
-                {isArabic ? costBreakdown.titleAr : costBreakdown.titleEn}
-              </h2>
-              <p className="text-slate-400 text-sm">
-                {isArabic ? costBreakdown.subtitleAr : costBreakdown.subtitleEn}
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono">
+        <ScrollReveal>
+          <div className="overflow-hidden rounded-[var(--radius-panel)] border border-white/10 bg-obsidian-900/70 p-6 shadow-card sm:p-8">
+            <div className="mb-8 flex flex-col justify-between gap-4 md:flex-row md:items-center">
+              <div>
+                <h2 className={H2}>{isArabic ? costBreakdown.titleAr : costBreakdown.titleEn}</h2>
+                <p className={SUB}>{isArabic ? costBreakdown.subtitleAr : costBreakdown.subtitleEn}</p>
+              </div>
+              <span className="chip chip-accent self-start md:self-auto">
                 {isArabic ? 'تعرفة رسمية محدثة 2026' : '2026 Verified Tariffs'}
               </span>
             </div>
-          </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left rtl:text-right border-collapse">
-              <thead>
-                <tr className="border-b border-white/10 text-xs font-mono text-slate-400">
-                  <th className="py-4 px-4">{isArabic ? 'بند الرسوم / الباقة' : 'Fee Item / Package Category'}</th>
-                  <th className="py-4 px-4">{isArabic ? 'الرسوم الرسمية (درهم)' : 'Official Tariff (AED)'}</th>
-                  <th className="py-4 px-4">{isArabic ? 'التفاصيل والمشمولات' : 'Inclusions & Details'}</th>
-                  <th className="py-4 px-4 text-center">{isArabic ? 'طلب الباقة' : 'Direct Action'}</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-white/5 text-sm">
-                {costBreakdown.items.map((item, idx) => (
-                  <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
-                    <td className="py-4 px-4 font-semibold text-white">
-                      {isArabic ? item.categoryAr : item.categoryEn}
-                    </td>
-                    <td className="py-4 px-4 font-mono font-bold text-emerald-400 whitespace-nowrap">
-                      {isArabic ? "حسب عرض الأسعار" : "Quotation required"}
-                    </td>
-                    <td className="py-4 px-4 text-xs text-slate-400 max-w-md">
-                      {isArabic ? item.notesAr : item.notesEn}
-                    </td>
-                    <td className="py-4 px-4 text-center whitespace-nowrap">
-                      <button
-                        onClick={() => handleWhatsAppQuote(isArabic ? item.categoryAr : item.categoryEn)}
-                        className="px-3 py-1.5 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-mono transition-all"
-                      >
-                        {isArabic ? 'طلب الباقة' : 'Inquire'}
-                      </button>
-                    </td>
+            <div className="overflow-x-auto" role="region" tabIndex={0} aria-label={isArabic ? 'جدول الرسوم، قابل للتمرير أفقياً' : 'Fee table, scrolls horizontally'}>
+              <table className="w-full min-w-[40rem] border-collapse text-start">
+                <thead>
+                  <tr className="border-b border-gold-400/25 text-sm text-slate-400">
+                    <th scope="col" className="px-4 py-4 text-start font-semibold">{isArabic ? 'بند الرسوم / الباقة' : 'Fee Item / Package Category'}</th>
+                    <th scope="col" className="px-4 py-4 text-start font-semibold">{isArabic ? 'الرسوم الرسمية (درهم)' : 'Official Tariff (AED)'}</th>
+                    <th scope="col" className="px-4 py-4 text-start font-semibold">{isArabic ? 'التفاصيل والمشمولات' : 'Inclusions & Details'}</th>
+                    <th scope="col" className="px-4 py-4 text-center font-semibold">{isArabic ? 'طلب الباقة' : 'Direct Action'}</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-
-          <div className="mt-6 pt-4 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-            <div>
-              {isArabic 
-                ? 'رقم الرخصة التجارية المعتمدة: CN-6307408 • دائرة التنمية الاقتصادية - أبوظبي' 
-                : 'Expedia Business & Services L.L.C • Abu Dhabi DED Trade License CN-6307408'}
+                </thead>
+                <tbody className="divide-y divide-white/[0.07] text-sm">
+                  {costBreakdown.items.map((item, idx) => (
+                    <tr key={idx} className="align-top transition-colors hover:bg-white/[0.03]">
+                      <th scope="row" className="px-4 py-4 text-start font-semibold text-white">
+                        {isArabic ? item.categoryAr : item.categoryEn}
+                      </th>
+                      <td className="whitespace-nowrap px-4 py-4 font-semibold text-emerald-400">
+                        {isArabic ? "حسب عرض الأسعار" : "Quotation required"}
+                      </td>
+                      <td className="max-w-md px-4 py-4 leading-6 text-slate-400">
+                        {isArabic ? item.notesAr : item.notesEn}
+                      </td>
+                      <td className="whitespace-nowrap px-4 py-4 text-center">
+                        <button
+                          type="button"
+                          onClick={() => handleWhatsAppQuote(isArabic ? item.categoryAr : item.categoryEn)}
+                          className="btn btn-secondary btn-sm"
+                        >
+                          {isArabic ? 'طلب الباقة' : 'Inquire'}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-            <div className="flex items-center gap-3">
-              <button 
-                onClick={onOpenEstimator}
-                className="text-emerald-400 hover:underline flex items-center gap-1 font-semibold"
-              >
-                <Calculator className="w-3.5 h-3.5" />
+
+            <div className="mt-6 flex flex-col items-start justify-between gap-4 border-t border-white/10 pt-5 text-sm text-slate-400 sm:flex-row sm:items-center">
+              <div>
+                {isArabic
+                  ? 'رقم الرخصة التجارية المعتمدة: CN-6307408 • دائرة التنمية الاقتصادية - أبوظبي'
+                  : 'Expedia Business & Services L.L.C • Abu Dhabi DED Trade License CN-6307408'}
+              </div>
+              <button type="button" onClick={onOpenEstimator} className="inline-flex items-center gap-2 py-1 font-semibold text-emerald-400 underline-offset-4 hover:underline">
+                <Calculator className="h-4 w-4" aria-hidden="true" />
                 {isArabic ? 'حاسبة التكاليف المباشرة' : 'Launch Custom Calculator'}
               </button>
             </div>
           </div>
-        </div>
+        </ScrollReveal>
       </section>
 
-      {/* Step-by-Step Formation Process */}
+      {/* Roadmap: a real sequence, so the steps are numbered */}
       <section className="mb-16">
-        <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mb-2">
-            {isArabic ? 'خطوات التأسيس وإصدار الرخصة' : 'Step-by-Step Formation Roadmap'}
-          </h2>
-          <p className="text-slate-400 text-sm">
+        <ScrollReveal>
+          <h2 className={H2}>{isArabic ? 'خطوات التأسيس وإصدار الرخصة' : 'Step-by-Step Formation Roadmap'}</h2>
+          <p className={SUB}>
             {isArabic ? 'مسار واضح وسريع من تقديم الطلب حتى استلام الرخصة والحساب البنكي' : 'A transparent, streamlined journey from digital KYC to active commercial trading'}
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <ol className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-4">
           {stepByStepProcess.map((step, idx) => (
-            <div key={idx} className="p-6 rounded-2xl bg-obsidian-950/60 border border-white/5 relative">
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-2xl font-mono font-bold text-emerald-400">{step.step}</span>
-                <span className="px-2 py-0.5 rounded bg-white/5 text-[11px] font-mono text-slate-400">
-                  {isArabic ? step.durationAr : step.durationEn}
-                </span>
+            <li key={idx} className="card p-6">
+              <div className="flex items-center justify-between gap-3">
+                <span className="grid h-10 w-10 place-items-center rounded-full border border-gold-400/60 font-display text-base font-bold text-gold-300 tnum">{step.step}</span>
+                <span className="chip">{isArabic ? step.durationAr : step.durationEn}</span>
               </div>
-              <h3 className="text-sm font-display font-bold text-white mb-2">
+              <h3 className="mt-4 text-base font-bold leading-snug text-white">
                 {isArabic ? step.titleAr : step.titleEn}
               </h3>
-              <p className="text-xs text-slate-400 leading-relaxed">
+              <p className="mt-2 text-sm leading-6 text-slate-400">
                 {isArabic ? step.descAr : step.descEn}
               </p>
-            </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
-      {/* Permitted Activities Showcase */}
+      {/* Activities */}
       <section className="mb-16">
-        <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mb-2">
-            {isArabic ? 'الأنشطة الاقتصادية والتجارية المعتمدة' : 'Approved Business Activity Groups'}
-          </h2>
-          <p className="text-slate-400 text-sm">
+        <ScrollReveal>
+          <h2 className={H2}>{isArabic ? 'الأنشطة الاقتصادية والتجارية المعتمدة' : 'Approved Business Activity Groups'}</h2>
+          <p className={SUB}>
             {isArabic ? 'تغطية شاملة لأكثر من 1500 نشاط تجاري ومهني وصناعي' : 'Full compliance with official UAE activity master classification codes'}
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
           {activityCategories.map((group, idx) => (
-            <div key={idx} className="p-6 rounded-2xl bg-obsidian-950/60 border border-white/5">
-              <h3 className="text-base font-display font-bold text-emerald-400 mb-4 pb-2 border-b border-white/5">
+            <div key={idx} className="card p-6">
+              <h3 className="mb-4 border-b border-white/10 pb-3 text-base font-bold text-gold-300">
                 {isArabic ? group.nameAr : group.nameEn}
               </h3>
-              <ul className="space-y-2">
+              <ul className="space-y-2.5">
                 {(isArabic ? group.examplesAr : group.examplesEn).map((ex, i) => (
-                  <li key={i} className="text-xs text-slate-300 flex items-center gap-2">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                  <li key={i} className="flex items-start gap-2.5 text-sm leading-6 text-slate-300">
+                    <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" aria-hidden="true" />
                     <span>{ex}</span>
                   </li>
                 ))}
@@ -412,39 +365,38 @@ export function DedicatedJurisdictionPage({
         </div>
       </section>
 
-      {/* High-Intent FAQ Section */}
+      {/* FAQ */}
       <section className="mb-16">
-        <div className="mb-8">
-          <h2 className="text-2xl sm:text-3xl font-display font-bold text-white mb-2">
-            {isArabic ? 'الأسئلة الشائعة والمعلومات القانونية' : 'Frequently Asked Questions & Legal Clarifications'}
-          </h2>
-          <p className="text-slate-400 text-sm">
+        <ScrollReveal>
+          <h2 className={H2}>{isArabic ? 'الأسئلة الشائعة والمعلومات القانونية' : 'Frequently Asked Questions & Legal Clarifications'}</h2>
+          <p className={SUB}>
             {isArabic ? 'إجابات مباشرة ومفصلة حول الإجراءات والضرائب والإقامات' : 'Clear, factual guidance on licensing, taxation, and residency'}
           </p>
-        </div>
+        </ScrollReveal>
 
-        <div className="space-y-3">
+        <div className="mt-8 divide-y divide-white/10 overflow-hidden rounded-[var(--radius-card)] border border-white/10 bg-obsidian-900/60">
           {faqList.map((faq, idx) => (
-            <div 
-              key={idx}
-              className="rounded-2xl border border-white/5 bg-obsidian-950/60 overflow-hidden transition-colors"
-            >
-              <button
-                id={`service-faq-${slug}-${idx}`}
-                aria-expanded={openFaqIndex === idx}
-                aria-controls={openFaqIndex === idx ? `service-answer-${slug}-${idx}` : undefined}
-                onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
-                className="w-full p-5 text-left rtl:text-right flex items-center justify-between space-x-4 rtl:space-x-reverse"
-              >
-                <span className="font-display font-semibold text-white text-sm sm:text-base">
-                  {isArabic ? faq.questionAr : faq.questionEn}
-                </span>
-                <ChevronDown className={`w-5 h-5 text-emerald-400 shrink-0 transition-transform duration-300 ${
-                  openFaqIndex === idx ? 'rotate-180' : ''
-                }`} />
-              </button>
+            <div key={idx} className={`transition-colors duration-300 ${openFaqIndex === idx ? 'bg-obsidian-900' : ''}`}>
+              <h3>
+                <button
+                  type="button"
+                  id={`service-faq-${slug}-${idx}`}
+                  aria-expanded={openFaqIndex === idx}
+                  aria-controls={openFaqIndex === idx ? `service-answer-${slug}-${idx}` : undefined}
+                  onClick={() => setOpenFaqIndex(openFaqIndex === idx ? null : idx)}
+                  className="flex w-full items-center justify-between gap-4 px-5 py-5 text-start sm:px-6"
+                >
+                  <span className={`text-base font-bold leading-snug transition-colors ${openFaqIndex === idx ? 'text-emerald-400' : 'text-white'}`}>
+                    {isArabic ? faq.questionAr : faq.questionEn}
+                  </span>
+                  <ChevronDown
+                    className={`h-5 w-5 shrink-0 text-emerald-400 transition-transform duration-300 ${openFaqIndex === idx ? 'rotate-180' : ''}`}
+                    aria-hidden="true"
+                  />
+                </button>
+              </h3>
 
-              <AnimatePresence>
+              <AnimatePresence initial={false}>
                 {openFaqIndex === idx && (
                   <motion.div
                     id={`service-answer-${slug}-${idx}`}
@@ -453,12 +405,12 @@ export function DedicatedJurisdictionPage({
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                     className="overflow-hidden"
                   >
-                    <div className="p-5 pt-0 text-slate-300 text-xs sm:text-sm leading-relaxed border-t border-white/5">
+                    <div className="px-5 pb-6 text-[0.9375rem] leading-7 text-slate-300 sm:px-6">
                       {isArabic ? faq.answerAr : faq.answerEn}
-                      {faq.sourceUrl && <a href={faq.sourceUrl} target="_blank" rel="noopener noreferrer" className="block mt-3 text-emerald-300 underline">{isArabic ? 'المصدر: البوابة الرسمية لحكومة الإمارات' : 'Source: UAE Government portal'}</a>}
+                      {faq.sourceUrl && <a href={faq.sourceUrl} target="_blank" rel="noopener noreferrer" className="mt-3 block text-emerald-300 underline underline-offset-4">{isArabic ? 'المصدر: البوابة الرسمية لحكومة الإمارات' : 'Source: UAE Government portal'}</a>}
                     </div>
                   </motion.div>
                 )}
@@ -468,18 +420,18 @@ export function DedicatedJurisdictionPage({
         </div>
       </section>
 
-      {/* Compare Other Free Zones Hub Links */}
-      <section className="p-8 rounded-3xl bg-gradient-to-r from-emerald-950/40 via-obsidian-950 to-sky-950/40 border border-white/10 text-center">
-        <h2 className="text-xl sm:text-2xl font-display font-bold text-white mb-3">
+      {/* Other jurisdictions */}
+      <section className="rounded-[var(--radius-panel)] border border-white/10 bg-obsidian-900/60 p-8 text-center sm:p-10">
+        <h2 className="font-display text-xl font-bold leading-tight text-white sm:text-2xl">
           {isArabic ? 'استكشف الوجهات والمقارنات الأخرى في الإمارات' : 'Explore Other UAE Jurisdictions & Comparison Guides'}
         </h2>
-        <p className="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto mb-6">
-          {isArabic 
+        <p className="mx-auto mt-3 max-w-2xl text-base leading-7 text-slate-400">
+          {isArabic
             ? 'اطلع على أدلة المقارنة والأسعار التفصيلية لكافة المناطق الحرة والبر الرئيسي في أبوظبي ودبي'
             : 'Access official 2026 pricing breakdowns and comparison engines across all major UAE setup hubs.'}
         </p>
 
-        <div className="flex flex-wrap justify-center gap-3">
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
           {[
             { id: 'meydan-free-zone', labelEn: 'Meydan Free Zone (Dubai)', labelAr: 'منطقة ميدان الحرة (دبي)' },
             { id: 'masdar-city-free-zone', labelEn: 'Masdar City Free Zone (Abu Dhabi)', labelAr: 'مدينة مصدر الحرة (أبوظبي)' },
@@ -496,7 +448,7 @@ export function DedicatedJurisdictionPage({
                 event.preventDefault();
                 onNavigateSlug(item.id);
               }}
-              className="px-4 py-2 rounded-xl bg-white/5 hover:bg-emerald-500/20 text-slate-300 hover:text-emerald-400 border border-white/10 text-xs font-mono transition-all"
+              className="btn btn-secondary btn-sm"
             >
               {isArabic ? item.labelAr : item.labelEn}
             </a>

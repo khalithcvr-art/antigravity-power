@@ -1,24 +1,18 @@
 import React from 'react';
-import { motion } from 'motion/react';
-import { 
-  Building2, 
-  ShieldCheck, 
-  Award, 
-  CheckCircle2, 
-  Sparkles, 
-  MapPin, 
-  FileCheck2, 
-  Lock, 
-  Cpu, 
-  Zap,
-  Globe2,
-  Users2,
+import {
+  ShieldCheck,
+  Award,
+  CircleCheck,
+  MapPin,
+  FileCheck2,
+  Cpu,
+  Sparkles,
   ArrowRight,
   ArrowLeft
 } from 'lucide-react';
-import { COMPANY_INFO } from '../data/siteData';
 import { generateWhatsAppUrl, trackConversion } from '../lib/tracking';
-import { ScrollReveal, BorderBeam, AnimatedCounter } from './motion/MotionPrimitives';
+import { ScrollReveal, AnimatedCounter } from './motion/MotionPrimitives';
+import { SectionHeader } from './SectionHeader';
 import { DualEngineMode } from '../types';
 
 interface AboutSectionProps {
@@ -46,7 +40,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     {
       id: 'pillar-1',
       icon: ShieldCheck,
-      color: 'emerald',
       title: isArabic ? 'شركة مرخّصة من دائرة التنمية الاقتصادية في أبوظبي' : 'Government-Licensed Legal Entity',
       subtitle: isArabic ? 'رخصة تجارية رقم CN-6307408' : 'ADDED License No. CN-6307408',
       desc: isArabic
@@ -57,7 +50,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     {
       id: 'pillar-2',
       icon: Award,
-      color: 'cyan',
       title: isArabic ? 'أربع مناطق حرة نعمل معها بانتظام' : 'Four Free Zones We Work With Regularly',
       subtitle: isArabic ? 'ميدان، مدينة مصدر، إيفزا، عجمان' : 'Meydan, Masdar City, IFZA & Ajman',
       desc: isArabic
@@ -68,7 +60,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     {
       id: 'pillar-3',
       icon: FileCheck2,
-      color: 'indigo',
       title: isArabic ? '12+ عاماً من الخبرة التنظيمية في الإمارات' : '12+ Years Regulatory Track Record',
       subtitle: isArabic ? 'أعمال في البر الرئيسي والمناطق الحرة' : 'Mainland & Free Zone Casework',
       desc: isArabic
@@ -79,7 +70,6 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     {
       id: 'pillar-4',
       icon: Cpu,
-      color: 'teal',
       title: isArabic ? 'المحرك المزدوج: تأسيس قانوني + هندسة برمجية' : 'Sovereign Dual-Engine Architecture',
       subtitle: isArabic ? 'منظومة شاملة للنمو الرقمي' : 'Legal Compliance + Bespoke Next.js Tech',
       desc: isArabic
@@ -117,191 +107,127 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
   ];
 
   return (
-    <section id="about" className={`py-24 relative bg-obsidian-950 border-t border-white/5 overflow-hidden ${isArabic ? 'font-arabic' : ''}`}>
-      
-      {/* Subtle Background Glows */}
-      <div className="absolute top-1/3 -left-40 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-40 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none" />
+    <section id="about" className="section border-t border-white/5">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Eyebrow & Header */}
-        <ScrollReveal>
-          <div className="max-w-3xl mx-auto text-center mb-16">
-            <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-wider text-slate-300 mb-4 shadow-sm">
-              <Building2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>
-                {isArabic 
-                  ? 'الملف التعريفي والسيادي للشركة · رخصة تجارية CN-6307408' 
-                  : 'Official Sovereign Entity Dossier · Trade License CN-6307408'}
-              </span>
-            </div>
+        <SectionHeader
+          eyebrow={
+            isArabic
+              ? 'الملف التعريفي والسيادي للشركة · رخصة تجارية CN-6307408'
+              : 'Official Sovereign Entity Dossier · Trade License CN-6307408'
+          }
+          title={
+            isArabic
+              ? 'الفريق الاستراتيجي خلف تأسيس الشركات وخدمات العلاقات الحكومية في الإمارات'
+              : 'The Strategic Advisory Team Behind UAE Company Formation & PRO Services'
+          }
+          subtitle={
+            isArabic ? (
+              <>
+                شركة <strong className="font-semibold text-white">إكسبيديا لخدمات الأعمال ش.ذ.م.م</strong> (Expedia Business and Services L.L.C) هي بيت خبرة ومستشار تنظيمي مرخص من <strong className="font-semibold text-white">دائرة التنمية الاقتصادية في أبوظبي</strong>، ومقرها الرئيسي في <strong className="font-semibold text-white">هايبو، الطابق الأول، أبوظبي مول</strong>. نجمع بين التمثيل الحكومي السيادي والتكنولوجيا الرقمية المتقدمة لتمكين المستثمرين من إطلاق وتوسيع أعمالهم بثقة مطلقة.
+              </>
+            ) : (
+              <>
+                <strong className="font-semibold text-white">Expedia Business and Services L.L.C</strong> is a business consultancy licensed by the <strong className="font-semibold text-white">Abu Dhabi Department of Economic Development (ADDED)</strong>, headquartered at <strong className="font-semibold text-white">Haibu, Level 1, Abu Dhabi Mall</strong>. We unite statutory legal governance with enterprise full-stack software engineering to accelerate commercial growth across the UAE.
+              </>
+            )
+          }
+        />
 
-            <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight leading-tight">
-              {isArabic ? (
-                <>
-                  الفريق الاستراتيجي خلف <br className="hidden sm:inline" />
-                  <span className="text-gradient-emerald">تأسيس الشركات وخدمات العلاقات الحكومية في الإمارات</span>
-                </>
-              ) : (
-                <>
-                  The Strategic Advisory Team Behind <br className="hidden sm:inline" />
-                  <span className="text-gradient-emerald">UAE Company Formation & PRO Services</span>
-                </>
-              )}
-            </h2>
-
-            <p className="text-slate-400 text-sm sm:text-base mt-4 leading-relaxed">
-              {isArabic ? (
-                <>
-                  شركة <strong className="text-white">إكسبيديا لخدمات الأعمال ش.ذ.م.م</strong> (Expedia Business and Services L.L.C) هي بيت خبرة ومستشار تنظيمي مرخص من <strong className="text-emerald-400">دائرة التنمية الاقتصادية في أبوظبي</strong>، ومقرها الرئيسي في <strong className="text-white">هايبو، الطابق الأول، أبوظبي مول</strong>. نجمع بين التمثيل الحكومي السيادي والتكنولوجيا الرقمية المتقدمة لتمكين المستثمرين من إطلاق وتوسيع أعمالهم بثقة مطلقة.
-                </>
-              ) : (
-                <>
-                  <strong className="text-white">Expedia Business and Services L.L.C</strong> is a business consultancy licensed by the <strong className="text-emerald-400">Abu Dhabi Department of Economic Development (ADDED)</strong>, headquartered at <strong className="text-white">Haibu, Level 1, Abu Dhabi Mall</strong>. We unite statutory legal governance with enterprise full-stack software engineering to accelerate commercial growth across the UAE.
-                </>
-              )}
-            </p>
-          </div>
-        </ScrollReveal>
-
-        {/* Live Statistics Counter Dashboard */}
-        <ScrollReveal>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-16">
+        {/* Facts: one hairline-divided band */}
+        <ScrollReveal className="mt-12">
+          <dl className="grid grid-cols-2 gap-px overflow-hidden rounded-[var(--radius-card)] border border-white/10 bg-white/10 lg:grid-cols-4">
             {STATS_DATA.map((stat, idx) => (
-              <div 
-                key={idx}
-                className="p-6 rounded-2xl bg-obsidian-900/80 border border-white/10 glass-panel relative overflow-hidden group hover:border-emerald-500/30 transition-all duration-300"
-              >
-                <div className="text-3xl sm:text-4xl font-display font-extrabold text-white mb-1 group-hover:text-emerald-300 transition-colors">
+              <div key={idx} className="flex flex-col bg-obsidian-950 p-6 sm:p-7">
+                <dd className="order-1 font-sans text-4xl font-extrabold leading-none tracking-tight text-white sm:text-5xl">
                   <AnimatedCounter value={stat.value} />
-                  <span className="text-emerald-400">{stat.suffix}</span>
-                </div>
-                <div className="font-display font-bold text-xs sm:text-sm text-slate-200">
-                  {stat.label}
-                </div>
-                <div className="text-[11px] text-slate-400 font-mono mt-1">
-                  {stat.sub}
-                </div>
+                  <span className="text-gold-400">{stat.suffix}</span>
+                </dd>
+                <dt className="order-2 mt-4 text-base font-bold leading-snug text-slate-100">{stat.label}</dt>
+                <dd className="order-3 mt-1 text-sm leading-5 text-slate-400">{stat.sub}</dd>
               </div>
             ))}
-          </div>
+          </dl>
         </ScrollReveal>
 
-        {/* 4 Core Pillars Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+        {/* Four grounds of trust */}
+        <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2">
           {TRUST_PILLARS.map((pillar) => {
             const Icon = pillar.icon;
             return (
-              <ScrollReveal key={pillar.id}>
-                <div className="h-full p-8 rounded-3xl bg-obsidian-900/60 border border-white/10 glass-panel hover:border-emerald-500/30 transition-all duration-300 flex flex-col justify-between space-y-6 group">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-obsidian-950 transition-all duration-300">
-                        <Icon className="w-6 h-6" />
-                      </div>
-                      <span className="text-[11px] font-mono text-slate-400 px-3 py-1 rounded-full bg-white/5 border border-white/10">
-                        {pillar.subtitle}
-                      </span>
-                    </div>
-
-                    <div>
-                      <h3 className="font-display font-bold text-xl text-white group-hover:text-emerald-300 transition-colors">
-                        {pillar.title}
-                      </h3>
-                      <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
-                        {pillar.desc}
-                      </p>
-                    </div>
+              <ScrollReveal key={pillar.id} className="h-full">
+                <div className="card group flex h-full flex-col p-7 sm:p-8">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <span className="grid h-12 w-12 place-items-center rounded-xl border border-gold-400/30 bg-gold-400/10 text-gold-400">
+                      <Icon className="h-6 w-6" aria-hidden="true" />
+                    </span>
+                    <span className="chip">{pillar.subtitle}</span>
                   </div>
 
-                  <div className="pt-4 border-t border-white/5 flex flex-wrap gap-2">
+                  <h3 className="mt-5 text-xl font-bold leading-snug text-white">{pillar.title}</h3>
+                  <p className="mb-6 mt-2 text-[0.9375rem] leading-7 text-slate-300">{pillar.desc}</p>
+
+                  <ul className="mt-auto flex flex-wrap gap-2 border-t border-white/10 pt-5">
                     {pillar.badges.map((badge, bIdx) => (
-                      <span 
-                        key={bIdx}
-                        className="px-2.5 py-1 rounded-lg bg-white/5 border border-white/10 text-[11px] font-mono text-emerald-300/90"
-                      >
-                        ✓ {badge}
-                      </span>
+                      <li key={bIdx} className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-sm text-slate-200">
+                        <CircleCheck className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />
+                        {badge}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               </ScrollReveal>
             );
           })}
         </div>
 
-        {/* Physical Office & Direct Governance Card */}
-        <ScrollReveal>
-          <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-obsidian-900 via-obsidian-950 to-obsidian-900 border border-white/15 shadow-2xl relative overflow-hidden">
-            <BorderBeam size={240} duration={10} colorFrom="#10b981" colorTo="#06b6d4" />
-            
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center relative z-10">
-              <div className="lg:col-span-2 space-y-4">
-                <div className="flex items-center space-x-2 rtl:space-x-reverse text-emerald-400 text-xs font-mono uppercase tracking-wider">
-                  <MapPin className="w-4 h-4" />
-                  <span>{isArabic ? 'المقر الرئيسي والموقع الجغرافي' : 'Headquarters & GEO Presence'}</span>
-                </div>
+        {/* Office */}
+        <ScrollReveal className="mt-10">
+          <div className="relative overflow-hidden rounded-[var(--radius-panel)] border border-gold-400/25 bg-obsidian-900/80 p-8 shadow-card sm:p-10">
+            <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-3">
+              <div className="space-y-4 lg:col-span-2">
+                <p className="eyebrow">
+                  <MapPin className="h-4 w-4 text-gold-400" aria-hidden="true" />
+                  {isArabic ? 'المقر الرئيسي والموقع الجغرافي' : 'Headquarters & GEO Presence'}
+                </p>
 
-                <h3 className="font-display font-bold text-2xl sm:text-3xl text-white">
-                  {isArabic 
-                    ? 'تفضل بزيارة مقرنا الرئيسي في قلب العاصمة أبوظبي' 
+                <h3 className="font-display text-2xl font-bold leading-tight text-white sm:text-3xl">
+                  {isArabic
+                    ? 'تفضل بزيارة مقرنا الرئيسي في قلب العاصمة أبوظبي'
                     : 'Visit Our Executive Office in Central Abu Dhabi'}
                 </h3>
 
-                <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                <p className="text-base leading-7 text-slate-300">
                   {isArabic ? (
                     <>
-                      يقع مكتبنا في <strong>هايبو، الطابق الأول، أبوظبي مول، النادي السياحي، أبوظبي</strong>. نوفر لعملائنا غرف اجتماعات، ومختصين في العلاقات الحكومية، ومتابعة لملفات الرخص والتأشيرات عبر بوابة تم الحكومية.
+                      يقع مكتبنا في <strong className="font-semibold text-white">هايبو، الطابق الأول، أبوظبي مول، النادي السياحي، أبوظبي</strong>. نوفر لعملائنا غرف اجتماعات، ومختصين في العلاقات الحكومية، ومتابعة لملفات الرخص والتأشيرات عبر بوابة تم الحكومية.
                     </>
                   ) : (
                     <>
-                      Located at <strong>Haibu, Level 1, Abu Dhabi Mall, Al Zahiya, Abu Dhabi</strong>. We provide meeting space, experienced PRO specialists, and application status updates coordinated through the official TAMM portal.
+                      Located at <strong className="font-semibold text-white">Haibu, Level 1, Abu Dhabi Mall, Al Zahiya, Abu Dhabi</strong>. We provide meeting space, experienced PRO specialists, and application status updates coordinated through the official TAMM portal.
                     </>
                   )}
                 </p>
 
-                <div className="flex flex-wrap gap-4 pt-2 text-xs font-mono text-slate-400">
-                  <div className="flex items-center space-x-1.5 rtl:space-x-reverse">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span>ADDED License: <strong>CN-6307408</strong></span>
-                  </div>
-                  <div className="flex items-center space-x-1.5 rtl:space-x-reverse">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400" />
-                    <span>{isArabic ? 'هاتف الاتصال: ' : 'Call: '}<strong>+971 56 4425 950</strong></span>
-                  </div>
-                  <div className="flex items-center space-x-1.5 rtl:space-x-reverse">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    <span>WhatsApp: <strong>+971 58 5858 816</strong></span>
-                  </div>
-                  <div className="flex items-center space-x-1.5 rtl:space-x-reverse">
-                    <span className="w-2 h-2 rounded-full bg-indigo-400" />
-                    <span>Email: <strong>info@expediaservices.ae</strong></span>
-                  </div>
-                </div>
+                <ul className="grid grid-cols-1 gap-x-8 gap-y-2 pt-2 text-sm text-slate-400 sm:grid-cols-2">
+                  <li>ADDED License: <strong className="font-mono font-semibold text-slate-100">CN-6307408</strong></li>
+                  <li>{isArabic ? 'هاتف الاتصال: ' : 'Call: '}<strong className="font-semibold tnum text-slate-100" dir="ltr">+971 56 4425 950</strong></li>
+                  <li>WhatsApp: <strong className="font-semibold tnum text-slate-100" dir="ltr">+971 58 5858 816</strong></li>
+                  <li>Email: <strong className="font-semibold text-slate-100" dir="ltr">info@expediaservices.ae</strong></li>
+                </ul>
               </div>
 
-              <div className="flex flex-col sm:flex-row lg:flex-col gap-3 justify-center">
-                <motion.button
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={handleConsultWhatsApp}
-                  className="w-full py-3.5 px-6 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-obsidian-950 font-display font-bold text-xs flex items-center justify-center space-x-2 rtl:space-x-reverse shadow-lg shadow-emerald-500/25 transition-all"
-                >
+              <div className="flex flex-col justify-center gap-3 sm:flex-row lg:flex-col">
+                <button type="button" onClick={handleConsultWhatsApp} className="btn btn-primary w-full">
                   <span>{isArabic ? 'حجز جلسة استشارية حضورية' : 'Book Office Consultation'}</span>
-                  <ArrowIcon className="w-3.5 h-3.5" />
-                </motion.button>
+                  <ArrowIcon className="h-4 w-4" aria-hidden="true" />
+                </button>
 
                 {onOpenEstimator && (
-                  <motion.button
-                    whileHover={{ scale: 1.03 }}
-                    whileTap={{ scale: 0.97 }}
-                    onClick={onOpenEstimator}
-                    className="w-full py-3.5 px-6 rounded-xl bg-white/10 hover:bg-white/15 text-white font-display font-bold text-xs flex items-center justify-center space-x-2 rtl:space-x-reverse border border-white/10 transition-colors"
-                  >
+                  <button type="button" onClick={onOpenEstimator} className="btn btn-secondary w-full">
                     <span>{isArabic ? 'حساب تكلفة التأسيس فورياً' : 'Calculate Formation Cost'}</span>
-                    <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-                  </motion.button>
+                    <Sparkles className="h-4 w-4 text-emerald-400" aria-hidden="true" />
+                  </button>
                 )}
               </div>
             </div>

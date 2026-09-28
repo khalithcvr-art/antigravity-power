@@ -1,16 +1,12 @@
 import { preferredScrollBehavior } from '../hooks/useMotionPreference';
 import { useMotionPreference } from '../hooks/useMotionPreference';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Terminal, 
-  Sparkles, 
-  Cpu, 
-  CheckCircle2, 
-  RotateCcw, 
-  Zap, 
-  Code2, 
+import {
+  Code2,
   ArrowRight,
+  ArrowLeft,
+  ChevronDown,
   Database,
   Search,
   ShieldCheck,
@@ -18,14 +14,14 @@ import {
   Gauge,
   Calculator,
   MessageSquare,
-  Sparkle,
-  ChevronDown,
-  Brain,
-  Rss,
-  Star
+  Sparkles,
+  RotateCcw,
+  Zap,
+  SkipForward
 } from 'lucide-react';
 import { BorderBeam } from './motion/MotionPrimitives';
 import { TRANSLATIONS } from '../data/translations';
+import { useEnterOnChange } from '../hooks/useEnterOnChange';
 
 interface DigitalCinematicHeroProps {
   isArabic: boolean;
@@ -42,22 +38,23 @@ interface IdeTab {
   lines: { text: string; color: string }[];
 }
 
+// Syntax colours stay inside the brand palette: comments slate, keywords cyan, strings emerald, values gold.
 const IDE_TABS: IdeTab[] = [
   {
     id: 'architecture',
     name: 'architecture.config.ts',
     lines: [
       { text: '// Step 1: Initialize Sovereign Web & App Engine', color: 'text-slate-500 italic' },
-      { text: 'import { SovereignEngine, NeuralMesh, AeoKnowledgeGraph } from "@expedia/core";', color: 'text-indigo-400 font-semibold' },
+      { text: 'import { SovereignEngine, NeuralMesh, AeoKnowledgeGraph } from "@expedia/core";', color: 'text-cyan-300' },
       { text: '', color: 'text-transparent' },
-      { text: 'export const digitalStudio = new SovereignEngine({', color: 'text-cyan-300 font-bold' },
+      { text: 'export const digitalStudio = new SovereignEngine({', color: 'text-cyan-200' },
       { text: '  jurisdiction: "Abu Dhabi · Dubai, UAE",', color: 'text-emerald-300' },
       { text: '  framework: "React 18 + Vite + Three.js 3D",', color: 'text-emerald-300' },
-      { text: '  performance: { budget: "agreed per project", measured: true },', color: 'text-teal-300' },
-      { text: '  searchReadiness: { structuredData: true, sitemap: true },', color: 'text-goldMuted' },
-      { text: '  intellectualProperty: "100% Client Source Code & Asset Handover"', color: 'text-cyan-300' },
-      { text: '});', color: 'text-cyan-300 font-bold' },
-      { text: 'await digitalStudio.materialize3DVisualEntity(); // [100% COMPILED]', color: 'text-emerald-400 font-mono font-bold animate-pulse' },
+      { text: '  performance: { budget: "agreed per project", measured: true },', color: 'text-emerald-300' },
+      { text: '  searchReadiness: { structuredData: true, sitemap: true },', color: 'text-gold-300' },
+      { text: '  intellectualProperty: "100% Client Source Code & Asset Handover"', color: 'text-emerald-300' },
+      { text: '});', color: 'text-cyan-200' },
+      { text: 'await digitalStudio.materialize3DVisualEntity(); // [100% COMPILED]', color: 'text-emerald-300' },
     ]
   },
   {
@@ -65,16 +62,25 @@ const IDE_TABS: IdeTab[] = [
     name: 'holographic3D.glsl',
     lines: [
       { text: '// Step 2: GPU Volumetric Raymarching Shader', color: 'text-slate-500 italic' },
-      { text: '#version 300 es', color: 'text-purple-400' },
-      { text: 'precision highp float;', color: 'text-purple-400' },
+      { text: '#version 300 es', color: 'text-gold-300' },
+      { text: 'precision highp float;', color: 'text-gold-300' },
       { text: 'uniform vec3 u_neonGlow; // Electric Cyan & Emerald', color: 'text-cyan-300' },
-      { text: 'void main() {', color: 'text-cyan-400 font-bold' },
+      { text: 'void main() {', color: 'text-cyan-200' },
       { text: '  vec3 logoVector = renderExpedia3DMesh(v_uv);', color: 'text-emerald-300' },
-      { text: '  fragColor = vec4(logoVector * u_neonGlow, 1.0); // 3D Mesh Output', color: 'text-teal-300 font-bold' },
-      { text: '}', color: 'text-cyan-400 font-bold' },
+      { text: '  fragColor = vec4(logoVector * u_neonGlow, 1.0); // 3D Mesh Output', color: 'text-emerald-300' },
+      { text: '}', color: 'text-cyan-200' },
     ]
   }
 ];
+
+type Stage = 'terminal' | 'materialize' | 'flying' | 'docked';
+
+// One sequence, about seven seconds: type, hold the lockup, fly the logo home, reveal the page.
+const T_LOCKUP = 3400;
+const T_FLIGHT = 5600;
+const T_DOCK = 6900;
+
+interface FlightPath { x0: number; y0: number; x1: number; y1: number; scale: number }
 
 export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
   isArabic,
@@ -85,739 +91,448 @@ export const DigitalCinematicHero: React.FC<DigitalCinematicHeroProps> = ({
   onExploreServices,
 }) => {
   const reducedMotion = useMotionPreference();
-  // Stages:
-  // 1. 'terminal' (0s - 4.5s): Terminal in center, typing line-by-line slowly and clearly
-  // 2. 'materialize' (4.5s - 8.5s): Code morphs into Grand 3D Logo with glowing wireframes & explanation
-  // 3. 'flying' (8.5s - 11.0s): Smooth, slow, majestic flight curving up-left to header logo position
-  // 4. 'docked' (11.0s+): Snaps into navbar, and hero headlines, directional animated buttons (Left/Right) appear!
-  const [animStage, setAnimStage] = useState<'terminal' | 'materialize' | 'flying' | 'docked'>('terminal');
+  const [animStage, setAnimStage] = useState<Stage>('terminal');
   const [activeTab, setActiveTab] = useState<string>('architecture');
   const [visibleLinesCount, setVisibleLinesCount] = useState<number>(2);
   const [progress, setProgress] = useState<number>(10);
   const [compiledBytes, setCompiledBytes] = useState<number>(0);
-  const [mouseTilt, setMouseTilt] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
   const [activeSandboxTab, setActiveSandboxTab] = useState<'web' | 'crm' | 'aeo'>('web');
-  const [targetCoords, setTargetCoords] = useState<{ x: number; y: number } | null>(null);
+  const [flight, setFlight] = useState<FlightPath | null>(null);
+  const enterPanel = useEnterOnChange(activeSandboxTab);
+
+  // Every timer of the intro lives here, so Skip and Replay can cancel all of them.
+  const timers = useRef<Array<ReturnType<typeof setTimeout> | ReturnType<typeof setInterval>>>([]);
+  const lockupLogo = useRef<HTMLImageElement>(null);
 
   const tHero = isArabic ? TRANSLATIONS.ar.hero : TRANSLATIONS.en.hero;
   const tNav = isArabic ? TRANSLATIONS.ar.navbar : TRANSLATIONS.en.navbar;
+  const ArrowIcon = isArabic ? ArrowLeft : ArrowRight;
 
-  // Measure target navbar position dynamically
-  const updateTargetCoords = () => {
-    const targetEl = document.getElementById('navbar-logo-target');
-    if (targetEl) {
-      const rect = targetEl.getBoundingClientRect();
-      setTargetCoords({
-        x: rect.left + rect.width / 2,
-        y: rect.top + rect.height / 2,
-      });
-    } else {
-      setTargetCoords({ x: 140, y: 40 });
-    }
-  };
-
-  useEffect(() => {
-    updateTargetCoords();
-    window.addEventListener('resize', updateTargetCoords);
-    window.addEventListener('scroll', updateTargetCoords);
-    return () => {
-      window.removeEventListener('resize', updateTargetCoords);
-      window.removeEventListener('scroll', updateTargetCoords);
-    };
+  const clearTimers = useCallback(() => {
+    timers.current.forEach((id) => { clearTimeout(id as ReturnType<typeof setTimeout>); clearInterval(id as ReturnType<typeof setInterval>); });
+    timers.current = [];
+  }, []);
+  const later = useCallback((fn: () => void, ms: number) => {
+    timers.current.push(setTimeout(fn, ms));
   }, []);
 
-  const runSequence = () => {
-    if (reducedMotion) { setAnimStage('docked'); onLogoDocked(true); return; }
+  const startFlight = useCallback(() => {
+    const from = lockupLogo.current?.getBoundingClientRect();
+    // The real header logo (still invisible at this point) is both the landing spot and the size to land at.
+    const target = document.querySelector<HTMLImageElement>('#navbar-logo-target img')?.getBoundingClientRect();
+    if (from && target && target.height > 0) {
+      setFlight({
+        x0: from.left + from.width / 2,
+        y0: from.top + from.height / 2,
+        x1: target.left + target.width / 2,
+        y1: target.top + target.height / 2,
+        scale: Math.max(from.height / target.height, 1),
+      });
+    } else {
+      setFlight(null);
+    }
+    setAnimStage('flying');
+  }, []);
+
+  const dock = useCallback(() => {
+    clearTimers();
+    setFlight(null);
+    setAnimStage('docked');
+    onLogoDocked(true);
+  }, [clearTimers, onLogoDocked]);
+
+  const runSequence = useCallback(() => {
+    clearTimers();
+    // Reduced motion: no timers, no flight. The page is simply there.
+    if (reducedMotion) { dock(); return; }
     onLogoDocked(false);
     setAnimStage('terminal');
+    setFlight(null);
     setActiveTab('architecture');
     setVisibleLinesCount(2);
     setProgress(15);
     setCompiledBytes(0);
-    updateTargetCoords();
 
-    // Live byte counter: simulates compiled bytes growing during typing
-    let bytesInterval: ReturnType<typeof setInterval>;
-    bytesInterval = setInterval(() => {
-      setCompiledBytes(prev => {
-        if (prev >= 48320) { clearInterval(bytesInterval); return 48320; }
-        return prev + Math.floor(Math.random() * 1200 + 400);
-      });
-    }, 120);
+    // Byte counter climbs while the console "compiles".
+    timers.current.push(setInterval(() => {
+      setCompiledBytes((prev) => Math.min(prev + Math.floor(Math.random() * 1200 + 400), 48320));
+    }, 120));
 
-    // Stage 1: Paced, clear line-by-line typing in terminal
-    const t1 = setTimeout(() => { setVisibleLinesCount(4); setProgress(30); }, 700);
-    const t2 = setTimeout(() => { setVisibleLinesCount(6); setProgress(50); }, 1400);
-    const t3 = setTimeout(() => { setVisibleLinesCount(8); setProgress(75); }, 2100);
-    const t4 = setTimeout(() => { setActiveTab('shader'); setVisibleLinesCount(4); setProgress(88); }, 2800);
-    const t5 = setTimeout(() => { setActiveTab('architecture'); setVisibleLinesCount(11); setProgress(100); }, 3500);
-
-    // Stage 2: Transformation / 3D Hologram Materialization in center (4.5s)
-    const matTimer = setTimeout(() => {
-      clearInterval(bytesInterval);
-      setCompiledBytes(48320);
-      setAnimStage('materialize');
-    }, 4500);
-
-    // Stage 3: Smooth, majestic flight & scale-down to header (8.5s)
-    const flyTimer = setTimeout(() => {
-      updateTargetCoords();
-      setAnimStage('flying');
-    }, 8500);
-
-    // Stage 4: Snap and dock into navbar (11.0s) -> triggers hero buttons choreography!
-    const dockTimer = setTimeout(() => {
-      setAnimStage('docked');
-      onLogoDocked(true);
-    }, 11000);
-
-    return () => {
-      clearInterval(bytesInterval);
-      clearTimeout(t1);
-      clearTimeout(t2);
-      clearTimeout(t3);
-      clearTimeout(t4);
-      clearTimeout(t5);
-      clearTimeout(matTimer);
-      clearTimeout(flyTimer);
-      clearTimeout(dockTimer);
-    };
-  };
+    later(() => { setVisibleLinesCount(4); setProgress(30); }, 600);
+    later(() => { setVisibleLinesCount(6); setProgress(50); }, 1200);
+    later(() => { setVisibleLinesCount(8); setProgress(75); }, 1800);
+    later(() => { setActiveTab('shader'); setVisibleLinesCount(4); setProgress(88); }, 2300);
+    later(() => { setActiveTab('architecture'); setVisibleLinesCount(11); setProgress(100); }, 2900);
+    later(() => { setCompiledBytes(48320); setAnimStage('materialize'); }, T_LOCKUP);
+    later(startFlight, T_FLIGHT);
+    later(dock, T_DOCK);
+  }, [clearTimers, dock, later, onLogoDocked, reducedMotion, startFlight]);
 
   useEffect(() => {
-    const cleanup = runSequence();
-    return cleanup;
-  }, [reducedMotion]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (reducedMotion) return;
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 22;
-    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -22;
-    setMouseTilt({ x, y });
-  };
-
-  const handleMouseLeave = () => {
-    setMouseTilt({ x: 0, y: 0 });
-  };
-
-  const handleReplay = () => {
     runSequence();
-  };
-
-  const handleSkip = () => {
-    setAnimStage('docked');
-    onLogoDocked(true);
-  };
+    return clearTimers;
+  }, [runSequence, clearTimers]);
 
   const currentTabObj = IDE_TABS.find(t => t.id === activeTab) || IDE_TABS[0];
+  const introPlaying = animStage !== 'docked';
+
+  const pillars = {
+    web: [
+      { label: '01 · Architecture', title: 'Next.js & React Development', body: 'Server-side rendering, an agreed performance budget, and bilingual Arabic/English responsive layouts.' },
+      { label: '02 · Performance', title: 'Core Web Vitals Measured Per Build', body: 'Built around customer conversion and WhatsApp enquiry flows, with results measured after launch.' },
+      { label: '03 · IP Sovereign Handover', title: '100% Full Source Code Ownership', body: 'No vendor lock-in or recurring template fees. Complete GitHub repository and production deployment transfer.' },
+    ],
+    crm: [
+      { label: '01 · Multi-Tenant Isolation', title: 'Company & Branch Isolation', body: 'Enterprise role-based permissions (Super Admin, Manager, PRO Staff) with zero cross-tenant data leakage.' },
+      { label: '02 · Financial Automation', title: 'UAE VAT Invoicing & Cashbook', body: 'Automated 5% VAT invoices, quotation conversion, real-time banking reconciliation, and attachment tracking.' },
+      { label: '03 · Government API Liaison', title: 'TAMM & MOHRE Tracking', body: 'Integrated document lifecycle tracking for commercial licenses, visa quotas, and labor file clearances.' },
+    ],
+    aeo: [
+      { label: '01 · Answer Engine Optimization', title: 'AEO: AI Search Visibility', body: 'Structured knowledge graphs and schema markup that make your business the cited answer in ChatGPT, Gemini, and Perplexity AI responses.' },
+      { label: '02 · Generative Engine Optimization', title: 'GEO: LLM Knowledge Indexing', body: 'Optimized content architecture and entity signals so large language models (LLMs) accurately cite your brand in AI-generated answers.' },
+      { label: '03 · Sovereign Content Intelligence', title: 'Multi-Layer UAE SEO Dominance', body: 'Bilingual Arabic/English semantic content strategy — ranked on Google, Bing, and cited inside AI assistant platforms simultaneously.' },
+    ],
+  } as const;
+
+  const sandboxTabs = [
+    { id: 'web', icon: Code2, label: isArabic ? 'تطبيقات الويب والمنصات الذكية' : 'Full-Stack Web & Next.js Platforms' },
+    { id: 'crm', icon: Database, label: isArabic ? 'أنظمة CRM وأتمتة الأعمال' : 'Custom CRM & Business Portals' },
+    { id: 'aeo', icon: Search, label: isArabic ? 'محركات الذكاء وهيمنة AEO/GEO' : 'AEO, GEO & Generative AI Search' },
+  ] as const;
+
+  const step = (i: number) => ({ '--i': i } as React.CSSProperties);
 
   return (
-    <div className="relative w-full max-w-6xl mx-auto flex flex-col items-center">
-      
-      {/* 
-        PRE-DOCKED STATE:
-        During compilation and 3D flying flight, ONLY the central creation canvas is visible 
-      */}
-      {animStage !== 'docked' && (
-        <div 
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-          className="relative w-full min-h-[520px] sm:min-h-[580px] flex flex-col items-center justify-center py-8"
-        >
+    <div className="relative mx-auto flex w-full max-w-6xl flex-col items-center">
 
-          {/* STAGE 1: Interactive Paced IDE Terminal (Center Stage) */}
-          <AnimatePresence>
+      {/* Exactly one H1 at all times: this one stands in while the intro plays. */}
+      {introPlaying && (
+        <h1 className="sr-only">
+          {tHero.digital.titleMain} {isArabic ? 'من الكود المصدري إلى منتج بصري متكامل' : 'From Zero Code to Sovereign Visual Products'}
+        </h1>
+      )}
+
+      {/* ------------------------------------------------------------ Intro */}
+      {introPlaying && (
+        <div className="relative flex min-h-[34rem] w-full flex-col items-center justify-center gap-6 py-6">
+
+          {/* Skip comes first in the tab order so the intro never traps a keyboard user. */}
+          <button
+            type="button"
+            onClick={dock}
+            className="btn btn-secondary btn-sm self-end"
+          >
+            <span>{isArabic ? 'تخطي حركة التجميع المباشر' : 'Skip Live Creation Intro'}</span>
+            <SkipForward className="h-3.5 w-3.5" aria-hidden="true" />
+          </button>
+
+          <AnimatePresence mode="wait">
             {animStage === 'terminal' && (
               <motion.div
-                key="terminal-window"
-                initial={{ opacity: 0, scale: 0.9, y: 30 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: -25, filter: 'blur(14px)' }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="w-full max-w-3xl rounded-3xl bg-obsidian-950/95 border border-cyan-500/40 backdrop-blur-2xl shadow-[0_0_80px_rgba(6,182,212,0.3)] overflow-hidden font-mono text-left z-20"
+                key="console"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10, filter: 'blur(6px)' }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                className="relative w-full max-w-3xl overflow-hidden rounded-2xl border border-cyan-500/30 bg-obsidian-950 text-left shadow-[0_40px_90px_-40px_rgb(var(--c-cyan-500)/0.4)] rtl:text-left"
+                dir="ltr"
+                aria-hidden="true"
               >
-                {/* IDE Top Bar */}
-                <div className="px-5 py-3.5 bg-obsidian-900/90 border-b border-white/10 flex items-center justify-between">
-                  <div className="flex items-center space-x-2">
-                    <span className="w-3 h-3 rounded-full bg-red-500/80 inline-block shadow-sm"></span>
-                    <span className="w-3 h-3 rounded-full bg-yellow-500/80 inline-block shadow-sm"></span>
-                    <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block shadow-sm"></span>
-                    <span className="text-xs text-slate-400 font-semibold pl-2 hidden sm:inline">
-                      Antigravity IDE :: Sovereign Digital Architecture
-                    </span>
-                  </div>
+                <BorderBeam size={200} duration={7} colorFrom="rgb(var(--c-cyan-500))" colorTo="rgb(var(--c-emerald-500))" />
 
-                  <div className="flex items-center space-x-3 text-xs">
-                    <span className="px-2.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 font-mono text-[11px]">
-                      ⚡ Phase 1: Source Compilation
-                    </span>
-                    <span className="text-slate-400 font-mono text-[11px] hidden sm:inline">
-                      {compiledBytes.toLocaleString()} bytes
-                    </span>
-                    <span className="text-cyan-300 font-bold font-mono">
-                      {progress}%
-                    </span>
-                  </div>
+                {/* Title bar */}
+                <div className="flex items-center gap-3 border-b border-white/10 bg-obsidian-900 px-4 py-3">
+                  <span className="flex gap-1.5">
+                    <span className="h-2.5 w-2.5 rounded-full bg-obsidian-600" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-obsidian-600" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-obsidian-600" />
+                  </span>
+                  <span className="min-w-0 truncate font-mono text-xs text-slate-400">
+                    Antigravity IDE :: Sovereign Digital Architecture
+                  </span>
                 </div>
 
-                {/* IDE Tab Bar */}
-                <div className="flex items-center bg-obsidian-950 border-b border-white/5 px-3 pt-2 text-xs">
+                {/* File tabs */}
+                <div className="flex border-b border-white/10 bg-obsidian-950 px-2 pt-1.5 font-mono text-xs">
                   {IDE_TABS.map(tab => (
-                    <button
+                    <span
                       key={tab.id}
-                      onClick={() => setActiveTab(tab.id)}
-                      className={`flex items-center space-x-2 px-3.5 py-2 rounded-t-xl transition-all border-t border-x ${
+                      className={`flex items-center gap-2 rounded-t-lg border-x border-t px-3.5 py-2 transition-colors ${
                         activeTab === tab.id
-                          ? 'bg-obsidian-900/90 text-cyan-300 border-white/10 font-semibold shadow-sm'
-                          : 'text-slate-500 border-transparent hover:text-slate-300'
+                          ? 'border-white/10 bg-obsidian-900 text-cyan-300'
+                          : 'border-transparent text-slate-500'
                       }`}
                     >
-                      <Code2 className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>{tab.name}</span>
-                    </button>
+                      <Code2 className="h-3.5 w-3.5" />
+                      {tab.name}
+                    </span>
                   ))}
                 </div>
 
-                {/* Code Body with Scanning Laser Beam */}
-                <div className="relative p-6 space-y-2 text-xs sm:text-sm min-h-[270px] overflow-hidden">
-                  
-                  {/* Laser Scanline Beam */}
-                  <motion.div 
-                    animate={{ y: [0, 260, 0] }}
-                    transition={{ duration: 2.2, repeat: reducedMotion ? 0 : Infinity, ease: 'easeInOut' }}
-                    className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80 shadow-[0_0_20px_#06b6d4] pointer-events-none"
-                  />
-
-                  {currentTabObj.lines.slice(0, visibleLinesCount).map((line, idx) => (
-                    <motion.div
-                      key={idx}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className={`flex items-start space-x-3 ${line.color}`}
-                    >
-                      <span className="text-slate-600 select-none w-6 text-right shrink-0 font-mono text-[11px]">{idx + 1}</span>
-                      <span className="leading-relaxed whitespace-pre-wrap">{line.text}</span>
-                    </motion.div>
-                  ))}
-
-                  {/* Blinking Cursor */}
-                  <div className="flex items-center space-x-3 text-cyan-400 pt-1">
-                    <span className="text-slate-600 select-none w-6 text-right shrink-0 font-mono text-[11px]">{visibleLinesCount + 1}</span>
-                    <span className="animate-pulse font-bold text-base">▋</span>
+                {/* Editor: gutter + code. Height is fixed so lines appear without moving anything. */}
+                <div className="grid min-h-[19.5rem] grid-cols-[auto_1fr] font-mono text-[0.8125rem] leading-7 sm:text-sm">
+                  <div className="select-none border-e border-white/5 bg-obsidian-900/40 px-3 text-right text-slate-600">
+                    {currentTabObj.lines.map((_, idx) => (
+                      <div key={idx} className={idx === visibleLinesCount - 1 ? 'text-slate-300' : ''}>{idx + 1}</div>
+                    ))}
+                  </div>
+                  <div className="overflow-hidden py-0 pe-4 ps-4">
+                    {currentTabObj.lines.map((line, idx) => {
+                      const shown = idx < visibleLinesCount;
+                      const current = idx === visibleLinesCount - 1;
+                      return (
+                        <div
+                          key={`${activeTab}-${idx}`}
+                          className={`whitespace-pre-wrap ${shown ? 'animate-[line-in_260ms_var(--ease-out)_both]' : 'invisible'} ${current ? 'bg-white/[0.04]' : ''} ${line.color}`}
+                        >
+                          {line.text || ' '}
+                          {current && <span className="ms-0.5 inline-block w-2 animate-[caret_1s_steps(1)_infinite] bg-cyan-300 align-middle">&nbsp;</span>}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
-                {/* Progress Bar */}
-                <div className="h-1.5 w-full bg-obsidian-900 overflow-hidden">
-                  <motion.div 
-                    className="h-full bg-gradient-to-r from-cyan-500 via-indigo-500 to-emerald-400"
-                    style={{ width: `${progress}%` }}
-                    transition={{ ease: 'easeOut', duration: 0.35 }}
-                  />
+                {/* Status bar */}
+                <div className="flex items-center justify-between gap-3 border-t border-white/10 bg-obsidian-900 px-4 py-2 font-mono text-xs text-slate-400">
+                  <span className="text-cyan-300">Phase 1: Source Compilation</span>
+                  <span className="flex items-center gap-4 tnum">
+                    <span className="hidden sm:inline">{compiledBytes.toLocaleString()} bytes</span>
+                    <span className="text-cyan-300">{progress}%</span>
+                  </span>
+                </div>
+                <div className="h-0.5 w-full bg-obsidian-800">
+                  <div className="h-full bg-cyan-400 transition-[width] duration-300 ease-out" style={{ width: `${progress}%` }} />
                 </div>
               </motion.div>
             )}
-          </AnimatePresence>
 
-          {/* STAGE 2: Code Transforms into Grand 3D Holographic Expedia Logo */}
-          <AnimatePresence>
             {animStage === 'materialize' && (
               <motion.div
-                key="hologram-stage"
-                initial={{ opacity: 0, scale: 0.35, rotateY: -40, rotateX: 30 }}
-                animate={{ 
-                  opacity: 1, 
-                  scale: [0.4, 1.25, 1],
-                  rotateY: mouseTilt.x || 0,
-                  rotateX: mouseTilt.y || 0,
-                }}
-                exit={{ opacity: 0, scale: 1.1, filter: 'blur(10px)' }}
-                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                style={{ perspective: 1200 }}
-                className="relative flex flex-col items-center justify-center text-center z-20"
+                key="lockup"
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0.25 } }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="relative w-full max-w-3xl rounded-2xl border border-cyan-500/30 bg-obsidian-900/80 px-6 py-10 text-center shadow-[0_40px_90px_-40px_rgb(var(--c-cyan-500)/0.35)] backdrop-blur-2xl sm:px-12 sm:py-14"
               >
-                {/* Volumetric Neon Portal Glow */}
-                <div className="absolute -inset-28 bg-gradient-to-tr from-cyan-500/40 via-indigo-500/30 to-purple-600/40 rounded-full blur-[120px] animate-pulse pointer-events-none" />
-                <div className="absolute -inset-12 border border-cyan-400/30 rounded-full animate-ping pointer-events-none opacity-50" />
-
-                <div className="relative p-8 sm:p-14 md:p-16 rounded-3xl bg-obsidian-900/80 border border-cyan-400/60 backdrop-blur-2xl shadow-[0_0_120px_rgba(6,182,212,0.5)]">
-                  
-                  {/* Holographic Wireframe Scanlines */}
-                  <div 
-                    className="absolute inset-0 opacity-30 pointer-events-none rounded-3xl overflow-hidden"
-                    style={{
-                      backgroundImage: 'linear-gradient(rgba(6, 182, 212, 0.6) 1px, transparent 1px)',
-                      backgroundSize: '100% 4px'
-                    }}
-                  />
-
-                  {/* Transformation Headline Callout */}
-                  <div className="mb-4 inline-flex items-center space-x-2 rtl:space-x-reverse px-4 py-1 rounded-full bg-cyan-500/20 border border-cyan-400/50 text-cyan-300 text-xs font-mono font-bold tracking-wider">
-                    <Sparkles className="w-3.5 h-3.5 text-cyan-300 animate-spin" />
-                    <span>⚡ CODE COMPILED → MATERIALIZING SOVEREIGN 3D ASSET</span>
-                  </div>
-
-                  {/* Grand 3D Logo */}
-                  <motion.div
-                    animate={{
-                      y: [-8, 8, -8],
-                      rotateZ: [-1, 1, -1]
-                    }}
-                    transition={{ repeat: reducedMotion ? 0 : Infinity, duration: 3.5, ease: 'easeInOut' }}
-                    className="relative z-10 filter drop-shadow-[0_25px_50px_rgba(6,182,212,0.8)]"
-                  >
-                    <img 
-                      src="/expedia-latest-logo.png" 
-                      alt="Expedia Business Services" 
-                      className="h-24 sm:h-36 md:h-44 w-auto max-w-[380px] sm:max-w-[500px] md:max-w-[620px] object-contain brightness-125 contrast-115 scale-105"
-                    />
-                  </motion.div>
-
-                  {/* Live Value Proposition Badges */}
-                  <div className="mt-6 flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-[11px] sm:text-xs font-mono text-cyan-300">
-                    <span className="px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-400/40 flex items-center space-x-1.5 shadow-sm">
-                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                      <span>100% Client Source Code Ownership</span>
-                    </span>
-                    <span className="px-3 py-1 rounded-full bg-indigo-500/15 border border-indigo-400/40 flex items-center space-x-1.5 shadow-sm">
-                      <Gauge className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>Performance Budget Agreed Per Project</span>
-                    </span>
-                    <span className="px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-400/40 flex items-center space-x-1.5 shadow-sm">
-                      <Globe2 className="w-3.5 h-3.5 text-teal-300" />
-                      <span>Structured Data & Sitemaps</span>
-                    </span>
-                  </div>
-                </div>
+                <p className="font-mono text-xs text-cyan-300">
+                  ⚡ CODE COMPILED → MATERIALIZING SOVEREIGN 3D ASSET
+                </p>
+                <img
+                  ref={lockupLogo}
+                  src="/expedia-latest-logo.png"
+                  alt="Expedia Business Services"
+                  width="940"
+                  height="420"
+                  className="mx-auto mt-6 h-24 w-auto object-contain sm:h-32 md:h-36"
+                />
+                <ul className="mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+                  <li className="chip chip-accent"><ShieldCheck className="h-3.5 w-3.5 text-emerald-400" aria-hidden="true" />100% Client Source Code Ownership</li>
+                  <li className="chip chip-accent"><Gauge className="h-3.5 w-3.5" aria-hidden="true" />Performance Budget Agreed Per Project</li>
+                  <li className="chip chip-accent"><Globe2 className="h-3.5 w-3.5" aria-hidden="true" />Structured Data &amp; Sitemaps</li>
+                </ul>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* STAGE 3: Smooth, Majestic Curved Flight to Top-Left Navbar */}
-          {animStage === 'flying' && targetCoords && (
+          {/* The one flight: the logo travels to the header, on transforms only. */}
+          {animStage === 'flying' && flight && (
             <motion.div
-              key="flying-logo"
-              initial={{
-                position: 'fixed',
-                top: '45%',
-                left: '50%',
-                x: '-50%',
-                y: '-50%',
-                scale: 2.8,
-                opacity: 1,
-                zIndex: 9999,
-              }}
-              animate={{
-                top: targetCoords.y,
-                left: targetCoords.x,
-                x: '-50%',
-                y: '-50%',
-                scale: 1,
-                opacity: 0.95,
-              }}
-              transition={{
-                duration: 2.2, // Slower, silky smooth flight
-                ease: [0.25, 1, 0.5, 1], // Smooth parabolic easing
-              }}
-              className="pointer-events-none filter drop-shadow-[0_15px_40px_rgba(6,182,212,0.9)]"
+              aria-hidden="true"
+              initial={{ x: flight.x0, y: flight.y0, scale: flight.scale }}
+              animate={{ x: flight.x1, y: flight.y1, scale: 1 }}
+              transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+              className="pointer-events-none fixed left-0 top-0 z-[9999]"
             >
-              <div className="relative">
-                {/* Radiant Flight Particle Tail */}
-                <div className="absolute -inset-8 bg-gradient-to-r from-cyan-400/50 via-indigo-500/40 to-emerald-400/50 rounded-full blur-3xl animate-ping" />
-                <img 
-                  src="/expedia-latest-logo.png" 
-                  alt="Expedia Logo Flying" 
-                  className="h-14 sm:h-16 w-auto max-w-[260px] sm:max-w-[300px] object-contain brightness-125"
+              <div className="-translate-x-1/2 -translate-y-1/2">
+                <img
+                  src="/expedia-latest-logo.png"
+                  alt=""
+                  width="940"
+                  height="420"
+                  className="h-12 w-auto object-contain sm:h-14 lg:h-16"
                 />
               </div>
             </motion.div>
           )}
-
-          {/* Skip Button during compilation */}
-          <button
-            onClick={handleSkip}
-            className="mt-6 px-4 py-1.5 rounded-full bg-white/5 hover:bg-white/10 text-xs font-mono text-slate-400 hover:text-slate-200 transition-colors border border-white/10"
-          >
-            {isArabic ? 'تخطي حركة التجميع المباشر ⏭' : 'Skip Live Creation Intro ⏭'}
-          </button>
-
         </div>
       )}
 
-      {/* 
-        STAGE 4: DOCKED STATE
-        After landing in the navbar, the full Hero section reveals dynamically with 
-        choreographed animations for Badge, Title, Subtitle, and Directional Buttons!
-      */}
-      {animStage === 'docked' && (
-        <motion.div
-          key="docked-hero-content"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-          className="w-full flex flex-col items-center"
-        >
-          {/* 1. Eyebrow Badge drops smoothly from top */}
-          <motion.div
-            initial={{ opacity: 0, y: -25 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="flex flex-wrap items-center justify-center gap-3 mb-6"
-          >
-            <div className="relative inline-flex items-center space-x-2 rtl:space-x-reverse px-4 py-1.5 rounded-full bg-obsidian-900/95 border border-cyan-500/30 text-xs backdrop-blur-md shadow-2xl overflow-hidden">
-              <BorderBeam size={180} duration={8} colorFrom="#06b6d4" colorTo="#6366f1" />
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
-              </span>
-              <span className="text-slate-200 font-medium tracking-wide">
-                {tHero.digital.badge}
-              </span>
-              <span className="text-slate-600">|</span>
-              <span className="text-cyan-400 font-mono font-semibold">
-                {isArabic ? 'هندسة سيادية' : 'Sovereign Architecture'}
-              </span>
-            </div>
-          </motion.div>
+      {/* ---------------------------------------------------------- Docked */}
+      {!introPlaying && (
+        <div className="flex w-full flex-col items-center">
+          <div className="hero-in flex w-full flex-col items-center text-center">
+            <p className="chip chip-accent" style={step(0)}>
+              <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" aria-hidden="true" />
+              <span>{tHero.digital.badge}</span>
+              <span className="text-slate-500" aria-hidden="true">|</span>
+              <span>{isArabic ? 'هندسة سيادية' : 'Sovereign Architecture'}</span>
+            </p>
 
-          {/* 2. Main Title & Rotating Kinetic Line rises smoothly */}
-          <motion.div
-            initial={{ opacity: 0, y: 35 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-center max-w-4xl mx-auto mb-6"
-          >
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-display font-extrabold tracking-tight text-white leading-[1.15] mb-4 drop-shadow-[0_4px_16px_rgba(0,0,0,0.85)]">
+            <h1
+              className="mt-6 max-w-4xl text-[clamp(2.25rem,4.6vw,3.75rem)] font-bold leading-[1.1] tracking-[-0.025em] text-white"
+              style={step(1)}
+            >
               {tHero.digital.titleMain}{' '}
-              <span className="block text-gradient-digital font-extrabold mt-1">
+              <span className="mt-4 block text-[0.62em] font-semibold leading-[1.25] tracking-[-0.015em] text-slate-300">
                 {isArabic ? 'من الكود المصدري إلى منتج بصري متكامل' : 'From Zero Code to Sovereign Visual Products'}
               </span>
             </h1>
 
-            <p className="text-base sm:text-xl text-slate-200 max-w-3xl mx-auto font-normal leading-relaxed drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300 sm:text-xl sm:leading-9" style={step(2)}>
               {tHero.digital.subtitle}
             </p>
-          </motion.div>
 
-          {/* 3. Action Buttons with Directional Choreography (Left, Center Pulse, Right) */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 w-full max-w-3xl">
-            
-            {/* Button 1: Sweeps in from LEFT */}
-            <motion.button
-              initial={{ opacity: 0, x: -70 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={onOpenEstimator}
-              className="w-full sm:w-auto px-8 py-4 rounded-2xl font-display font-bold text-sm sm:text-base flex items-center justify-center space-x-3 rtl:space-x-reverse transition-all duration-300 shadow-xl bg-gradient-to-r from-cyan-400 to-indigo-500 hover:from-cyan-300 hover:to-indigo-400 text-obsidian-950 shadow-cyan-500/30 hover:shadow-cyan-500/50"
-            >
-              <Calculator className="w-5 h-5" />
-              <span>{tHero.digital.ctaStudio}</span>
-              <ArrowRight className="w-4 h-4 rtl:rotate-180" />
-            </motion.button>
-
-            {/* Button 2: Zooms up from CENTER with radiant pulse */}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={onBookConsultation}
-              className="w-full sm:w-auto px-7 py-4 rounded-2xl bg-obsidian-900 hover:bg-obsidian-850 border border-cyan-500/40 text-white font-display font-semibold text-sm sm:text-base flex items-center justify-center space-x-3 rtl:space-x-reverse transition-all duration-300 hover:border-cyan-400 shadow-lg shadow-black/50"
-            >
-              <MessageSquare className="w-5 h-5 text-cyan-400" />
-              <span>{tNav.whatsappDirect}</span>
-            </motion.button>
-
-            {/* Button 3: Sweeps in from RIGHT — scrolls to Digital Tech Pillars */}
-            <motion.button
-              initial={{ opacity: 0, x: 70 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.7, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              whileHover={{ scale: 1.03, y: -2 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={() => {
-                const el = document.getElementById('services');
-                el?.scrollIntoView({ behavior: preferredScrollBehavior() });
-              }}
-              className="w-full sm:w-auto px-5 py-4 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white text-sm font-semibold flex items-center justify-center space-x-2 rtl:space-x-reverse transition-all"
-            >
-              <Zap className="w-4 h-4 text-cyan-400" />
-              <span>{tHero.digital.ctaPortfolio}</span>
-            </motion.button>
-
-          </div>
-
-          {/* 4. Interactive Architecture Sandbox Controller */}
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="w-full rounded-3xl bg-obsidian-900/85 border border-white/10 backdrop-blur-2xl shadow-2xl p-6 sm:p-8"
-          >
-            {/* Controller Module Selector */}
-            <div className="flex flex-wrap items-center justify-center gap-2 mb-6 border-b border-white/10 pb-4">
-              <button
-                onClick={() => setActiveSandboxTab('web')}
-                className={`flex items-center space-x-2 rtl:space-x-reverse px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
-                  activeSandboxTab === 'web'
-                    ? 'bg-gradient-to-r from-cyan-500 to-indigo-600 text-obsidian-950 shadow-md shadow-cyan-500/25'
-                    : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <Code2 className="w-4 h-4" />
-                <span>{isArabic ? 'تطبيقات الويب والمنصات الذكية' : 'Full-Stack Web & Next.js Platforms'}</span>
+            <div className="mt-9 flex w-full max-w-3xl flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center" style={step(3)}>
+              <button type="button" onClick={onOpenEstimator} className="btn btn-primary btn-lg">
+                <Calculator className="h-5 w-5" aria-hidden="true" />
+                <span>{tHero.digital.ctaStudio}</span>
+                <ArrowIcon className="h-4 w-4" aria-hidden="true" />
               </button>
-
-              <button
-                onClick={() => setActiveSandboxTab('crm')}
-                className={`flex items-center space-x-2 rtl:space-x-reverse px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
-                  activeSandboxTab === 'crm'
-                    ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-md shadow-indigo-500/25'
-                    : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                <Database className="w-4 h-4" />
-                <span>{isArabic ? 'أنظمة CRM وأتمتة الأعمال' : 'Custom CRM & Business Portals'}</span>
+              <button type="button" onClick={onBookConsultation} className="btn btn-secondary btn-lg">
+                <MessageSquare className="h-5 w-5 text-cyan-400" aria-hidden="true" />
+                <span>{tNav.whatsappDirect}</span>
               </button>
-
               <button
-                onClick={() => setActiveSandboxTab('aeo')}
-                className={`flex items-center space-x-2 rtl:space-x-reverse px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
-                  activeSandboxTab === 'aeo'
-                    ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-obsidian-950 shadow-md shadow-emerald-500/25'
-                    : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
+                type="button"
+                onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: preferredScrollBehavior() })}
+                className="btn btn-ghost btn-lg"
               >
-                <Search className="w-4 h-4" />
-                <span>{isArabic ? 'محركات الذكاء وهيمنة AEO/GEO' : 'AEO, GEO & Generative AI Search'}</span>
+                <Zap className="h-4 w-4 text-cyan-400" aria-hidden="true" />
+                <span>{tHero.digital.ctaPortfolio}</span>
               </button>
             </div>
+          </div>
 
-            {/* Tab 1: Web Applications Content */}
-            {activeSandboxTab === 'web' && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left rtl:text-right">
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-cyan-500/20">
-                  <div className="text-xs font-mono text-cyan-400 uppercase font-bold mb-1">01 · Architecture</div>
-                  <div className="text-sm font-bold text-white mb-1">Next.js & React Development</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Server-side rendering, an agreed performance budget, and bilingual Arabic/English responsive layouts.
-                  </p>
+          {/* Capability panel */}
+          <div className="relative mt-16 w-full overflow-hidden rounded-[var(--radius-panel)] border border-white/10 bg-obsidian-900/85 p-6 text-start shadow-card backdrop-blur-2xl sm:p-8">
+            <div className="mb-6 flex flex-wrap items-center justify-center gap-2 border-b border-white/10 pb-5" role="group" aria-label={isArabic ? 'مجالات الاستوديو' : 'Studio capabilities'}>
+              {sandboxTabs.map((tab) => {
+                const Icon = tab.icon;
+                const active = activeSandboxTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => setActiveSandboxTab(tab.id)}
+                    className={`btn btn-sm ${active ? 'btn-primary' : 'btn-ghost'}`}
+                  >
+                    <Icon className="h-4 w-4" aria-hidden="true" />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <div key={activeSandboxTab} className={`${enterPanel} grid grid-cols-1 gap-4 md:grid-cols-3`}>
+              {pillars[activeSandboxTab].map((card) => (
+                <div key={card.label} className="rounded-2xl border border-white/10 bg-obsidian-950/70 p-5">
+                  <div className="text-sm font-semibold text-gold-300">{card.label}</div>
+                  <div className="mt-1.5 text-base font-bold text-white">{card.title}</div>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">{card.body}</p>
                 </div>
+              ))}
+            </div>
 
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-cyan-500/20">
-                  <div className="text-xs font-mono text-emerald-400 uppercase font-bold mb-1">02 · Performance</div>
-                  <div className="text-sm font-bold text-white mb-1">Core Web Vitals Measured Per Build</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Built around customer conversion and WhatsApp enquiry flows, with results measured after launch.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-cyan-500/20">
-                  <div className="text-xs font-mono text-goldMuted uppercase font-bold mb-1">03 · IP Sovereign Handover</div>
-                  <div className="text-sm font-bold text-white mb-1">100% Full Source Code Ownership</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    No vendor lock-in or recurring template fees. Complete GitHub repository and production deployment transfer.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Tab 2: Custom CRM Content */}
-            {activeSandboxTab === 'crm' && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left rtl:text-right">
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-indigo-500/20">
-                  <div className="text-xs font-mono text-indigo-400 uppercase font-bold mb-1">01 · Multi-Tenant Isolation</div>
-                  <div className="text-sm font-bold text-white mb-1">Company & Branch Isolation</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Enterprise role-based permissions (Super Admin, Manager, PRO Staff) with zero cross-tenant data leakage.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-indigo-500/20">
-                  <div className="text-xs font-mono text-purple-400 uppercase font-bold mb-1">02 · Financial Automation</div>
-                  <div className="text-sm font-bold text-white mb-1">UAE VAT Invoicing & Cashbook</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Automated 5% VAT invoices, quotation conversion, real-time banking reconciliation, and attachment tracking.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-indigo-500/20">
-                  <div className="text-xs font-mono text-cyan-400 uppercase font-bold mb-1">03 · Government API Liaison</div>
-                  <div className="text-sm font-bold text-white mb-1">TAMM & MOHRE Tracking</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Integrated document lifecycle tracking for commercial licenses, visa quotas, and labor file clearances.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Tab 3: AEO / GEO / AI Search Content */}
-            {activeSandboxTab === 'aeo' && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left rtl:text-right">
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-emerald-500/20">
-                  <div className="text-xs font-mono text-emerald-400 uppercase font-bold mb-1">01 · Answer Engine Optimization</div>
-                  <div className="text-sm font-bold text-white mb-1">AEO: AI Search Visibility</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Structured knowledge graphs and schema markup that make your business the cited answer in ChatGPT, Gemini, and Perplexity AI responses.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-emerald-500/20">
-                  <div className="text-xs font-mono text-teal-400 uppercase font-bold mb-1">02 · Generative Engine Optimization</div>
-                  <div className="text-sm font-bold text-white mb-1">GEO: LLM Knowledge Indexing</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Optimized content architecture and entity signals so large language models (LLMs) accurately cite your brand in AI-generated answers.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-2xl bg-obsidian-950/80 border border-emerald-500/20">
-                  <div className="text-xs font-mono text-cyan-400 uppercase font-bold mb-1">03 · Sovereign Content Intelligence</div>
-                  <div className="text-sm font-bold text-white mb-1">Multi-Layer UAE SEO Dominance</div>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    Bilingual Arabic/English semantic content strategy — ranked on Google, Bing, and cited inside AI assistant platforms simultaneously.
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* Live Performance & Sovereign Benchmark Comparison Matrix */}
-            <div className="mt-8 pt-6 border-t border-white/10">
-              <div className="flex items-center justify-between mb-4">
+            {/* Approach comparison */}
+            <div className="mt-8 border-t border-white/10 pt-6">
+              <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
                 <div>
-                  <div className="text-xs font-mono uppercase tracking-wider text-cyan-400 font-bold">
+                  <div className="text-sm font-semibold text-cyan-300">
                     {isArabic ? 'مقارنة في أسلوب البناء' : 'Architectural Approach Comparison'}
                   </div>
-                  <div className="text-sm font-bold text-white">
+                  <div className="mt-0.5 text-lg font-bold text-white">
                     {isArabic ? 'القوالب الجاهزة مقابل التطوير المخصص' : 'Off-the-shelf templates vs bespoke development'}
                   </div>
                 </div>
-                <span className="px-2.5 py-1 rounded-full bg-white/5 border border-white/15 text-slate-300 font-mono text-[11px]">
-                  {isArabic ? 'مقارنة وصفية وليست قياساً' : 'Descriptive, not a measured benchmark'}
-                </span>
+                <span className="chip">{isArabic ? 'مقارنة وصفية وليست قياساً' : 'Descriptive, not a measured benchmark'}</span>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                
-                {/* Standard Agency */}
-                <div className="p-5 rounded-2xl bg-obsidian-950/60 border border-white/10 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono font-bold text-slate-400">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                <div className="space-y-3 rounded-2xl border border-white/10 bg-obsidian-950/60 p-5">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-sm font-semibold text-slate-300">
                       {isArabic ? 'الوكالات التقليدية (قوالب جاهزة)' : 'Standard Agency (WordPress / Templates)'}
                     </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-amber-500/10 text-amber-400/80 border border-amber-500/20">{isArabic ? 'قيود القوالب' : 'Template limits'}</span>
+                    <span className="chip chip-gold">{isArabic ? 'قيود القوالب' : 'Template limits'}</span>
                   </div>
-
-                  <div className="space-y-2 text-xs text-slate-400">
-                    <div className="flex justify-between border-b border-white/5 pb-1.5">
-                      <span>{isArabic ? 'سرعة التحميل (LCP):' : 'Loading Speed (LCP):'}</span>
-                      <span className="font-mono text-amber-400/80 font-semibold">{isArabic ? 'يعتمد على القالب' : 'Theme-dependent'}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-white/5 pb-1.5">
-                      <span>{isArabic ? 'تقييم جوجل للأداء:' : 'Google Lighthouse Score:'}</span>
-                      <span className="font-mono text-amber-400/80 font-semibold">{isArabic ? 'غير مُحسَّن عادةً' : 'Rarely optimised'}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-white/5 pb-1.5">
-                      <span>{isArabic ? 'ملكية الكود المصدري:' : 'Source Code Ownership:'}</span>
-                      <span className="font-mono text-slate-500">{isArabic ? 'مقيد بالمنصة' : 'Platform lock-in'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>{isArabic ? 'البيانات المنظمة للمحتوى:' : 'Structured data markup:'}</span>
-                      <span className="font-mono text-slate-500">{isArabic ? 'محدودة' : 'Minimal'}</span>
-                    </div>
-                  </div>
+                  <dl className="space-y-2 text-sm text-slate-400">
+                    {[
+                      [isArabic ? 'سرعة التحميل (LCP):' : 'Loading Speed (LCP):', isArabic ? 'يعتمد على القالب' : 'Theme-dependent'],
+                      [isArabic ? 'تقييم جوجل للأداء:' : 'Google Lighthouse Score:', isArabic ? 'غير مُحسَّن عادةً' : 'Rarely optimised'],
+                      [isArabic ? 'ملكية الكود المصدري:' : 'Source Code Ownership:', isArabic ? 'مقيد بالمنصة' : 'Platform lock-in'],
+                      [isArabic ? 'البيانات المنظمة للمحتوى:' : 'Structured data markup:', isArabic ? 'محدودة' : 'Minimal'],
+                    ].map(([k, v]) => (
+                      <div key={k} className="flex justify-between gap-4 border-b border-white/5 pb-2 last:border-b-0 last:pb-0">
+                        <dt>{k}</dt>
+                        <dd className="text-end text-slate-300">{v}</dd>
+                      </div>
+                    ))}
+                  </dl>
                 </div>
 
-                {/* Expedia Sovereign Architecture */}
-                <div className="p-5 rounded-2xl bg-cyan-950/30 border border-cyan-500/40 space-y-3 relative overflow-hidden shadow-lg shadow-cyan-950/50">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-cyan-400/10 rounded-full blur-2xl pointer-events-none" />
-                  
-                  <div className="flex items-center justify-between relative z-10">
-                    <span className="text-xs font-mono font-bold text-cyan-300 flex items-center space-x-1.5 rtl:space-x-reverse">
-                      <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-                      <span>{isArabic ? 'تطوير مخصص من إكسبيديا' : 'Bespoke Expedia build'}</span>
+                {/* The one element with a moving edge: the recommended column. */}
+                <div className="relative space-y-3 overflow-hidden rounded-2xl border border-cyan-500/40 bg-cyan-950/30 p-5 shadow-lg shadow-cyan-950/50">
+                  <BorderBeam size={180} duration={10} colorFrom="rgb(var(--c-cyan-500))" colorTo="rgb(var(--c-emerald-500))" />
+                  <div className="relative flex items-center justify-between gap-3">
+                    <span className="flex items-center gap-2 text-sm font-semibold text-cyan-300">
+                      <Sparkles className="h-4 w-4" aria-hidden="true" />
+                      {isArabic ? 'تطوير مخصص من إكسبيديا' : 'Bespoke Expedia build'}
                     </span>
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold">Enterprise Grade</span>
+                    <span className="chip chip-accent">Enterprise Grade</span>
                   </div>
-
-                  <div className="space-y-2 text-xs text-slate-200 relative z-10">
-                    <div className="flex justify-between border-b border-cyan-500/15 pb-1.5">
-                      <span>{isArabic ? 'سرعة التحميل (LCP):' : 'Loading Speed (LCP):'}</span>
-                      <span className="font-mono text-emerald-400 font-bold">{isArabic ? 'ميزانية متفق عليها وتُقاس' : 'Agreed budget, measured'}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-cyan-500/15 pb-1.5">
-                      <span>{isArabic ? 'تقييم جوجل للأداء:' : 'Google Lighthouse Score:'}</span>
-                      <span className="font-mono text-emerald-400 font-bold">{isArabic ? 'يُقاس بعد الإطلاق' : 'Measured after launch'}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-cyan-500/15 pb-1.5">
-                      <span>{isArabic ? 'ملكية الكود المصدري:' : 'Source Code Ownership:'}</span>
-                      <span className="font-mono text-cyan-300 font-bold">{isArabic ? 'نقل كامل للملكية' : 'Full IP transfer'}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>{isArabic ? 'البيانات المنظمة للمحتوى:' : 'Structured data markup:'}</span>
-                      <span className="font-mono text-teal-300 font-bold">{isArabic ? 'JSON-LD كامل' : 'Complete JSON-LD'}</span>
-                    </div>
-                  </div>
+                  <dl className="relative space-y-2 text-sm text-slate-200">
+                    {[
+                      [isArabic ? 'سرعة التحميل (LCP):' : 'Loading Speed (LCP):', isArabic ? 'ميزانية متفق عليها وتُقاس' : 'Agreed budget, measured'],
+                      [isArabic ? 'تقييم جوجل للأداء:' : 'Google Lighthouse Score:', isArabic ? 'يُقاس بعد الإطلاق' : 'Measured after launch'],
+                      [isArabic ? 'ملكية الكود المصدري:' : 'Source Code Ownership:', isArabic ? 'نقل كامل للملكية' : 'Full IP transfer'],
+                      [isArabic ? 'البيانات المنظمة للمحتوى:' : 'Structured data markup:', isArabic ? 'JSON-LD كامل' : 'Complete JSON-LD'],
+                    ].map(([k, v]) => (
+                      <div key={k} className="flex justify-between gap-4 border-b border-cyan-500/15 pb-2 last:border-b-0 last:pb-0">
+                        <dt>{k}</dt>
+                        <dd className="text-end font-semibold text-cyan-200">{v}</dd>
+                      </div>
+                    ))}
+                  </dl>
                 </div>
-
               </div>
             </div>
 
-            {/* Bottom Actions & Replay Control */}
-            <div className="flex flex-wrap items-center justify-center gap-3 pt-6 border-t border-white/10 mt-6">
-              <button
-                onClick={onExploreServices}
-                className="px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-indigo-600 hover:from-cyan-400 hover:to-indigo-500 text-obsidian-950 font-display font-bold text-xs shadow-lg shadow-cyan-500/25 transition-all flex items-center space-x-2 rtl:space-x-reverse"
-              >
+            {/* Actions */}
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 border-t border-white/10 pt-6">
+              <button type="button" onClick={onExploreServices} className="btn btn-primary">
                 <span>{isArabic ? 'استعراض خدمات الاستوديو الرقمي' : 'Explore Digital Engineering Pillars'}</span>
-                <ArrowRight className="w-3.5 h-3.5 rtl:rotate-180" />
+                <ArrowIcon className="h-4 w-4" aria-hidden="true" />
               </button>
-              
-              <button
-                onClick={onBookConsultation}
-                className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-xs transition-colors"
-              >
+              <button type="button" onClick={onBookConsultation} className="btn btn-secondary">
                 {isArabic ? 'طلب استشارة برمجية فورية عبر واتساب' : 'Request WhatsApp Architecture Scope'}
               </button>
-
               <button
-                onClick={handleReplay}
-                className="px-4 py-3 rounded-xl bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-500/30 text-cyan-300 font-mono text-xs flex items-center space-x-1.5 rtl:space-x-reverse transition-colors"
+                type="button"
+                onClick={runSequence}
+                className="btn btn-ghost"
                 title="Replay Antigravity 3D Compilation"
               >
-                <RotateCcw className="w-3.5 h-3.5" />
+                <RotateCcw className="h-4 w-4" aria-hidden="true" />
                 <span>{isArabic ? 'إعادة تشغيل حركة التجميع 3D' : 'Replay 3D Intro'}</span>
               </button>
             </div>
+          </div>
 
-          {/* Scroll Down Indicator */}
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.2, duration: 0.6 }}
-            className="flex flex-col items-center pt-2 pb-6 cursor-pointer group"
-            onClick={() => {
-              const el = document.getElementById('services');
-              el?.scrollIntoView({ behavior: preferredScrollBehavior() });
+          <a
+            href="#services"
+            onClick={(e) => {
+              e.preventDefault();
+              document.getElementById('services')?.scrollIntoView({ behavior: preferredScrollBehavior() });
             }}
+            className="group mt-10 inline-flex flex-col items-center gap-1 text-sm font-medium text-slate-400 transition-colors hover:text-cyan-300"
           >
-            <span className="text-[11px] font-mono text-slate-500 group-hover:text-cyan-400 transition-colors tracking-widest uppercase mb-1">
-              {isArabic ? 'استعرض الخدمات' : 'Explore Services'}
-            </span>
-            <motion.div
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 1.4, repeat: reducedMotion ? 0 : Infinity, ease: 'easeInOut' }}
-            >
-              <ChevronDown className="w-5 h-5 text-slate-500 group-hover:text-cyan-400 transition-colors" />
-            </motion.div>
-          </motion.div>
-
-          </motion.div>
-        </motion.div>
+            <span>{isArabic ? 'استعرض الخدمات' : 'Explore Services'}</span>
+            <ChevronDown className="h-5 w-5" aria-hidden="true" />
+          </a>
+        </div>
       )}
 
     </div>

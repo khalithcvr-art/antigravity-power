@@ -1,15 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  ChevronDown, 
-  MessageSquare, 
-  BookOpen,
-  Code2,
-  Sparkles
-} from 'lucide-react';
+import { ChevronDown, MessageSquare } from 'lucide-react';
 import { FAQS } from '../data/siteData';
 import { generateWhatsAppUrl, trackConversion } from '../lib/tracking';
 import { ScrollReveal } from './motion/MotionPrimitives';
+import { SectionHeader } from './SectionHeader';
+import { useEnterOnChange } from '../hooks/useEnterOnChange';
 import { DualEngineMode } from '../types';
 
 interface FaqSectionProps {
@@ -20,6 +16,7 @@ interface FaqSectionProps {
 export const FaqSection: React.FC<FaqSectionProps> = ({ mode = 'corporate', isArabic }) => {
   const [openId, setOpenId] = useState<string>('faq-1');
   const [activeCategory, setActiveCategory] = useState<string>('All');
+  const enter = useEnterOnChange(activeCategory);
 
   useEffect(() => {
     if (mode === 'digital') {
@@ -58,10 +55,10 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ mode = 'corporate', isAr
   const handleAskCustom = () => {
     trackConversion('whatsapp_click', { source: 'faq_custom_question' });
     const msg = mode === 'digital'
-      ? (isArabic 
+      ? (isArabic
           ? "مرحباً إكسبيديا الرقمية، لدي استفسار تقني حول بناء موقع مخصص / نظام CRM / تحسين AEO بالذكاء الاصطناعي."
           : "Hello Expedia Digital, I have a specific technical question about custom web development, CRMs, or AEO search optimization.")
-      : (isArabic 
+      : (isArabic
           ? "مرحباً إكسبيديا، لدي استفسار مخصص بخصوص تأسيس الشركات وخدمات العلاقات العامة في الإمارات لم أجده في قسم الأسئلة الشائعة."
           : "Hello Expedia, I have a specific question about UAE company formation / PRO services that wasn't in your FAQ.");
     window.open(generateWhatsAppUrl(msg), '_blank');
@@ -70,102 +67,59 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ mode = 'corporate', isAr
   const isDigital = mode === 'digital';
 
   return (
-    <section id="faq" className={`py-24 relative bg-obsidian-950/95 border-t border-white/5 overflow-hidden ${isArabic ? 'font-arabic' : ''}`}>
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Section Header */}
-        <ScrollReveal>
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <div className="inline-flex items-center space-x-2 rtl:space-x-reverse px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase tracking-wider text-slate-300 mb-3">
-              {isDigital ? (
-                <Code2 className="w-3.5 h-3.5 text-cyan-400" />
-              ) : (
-                <BookOpen className="w-3.5 h-3.5 text-emerald-400" />
-              )}
-              <span>
-                {isDigital
-                  ? (isArabic ? 'المستودع المعرفي لهندسة البرمجيات والذكاء الاصطناعي' : 'Full-Stack & AEO Engineering Repository')
-                  : (isArabic ? 'مستودع المعرفة واللوائح التنظيمية المعتمدة' : 'AEO Direct Knowledge Repository')}
-              </span>
-            </div>
-            
-            <h2 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-tight">
-              {isDigital ? (
-                isArabic ? (
-                  <>
-                    الأسئلة الشائعة حول <br className="hidden sm:inline" />
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400">
-                      المنصات الرقمية والأتمتة والذكاء الاصطناعي
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    Frequently Answered <br className="hidden sm:inline" />
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400">
-                      Digital Engineering & AEO Queries
-                    </span>
-                  </>
-                )
-              ) : (
-                isArabic ? (
-                  <>
-                    الأسئلة الشائعة حول <br className="hidden sm:inline" />
-                    <span className="text-gradient-emerald">تأسيس الشركات والأنظمة الحكومية</span>
-                  </>
-                ) : (
-                  <>
-                    Frequently Answered <br className="hidden sm:inline" />
-                    <span className="text-gradient-emerald">Regulatory & Setup Inquiries</span>
-                  </>
-                )
-              )}
-            </h2>
-            
-            <p className="text-slate-400 text-xs sm:text-sm mt-3 max-w-xl mx-auto leading-relaxed">
-              {isDigital ? (
-                isArabic
-                  ? 'إجابات تقنية وهندسية مباشرة حول تطوير المواقع السيادية، أنظمة إدارة الأعمال (CRM)، أتمتة الواتساب، والظهور في محركات البحث بالذكاء الاصطناعي.'
-                  : 'Direct technical answers regarding Next.js web applications, custom CRM architectures, WhatsApp bots, and visibility in AI answer engines.'
-              ) : (
-                isArabic 
-                  ? 'إجابات قانونية وتنظيمية مباشرة مستندة إلى قانون الشركات التجارية الإماراتي لعام 2026، وضوابط وزارة الموارد البشرية، ومعايير الهيئة الاتحادية للضرائب.'
-                  : 'Direct statutory answers reflecting current 2026 UAE Commercial Companies Law, MoHRE labour codes, and Federal Tax Authority standards.'
-              )}
-            </p>
+    <section id="faq" className="section border-t border-white/5">
+      <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+
+        <SectionHeader
+          eyebrow={
+            isDigital
+              ? (isArabic ? 'المستودع المعرفي لهندسة البرمجيات والذكاء الاصطناعي' : 'Full-Stack & AEO Engineering Repository')
+              : (isArabic ? 'مستودع المعرفة واللوائح التنظيمية المعتمدة' : 'AEO Direct Knowledge Repository')
+          }
+          title={
+            isDigital
+              ? (isArabic ? 'الأسئلة الشائعة حول المنصات الرقمية والأتمتة والذكاء الاصطناعي' : 'Frequently Answered Digital Engineering & AEO Queries')
+              : (isArabic ? 'الأسئلة الشائعة حول تأسيس الشركات والأنظمة الحكومية' : 'Frequently Answered Regulatory & Setup Inquiries')
+          }
+          subtitle={
+            isDigital ? (
+              isArabic
+                ? 'إجابات تقنية وهندسية مباشرة حول تطوير المواقع السيادية، أنظمة إدارة الأعمال (CRM)، أتمتة الواتساب، والظهور في محركات البحث بالذكاء الاصطناعي.'
+                : 'Direct technical answers regarding Next.js web applications, custom CRM architectures, WhatsApp bots, and visibility in AI answer engines.'
+            ) : (
+              isArabic
+                ? 'إجابات قانونية وتنظيمية مباشرة مستندة إلى قانون الشركات التجارية الإماراتي لعام 2026، وضوابط وزارة الموارد البشرية، ومعايير الهيئة الاتحادية للضرائب.'
+                : 'Direct statutory answers reflecting current 2026 UAE Commercial Companies Law, MoHRE labour codes, and Federal Tax Authority standards.'
+            )
+          }
+        />
+
+        <ScrollReveal className="mt-10">
+          <div className="seg" role="group" aria-label={isArabic ? 'تصفية الأسئلة' : 'Filter questions'}>
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                type="button"
+                aria-pressed={activeCategory === cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                className="seg-item"
+              >
+                {activeCategory === cat.id && (
+                  <motion.span
+                    layoutId="activeFaqTab"
+                    className="absolute inset-0 -z-10 rounded-[0.625rem] bg-accent"
+                    transition={{ type: 'spring', stiffness: 380, damping: 32 }}
+                  />
+                )}
+                {cat.label}
+              </button>
+            ))}
           </div>
         </ScrollReveal>
 
-        {/* Category Filter Pills */}
-        <div className="flex items-center justify-center flex-wrap gap-2 mb-10">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className={`relative px-4 py-2 rounded-xl text-xs font-semibold transition-all z-10 ${
-                activeCategory === cat.id
-                  ? 'text-obsidian-950 font-bold'
-                  : 'text-slate-400 hover:text-white bg-obsidian-900 border border-white/10'
-              }`}
-            >
-              {activeCategory === cat.id && (
-                <motion.div
-                  layoutId="activeFaqTab"
-                  className={`absolute inset-0 rounded-xl shadow-md -z-10 ${
-                    isDigital 
-                      ? 'bg-gradient-to-r from-cyan-400 to-indigo-500 shadow-cyan-500/20' 
-                      : 'bg-emerald-500 shadow-emerald-500/20'
-                  }`}
-                  transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                />
-              )}
-              {cat.label}
-            </button>
-          ))}
-        </div>
-
-        {/* FAQ Accordion List */}
-        <div className="space-y-4">
-          <AnimatePresence mode="popLayout">
+        {/* Accordion: one bordered list, hairline dividers */}
+        <ScrollReveal className="mt-6">
+          <div key={activeCategory} className={`${enter} divide-y divide-white/10 overflow-hidden rounded-[var(--radius-card)] border border-white/10 bg-obsidian-900/60`}>
             {filteredFaqs.map((faq) => {
               const isOpen = openId === faq.id;
               const qText = isArabic && faq.questionAr ? faq.questionAr : faq.question;
@@ -173,109 +127,84 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ mode = 'corporate', isAr
               const directAEO = isArabic && faq.directAnswerAEOAr ? faq.directAnswerAEOAr : faq.directAnswerAEO;
 
               return (
-                <ScrollReveal key={faq.id}>
-                  <div 
-                    className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
-                      isOpen 
-                        ? (isDigital ? 'border-cyan-500/40 bg-obsidian-900/90 shadow-lg shadow-cyan-500/5' : 'border-emerald-500/40 bg-obsidian-900/90 shadow-lg shadow-emerald-500/5')
-                        : 'border-white/10 bg-obsidian-900/40 hover:border-white/20'
-                    }`}
-                  >
+                <div key={faq.id} className={`transition-colors duration-300 ${isOpen ? 'bg-obsidian-900' : ''}`}>
+                  <h3>
                     <button
+                      type="button"
                       id={`faq-question-${faq.id}`}
                       aria-expanded={isOpen}
                       aria-controls={isOpen ? `faq-answer-${faq.id}` : undefined}
                       onClick={() => toggleAccordion(faq.id)}
-                      className="w-full p-6 text-left rtl:text-right flex items-center justify-between gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-white/80"
+                      className="flex w-full items-center justify-between gap-4 px-5 py-5 text-start sm:px-7 sm:py-6"
                     >
-                      <span className={`font-display font-bold text-base sm:text-lg transition-colors ${
-                        isOpen 
-                          ? (isDigital ? 'text-cyan-300' : 'text-emerald-400')
-                          : 'text-white'
-                      }`}>
+                      <span className={`text-base font-bold leading-snug transition-colors sm:text-lg ${isOpen ? 'text-accent-soft' : 'text-white'}`}>
                         {qText}
                       </span>
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 border transition-transform duration-300 ${
-                        isOpen 
-                          ? (isDigital ? 'rotate-180 bg-cyan-500/20 border-cyan-500/40 text-cyan-300' : 'rotate-180 bg-emerald-500/20 border-emerald-500/40 text-emerald-400')
-                          : 'bg-white/5 border-white/10 text-slate-400'
-                      }`}>
-                        <ChevronDown className="w-4 h-4" />
-                      </div>
+                      <span
+                        className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border transition-all duration-300 ${
+                          isOpen ? 'rotate-180 border-accent/50 bg-accent/15 text-accent-soft' : 'border-white/15 bg-white/5 text-slate-400'
+                        }`}
+                      >
+                        <ChevronDown className="h-4 w-4" aria-hidden="true" />
+                      </span>
                     </button>
+                  </h3>
 
-                    <AnimatePresence>
-                      {isOpen && (
-                        <motion.div
-                          id={`faq-answer-${faq.id}`}
-                          role="region"
-                          aria-labelledby={`faq-question-${faq.id}`}
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: 'auto', opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.25 }}
-                        >
-                          <div className="px-6 pb-6 space-y-4 border-t border-white/5 pt-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
-                            
-                            {/* AEO Quick Snapshot */}
-                            {directAEO && (
-                              <div className={`p-3.5 rounded-xl border flex items-start space-x-2.5 rtl:space-x-reverse ${
-                                isDigital
-                                  ? 'bg-cyan-500/10 border-cyan-500/20 text-cyan-200'
-                                  : 'bg-emerald-500/10 border-emerald-500/20 text-emerald-200'
-                              }`}>
-                                <Sparkles className={`w-4 h-4 mt-0.5 shrink-0 ${isDigital ? 'text-cyan-400' : 'text-emerald-400'}`} />
-                                <div className="text-xs">
-                                  <strong className="block text-white mb-0.5">
-                                    {isArabic ? 'خلاصة الإجابة المباشرة (AEO):' : 'Direct Answer Summary (AEO Canonical):'}
-                                  </strong>
-                                  {directAEO}
-                                </div>
-                              </div>
-                            )}
-
-                            <p>{aText}</p>
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                </ScrollReveal>
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        id={`faq-answer-${faq.id}`}
+                        role="region"
+                        aria-labelledby={`faq-question-${faq.id}`}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className="space-y-4 px-5 pb-6 text-[0.9375rem] leading-7 text-slate-300 sm:px-7">
+                          {directAEO && (
+                            <div className="note">
+                              <span className="note-label">
+                                {isArabic ? 'خلاصة الإجابة المباشرة (AEO):' : 'Direct Answer Summary (AEO Canonical):'}
+                              </span>
+                              {directAEO}
+                            </div>
+                          )}
+                          <p>{aText}</p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               );
             })}
-          </AnimatePresence>
-        </div>
+          </div>
+        </ScrollReveal>
 
-        {/* Custom Question Inquire CTA */}
-        <ScrollReveal>
-          <div className="mt-12 text-center p-8 rounded-3xl glass-panel border border-white/10">
-            <h3 className="font-display font-bold text-lg text-white mb-2">
-              {isDigital
-                ? (isArabic ? 'هل لديك مواصفات تقنية أو هندسية خاصة لمشروعك؟' : 'Have unique technical specifications for your platform?')
-                : (isArabic ? 'هل لديك استفسار تنظيمي أو قانوني لم يتم ذكره؟' : 'Have an unaddressed regulatory query?')}
-            </h3>
-            <p className="text-xs text-slate-400 max-w-lg mx-auto mb-6">
-              {isDigital
-                ? (isArabic ? 'تحدث مباشرة مع كبار مهندسي إكسبيديا عبر واتساب لمناقشة المتطلبات، المخططات، والجدول الزمني.' : 'Connect directly with Expedia senior software architects via WhatsApp to discuss architectures and roadmaps.')
-                : (isArabic ? 'تحدث مباشرة مع مستشاري إكسبيديا ومختصي العلاقات الحكومية عبر واتساب.' : 'Connect directly with experienced Expedia PRO specialists on WhatsApp for guidance on your case.')}
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.03 }}
-              whileTap={{ scale: 0.97 }}
-              onClick={handleAskCustom}
-              className={`px-6 py-3 rounded-xl font-bold text-xs inline-flex items-center space-x-2 rtl:space-x-reverse shadow-lg transition-all ${
-                isDigital 
-                  ? 'bg-gradient-to-r from-cyan-400 to-indigo-500 text-obsidian-950 shadow-cyan-500/20' 
-                  : 'bg-emerald-500 text-obsidian-950 shadow-emerald-500/20'
-              }`}
-            >
-              <MessageSquare className="w-4 h-4" />
+        {/* Custom question */}
+        <ScrollReveal className="mt-10">
+          <div className="card flex flex-col items-start justify-between gap-6 p-7 sm:flex-row sm:items-center sm:p-8">
+            <div className="max-w-xl">
+              <h3 className="text-lg font-bold text-white">
+                {isDigital
+                  ? (isArabic ? 'هل لديك مواصفات تقنية أو هندسية خاصة لمشروعك؟' : 'Have unique technical specifications for your platform?')
+                  : (isArabic ? 'هل لديك استفسار تنظيمي أو قانوني لم يتم ذكره؟' : 'Have an unaddressed regulatory query?')}
+              </h3>
+              <p className="mt-1.5 text-sm leading-6 text-slate-400">
+                {isDigital
+                  ? (isArabic ? 'تحدث مباشرة مع كبار مهندسي إكسبيديا عبر واتساب لمناقشة المتطلبات، المخططات، والجدول الزمني.' : 'Connect directly with Expedia senior software architects via WhatsApp to discuss architectures and roadmaps.')
+                  : (isArabic ? 'تحدث مباشرة مع مستشاري إكسبيديا ومختصي العلاقات الحكومية عبر واتساب.' : 'Connect directly with experienced Expedia PRO specialists on WhatsApp for guidance on your case.')}
+              </p>
+            </div>
+            <button type="button" onClick={handleAskCustom} className="btn btn-primary shrink-0">
+              <MessageSquare className="h-4 w-4" aria-hidden="true" />
               <span>
                 {isDigital
                   ? (isArabic ? 'استشارة هندسية فورية عبر واتساب' : 'Chat with Engineering Team on WhatsApp')
                   : (isArabic ? 'طرح سؤال مخصص عبر واتساب' : 'Ask Custom Question on WhatsApp')}
               </span>
-            </motion.button>
+            </button>
           </div>
         </ScrollReveal>
 
@@ -283,4 +212,3 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ mode = 'corporate', isAr
     </section>
   );
 };
-

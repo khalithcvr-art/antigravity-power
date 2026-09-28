@@ -1,4 +1,15 @@
 /** @type {import('tailwindcss').Config} */
+
+// Every colour below points at a CSS variable in src/styles/tokens.css, so the
+// palette has one source of truth and Tailwind opacity modifiers keep working.
+const c = (name) => `rgb(var(--c-${name}) / <alpha-value>)`;
+const scale = (family, shades) =>
+  Object.fromEntries(shades.map((shade) => [shade, c(`${family}-${shade}`)]));
+
+const GOLD = { DEFAULT: c('gold-400'), ...scale('gold', [100, 200, 300, 400, 500, 600, 700, 800, 900]) };
+const EMERALD = { DEFAULT: c('emerald-500'), ...scale('emerald', [200, 300, 400, 500, 600, 700, 800, 900, 950]) };
+const CYAN = { DEFAULT: c('cyan-500'), ...scale('cyan', [200, 300, 400, 500, 600, 700, 800, 900, 950]) };
+
 export default {
   content: [
     "./index.html",
@@ -8,54 +19,48 @@ export default {
   theme: {
     extend: {
       colors: {
-        obsidian: {
-          950: '#070A0F',
-          900: '#0B0F17',
-          850: '#0F1420',
-          800: '#141B2D',
-          700: '#1E293B',
-          600: '#334155',
-        },
-        emeraldGlow: {
-          DEFAULT: '#10B981',
-          50: '#ECFDF5',
-          100: '#D1FAE5',
-          200: '#A7F3D0',
-          300: '#6EE7B7',
-          400: '#34D399',
-          500: '#10B981',
-          600: '#059669',
-          700: '#047857',
-          800: '#065F46',
-          900: '#064E3B',
-          glow: 'rgba(16, 185, 129, 0.35)',
-        },
-        cyanGlow: {
-          DEFAULT: '#06B6D4',
-          300: '#67E8F9',
-          400: '#22D3EE',
-          500: '#06B6D4',
-          600: '#0891B2',
-          glow: 'rgba(6, 182, 212, 0.35)',
-        },
-        indigoGlow: {
-          DEFAULT: '#6366F1',
-          400: '#818CF8',
-          500: '#6366F1',
-          600: '#4F46E5',
-          glow: 'rgba(99, 102, 241, 0.35)',
-        },
-        goldMuted: {
-          DEFAULT: '#D4AF37',
-          light: '#EEDC82',
-          dark: '#AA820A',
-        }
+        // Primary text colour. `text-white` and `bg-white/5` follow the token.
+        white: c('text'),
+        obsidian: scale('obsidian', [950, 900, 850, 800, 700, 600]),
+        slate: scale('slate', [100, 200, 300, 400, 500, 600]),
+        gold: GOLD,
+        goldMuted: { DEFAULT: c('gold-400'), light: c('gold-200'), dark: c('gold-600') },
+        emerald: EMERALD,
+        cyan: CYAN,
+        // The brand has three accent hues: gold (authority), emerald (corporate
+        // action) and cyan (digital studio). Stray hue families collapse into them
+        // so one-off colours cannot creep back in.
+        indigo: CYAN,
+        purple: CYAN,
+        sky: CYAN,
+        blue: CYAN,
+        teal: EMERALD,
+        amber: GOLD,
+        paper: { DEFAULT: c('paper'), 2: c('paper-2'), line: c('paper-line'), field: c('paper-field') },
+        ink: { DEFAULT: c('ink'), 2: c('ink-2'), 3: c('ink-3') },
+        danger: { 300: c('danger-300'), 700: c('danger-700') },
+        // Follows data-mode on the app root: emerald in corporate, cyan in digital.
+        accent: { DEFAULT: c('accent'), soft: c('accent-soft') },
       },
       fontFamily: {
-        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
-        display: ['Outfit', 'Syne', 'sans-serif'],
-        arabic: ['IBM Plex Sans Arabic', 'Tajawal', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+        sans: 'var(--font-sans)',
+        display: 'var(--font-display)',
+        arabic: 'var(--font-arabic)',
+        mono: 'var(--font-mono)',
+      },
+      boxShadow: {
+        card: 'var(--shadow-card)',
+        lift: 'var(--shadow-lift)',
+        pop: 'var(--shadow-pop)',
+      },
+      borderColor: {
+        DEFAULT: 'var(--border)',
+        soft: 'var(--border-soft)',
+        strong: 'var(--border-strong)',
+        control: 'var(--border-control)',
+      },
+      transitionTimingFunction: {
+        out: 'var(--ease-out)',
       },
       animation: {
         'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',

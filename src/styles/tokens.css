@@ -1,0 +1,124 @@
+/*
+ * Sovereign Editorial Tech: design tokens.
+ *
+ * Single source of truth for colour, type, spacing, borders, shadows and motion.
+ * Colours are stored as space-separated RGB channels so Tailwind can apply
+ * opacity (`bg-obsidian-900/60`) and custom CSS can use `rgb(var(--c-gold-400) / .3)`.
+ * tailwind.config.js and scripts/restored-pages.mjs both read from this file, so a
+ * value changed here changes the app, the utilities and the static guide pages.
+ */
+:root {
+  /* Ground and surfaces */
+  --c-obsidian-950: 7 10 13;      /* #070A0D  page ground */
+  --c-obsidian-900: 15 21 25;     /* #0F1519  elevated surface */
+  --c-obsidian-850: 19 27 32;     /* #131B20 */
+  --c-obsidian-800: 25 34 40;     /* #192228 */
+  --c-obsidian-700: 35 47 54;     /* #232F36 */
+  --c-obsidian-600: 52 67 76;     /* #34434C */
+  --c-glass: 18 27 31;            /* glass surface, used at .72 alpha */
+
+  /* Text on dark */
+  --c-text: 244 243 239;          /* #F4F3EF primary */
+  --c-slate-100: 233 232 227;
+  --c-slate-200: 217 220 216;
+  --c-slate-300: 194 201 198;
+  --c-slate-400: 167 178 176;     /* #A7B2B0 secondary */
+  --c-slate-500: 140 152 150;     /* #8C9896 muted, 5.2:1+ on every dark surface */
+  --c-slate-600: 102 113 111;     /* decorative only, fails AA as text */
+
+  /* Warm authority gold */
+  --c-gold-100: 247 235 207;
+  --c-gold-200: 238 220 174;
+  --c-gold-300: 228 199 138;
+  --c-gold-400: 215 181 109;      /* #D7B56D brand */
+  --c-gold-500: 190 154 82;
+  --c-gold-600: 156 123 59;
+  --c-gold-700: 122 92 28;        /* text on paper, 5.6:1 */
+  --c-gold-800: 92 68 21;
+  --c-gold-900: 61 45 14;
+
+  /* Corporate emerald: the client's action colour */
+  --c-emerald-200: 189 243 227;
+  --c-emerald-300: 138 233 207;
+  --c-emerald-400: 79 224 187;
+  --c-emerald-500: 45 212 168;    /* #2DD4A8 brand */
+  --c-emerald-600: 34 176 139;
+  --c-emerald-700: 21 138 109;
+  --c-emerald-800: 11 107 82;     /* text on paper, 5.8:1 */
+  --c-emerald-900: 10 76 59;
+  --c-emerald-950: 6 45 35;
+
+  /* Digital studio cyan */
+  --c-cyan-200: 200 247 253;
+  --c-cyan-300: 162 240 251;
+  --c-cyan-400: 133 236 250;
+  --c-cyan-500: 103 232 249;      /* #67E8F9 brand */
+  --c-cyan-600: 56 199 219;
+  --c-cyan-700: 30 155 174;
+  --c-cyan-800: 21 116 131;
+  --c-cyan-900: 15 79 90;
+  --c-cyan-950: 8 50 58;
+
+  /* Light reading and form surfaces ("paper") */
+  --c-paper: 244 243 239;         /* #F4F3EF */
+  --c-paper-2: 236 234 227;
+  --c-paper-line: 217 213 201;
+  --c-paper-field: 138 133 120;   /* input border on paper, 3.3:1 */
+  --c-field: 255 255 255;         /* input and card fill on paper */
+  --c-ink: 15 21 25;              /* #0F1519 */
+  --c-ink-2: 59 74 80;            /* 8.3:1 on paper */
+  --c-ink-3: 85 99 106;           /* 5.6:1 on paper */
+  --c-danger-300: 252 165 165;
+  --c-danger-700: 180 35 24;      /* error text on paper */
+
+  /* Mode accent. `data-mode` on the app root swaps it. */
+  --c-accent: var(--c-emerald-500);
+  --c-accent-soft: var(--c-emerald-400);
+
+  /* Focus: gold ring on dark, ink ring on paper, each with a contrasting gap */
+  --focus-ring: var(--c-gold-400);
+  --focus-gap: var(--c-obsidian-950);
+
+  /* Type roles */
+  --font-display: 'Syne', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-arabic: 'IBM Plex Sans Arabic', 'Tajawal', 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Spacing and radii */
+  --header-h: 4.5rem;
+  --section-y: clamp(4.5rem, 9vw, 7.5rem);
+  --radius-control: 0.75rem;
+  --radius-card: 1.25rem;
+  --radius-panel: 1.75rem;
+
+  /* Borders */
+  --border-soft: rgb(255 255 255 / 0.07);
+  --border: rgb(255 255 255 / 0.12);
+  --border-strong: rgb(255 255 255 / 0.22);
+  --border-control: rgb(255 255 255 / 0.42);   /* form controls on dark, 3:1+ */
+
+  /* Shadows */
+  --shadow-card: 0 1px 0 rgb(255 255 255 / 0.04) inset, 0 14px 34px -18px rgb(0 0 0 / 0.7);
+  --shadow-lift: 0 1px 0 rgb(255 255 255 / 0.06) inset, 0 22px 44px -20px rgb(0 0 0 / 0.85);
+  --shadow-pop: 0 30px 80px -24px rgb(0 0 0 / 0.9);
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.55, 0, 0.8, 0.4);
+  --dur-fast: 160ms;
+  --dur-med: 280ms;
+  --dur-slow: 600ms;
+}
+
+/* Digital studio: cyan takes over as the accent. */
+[data-mode='digital'] {
+  --c-accent: var(--c-cyan-500);
+  --c-accent-soft: var(--c-cyan-400);
+}
+
+/* Paper surfaces flip the focus ring and the text scale. */
+[data-surface='paper'] {
+  --focus-ring: var(--c-ink);
+  --focus-gap: var(--c-paper);
+}
