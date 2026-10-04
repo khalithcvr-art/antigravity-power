@@ -101,7 +101,7 @@ export function DedicatedJurisdictionPage({
 
     const encoded = encodeURIComponent(contextText);
     trackConversion('dedicated_page_whatsapp', { slug, packageDetail });
-    window.open(`https://wa.me/971585858816?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/971585858816?text=${encoded}`, '_blank', 'noopener,noreferrer');
   };
 
   const HIGHLIGHT_ICONS: Record<string, React.ElementType> = {

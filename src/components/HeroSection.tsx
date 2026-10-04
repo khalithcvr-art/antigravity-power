@@ -35,7 +35,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     const msg = isArabic
       ? "مرحباً إكسبيديا الرقمية، أود الاستفسار حول تصميم منصة رقمية وتطوير الهوية المؤسسية."
       : "Hello Expedia Digital, I am interested in building a bespoke web application and brand identity.";
-    window.open(generateWhatsAppUrl(msg), '_blank');
+    window.open(generateWhatsAppUrl(msg), '_blank', 'noopener,noreferrer');
   };
 
   return (

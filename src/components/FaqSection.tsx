@@ -61,7 +61,7 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ mode = 'corporate', isAr
       : (isArabic
           ? "مرحباً إكسبيديا، لدي استفسار مخصص بخصوص تأسيس الشركات وخدمات العلاقات العامة في الإمارات لم أجده في قسم الأسئلة الشائعة."
           : "Hello Expedia, I have a specific question about UAE company formation / PRO services that wasn't in your FAQ.");
-    window.open(generateWhatsAppUrl(msg), '_blank');
+    window.open(generateWhatsAppUrl(msg), '_blank', 'noopener,noreferrer');
   };
 
   const isDigital = mode === 'digital';
