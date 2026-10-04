@@ -111,7 +111,7 @@ export const JurisdictionTable: React.FC<JurisdictionTableProps> = ({
     const text = isArabic
       ? `مرحباً إكسبيديا، أود الحصول على مزيد من التفاصيل وعرض أسعار لتأسيس شركة في *${name}*.`
       : `Hello Expedia, I would like more details and an exact quote on setting up a company in *${name}*.`;
-    window.open(generateWhatsAppUrl(text), '_blank');
+    window.open(generateWhatsAppUrl(text), '_blank', 'noopener,noreferrer');
   };
 
   const handleDigitalInquiry = () => {
@@ -119,7 +119,7 @@ export const JurisdictionTable: React.FC<JurisdictionTableProps> = ({
     const text = isArabic
       ? `مرحباً إكسبيديا الرقمية، أود استشارة فريقكم الهندسي لتطوير منصة رقمية سيادية بمواصفات متقدمة.`
       : `Hello Expedia Digital, I would like to consult your engineering team for building a sovereign digital platform.`;
-    window.open(generateWhatsAppUrl(text), '_blank');
+    window.open(generateWhatsAppUrl(text), '_blank', 'noopener,noreferrer');
   };
 
   const ArrowIcon = isArabic ? ArrowLeft : ArrowRight;

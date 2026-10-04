@@ -33,7 +33,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({
     const msg = isArabic
       ? "مرحباً إكسبيديا، أود التعرف أكثر على خدماتكم المؤسسية والتحدث مع فريقكم في أبوظبي."
       : "Hello Expedia, I would like to learn more about your corporate services and speak with your Abu Dhabi team.";
-    window.open(generateWhatsAppUrl(msg), '_blank');
+    window.open(generateWhatsAppUrl(msg), '_blank', 'noopener,noreferrer');
   };
 
   const TRUST_PILLARS = [

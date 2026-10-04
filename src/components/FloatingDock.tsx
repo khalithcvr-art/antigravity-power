@@ -38,7 +38,7 @@ export const FloatingDock: React.FC<FloatingDockProps> = ({
 
   const handleWhatsApp = () => {
     trackConversion('whatsapp_click', { source: 'floating_dock' });
-    window.open(generateWhatsAppUrl(), '_blank');
+    window.open(generateWhatsAppUrl(), '_blank', 'noopener,noreferrer');
   };
 
   const handleCall = () => {

@@ -20,7 +20,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenEstimator, onOpenTracker, 
 
   const handleWhatsApp = () => {
     trackConversion('whatsapp_click', { source: 'footer_cta' });
-    window.open(generateWhatsAppUrl(), '_blank');
+    window.open(generateWhatsAppUrl(), '_blank', 'noopener,noreferrer');
   };
 
   const scrollToTop = () => {

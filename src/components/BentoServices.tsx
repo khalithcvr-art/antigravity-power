@@ -74,7 +74,7 @@ export const BentoServices: React.FC<BentoServicesProps> = ({
     const msg = isArabic
       ? `مرحباً إكسبيديا لخدمات الأعمال، أود الاستفسار عن خدمة *${serviceTitle}* في الإمارات. يرجى تزويدي بالمتطلبات والرسوم والمدة الزمنية للإنجاز.`
       : `Hello Expedia Business Services, I am interested in your *${serviceTitle}* service in UAE. Please share the procedure, turnaround time, and government fees.`;
-    window.open(generateWhatsAppUrl(msg), '_blank');
+    window.open(generateWhatsAppUrl(msg), '_blank', 'noopener,noreferrer');
   };
 
   const ArrowIcon = isArabic ? ArrowLeft : ArrowRight;

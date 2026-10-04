@@ -115,7 +115,7 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
     const msg = isArabic
       ? `مرحباً إكسبيديا، أود تأسيس شركتي في *${name}*. أرجو تزويدي بالأنشطة المتاحة وعرض الأسعار.`
       : `Hello Expedia, I want to establish my entity in *${name}*. Please send me the activity list and promotional package.`;
-    window.open(generateWhatsAppUrl(msg), '_blank');
+    window.open(generateWhatsAppUrl(msg), '_blank', 'noopener,noreferrer');
   };
 
   const handleTechInquiry = (techName: string) => {
@@ -123,7 +123,7 @@ export const TrustPartners: React.FC<TrustPartnersProps> = ({
     const msg = isArabic
       ? `مرحباً إكسبيديا الرقمية، أود استشارة خبرائكم التقنيين بخصوص تطبيق معايير *${techName}* في مشروعي.`
       : `Hello Expedia Digital, I would like to consult your engineers regarding *${techName}* integration for my project.`;
-    window.open(generateWhatsAppUrl(msg), '_blank');
+    window.open(generateWhatsAppUrl(msg), '_blank', 'noopener,noreferrer');
   };
 
   const ArrowIcon = isArabic ? ArrowLeft : ArrowRight;

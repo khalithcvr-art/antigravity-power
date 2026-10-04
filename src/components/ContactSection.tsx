@@ -58,6 +58,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
         pendingRequest.current = {payload, id: crypto.randomUUID()};
       }
       const res = await fetch(ENQUIRY_ENDPOINT, {
+        signal: AbortSignal.timeout(20000),
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...JSON.parse(payload), request_id: pendingRequest.current.id })
@@ -83,7 +84,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ isArabic = false
     const msg = isArabic
       ? `مرحباً إكسبيديا للأعمال والخدمات، اسمي ${formData.name || 'عميل محترم'}. أود الاستفسار بخصوص ${formData.service}.`
       : `Hello Expedia Business Services, my name is ${formData.name || 'Client'}. I am interested in consulting about ${formData.service}.`;
-    window.open(generateWhatsAppUrl(msg), '_blank');
+    window.open(generateWhatsAppUrl(msg), '_blank', 'noopener,noreferrer');
   };
 
   const serviceOptions = isArabic ? [
