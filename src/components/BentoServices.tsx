@@ -147,6 +147,7 @@ export const BentoServices: React.FC<BentoServicesProps> = ({
                 <InteractiveCard
                   key={service.id}
                   id={service.anchorId}
+                  image={service.image}
                   className={`group flex flex-col p-6 sm:p-7 ${featured ? 'md:col-span-2 lg:col-span-2' : ''}`}
                 >
                   <div className="flex items-start justify-between gap-3">

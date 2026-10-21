@@ -143,6 +143,40 @@
     }
   }
 
+  /* Photo-backed cards. Children are lifted over the image rather than wrapped,
+     so the card's flex layout and mt-auto footer keep working untouched. */
+  .card-photo {
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .card-photo > * {
+    position: relative;
+    z-index: 1;
+  }
+  .card-photo > .card-photo-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  .card-photo-media img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+  /* Scrim: heavy by design, so slate-300 body copy clears AA over any photo. */
+  .card-photo-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      135deg,
+      rgb(var(--c-obsidian-950) / 0.90) 0%,
+      rgb(var(--c-obsidian-900) / 0.85) 50%,
+      rgb(var(--c-obsidian-950) / 0.90) 100%
+    );
+  }
+
   /* Small labels: sentence case, sans, readable size */
   .chip {
     display: inline-flex;
