@@ -7,6 +7,8 @@ export interface ServiceItem {
   titleAr?: string;
   category: 'formation' | 'pro' | 'compliance' | 'digital' | 'branding';
   anchorId: string;
+  /** Decorative photo painted behind the card; the heading already names the service. */
+  image?: string;
   shortDesc: string;
   shortDescAr?: string;
   fullDesc: string;

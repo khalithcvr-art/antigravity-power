@@ -33,6 +33,7 @@ export const COMPANY_INFO = {
 export const CORPORATE_SERVICES: ServiceItem[] = [
   {
     id: 'business-setup',
+    image: '/images/svc-business-setup.webp',
     number: 1,
     title: 'Business Setup & Licensing',
     titleAr: 'تأسيس الشركات والتراخيص التجارية',
@@ -72,6 +73,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
   },
   {
     id: 'pro-government',
+    image: '/images/svc-pro-government.webp',
     number: 2,
     title: 'Corporate PRO & Government Liaison',
     titleAr: 'خدمات العلاقات العامة والمعاملات الحكومية',
@@ -111,6 +113,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
   },
   {
     id: 'golden-visa',
+    image: '/images/golden-visa-uae.webp',
     number: 10,
     title: 'UAE Golden Visa Services (10-Year)',
     titleAr: 'خدمات الإقامة الذهبية (10 سنوات)',
@@ -148,6 +151,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
   },
   {
     id: 'visa-compliance',
+    image: '/images/icp-immigration-emirates-id.webp',
     number: 6,
     title: 'Investor, Partner & Employment Visas',
     titleAr: 'تأشيرات المستثمرين والموظفين وتصاريح العمل',
@@ -185,6 +189,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
   },
   {
     id: 'corporate-tax',
+    image: '/images/corporate-tax-registration-uae.webp',
     number: 11,
     title: 'Corporate Tax & VAT Registration',
     titleAr: 'التسجيل في ضريبة الشركات وضريبة القيمة المضافة',
@@ -222,6 +227,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
   },
   {
     id: 'mohre-labour',
+    image: '/images/svc-mohre-labour.webp',
     number: 7,
     title: 'MoHRE Labour File & Quota Management',
     titleAr: 'إدارة ملف العمل والعمال لدى وزارة الموارد البشرية',
@@ -259,6 +265,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
   },
   {
     id: 'admin-center',
+    image: '/images/svc-admin-center.webp',
     number: 3,
     title: 'Administrative & Business Center Solutions',
     titleAr: 'حلول المراكز التجارية والمكاتب الإدارية',
@@ -292,6 +299,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
   },
   {
     id: 'real-estate',
+    image: '/images/svc-real-estate.webp',
     number: 4,
     title: 'Real Estate & Lease Coordination',
     titleAr: 'تنسيق عقود الإيجار والتراخيص العقارية',
@@ -325,6 +333,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
   },
   {
     id: 'icp-immigration',
+    image: '/images/svc-icp-immigration.webp',
     number: 8,
     title: 'ICP / Immigration & Emirates ID Services',
     titleAr: 'خدمات الهيئة الاتحادية للهوية والجنسية',
@@ -358,6 +367,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
   },
   {
     id: 'ongoing-pro',
+    image: '/images/pro-government-services-uae.webp',
     number: 9,
     title: 'Ongoing Corporate PRO Retainer',
     titleAr: 'عقود العلاقات العامة الشهرية والسنوية للشركات',
@@ -391,6 +401,7 @@ export const CORPORATE_SERVICES: ServiceItem[] = [
   },
   {
     id: 'digital-solutions',
+    image: '/images/svc-digital-ecommerce.webp',
     number: 5,
     title: 'Digital & Corporate Systems Integration',
     titleAr: 'الحلول الرقمية والأنظمة المؤسسية المتطورة',

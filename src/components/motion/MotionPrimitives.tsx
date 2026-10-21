@@ -143,6 +143,13 @@ interface InteractiveCardProps {
   glow?: boolean;
   onClick?: () => void;
   id?: string;
+  /**
+   * Decorative photo painted behind the card contents. Purely visual: the card's
+   * own heading names the service, so the image carries an empty alt rather than
+   * repeating it. `.card-photo` lifts the children above it and lays the scrim
+   * that keeps body copy readable over whatever the photo happens to be.
+   */
+  image?: string;
 }
 
 export const InteractiveCard: React.FC<InteractiveCardProps> = ({
@@ -151,6 +158,7 @@ export const InteractiveCard: React.FC<InteractiveCardProps> = ({
   glow = false,
   onClick,
   id,
+  image,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -183,8 +191,13 @@ export const InteractiveCard: React.FC<InteractiveCardProps> = ({
       ref={ref}
       id={id}
       onClick={onClick}
-      className={`card card-interactive ${glow ? 'spotlight' : ''} ${className}`}
+      className={`card card-interactive ${glow ? 'spotlight' : ''} ${image ? 'card-photo' : ''} ${className}`}
     >
+      {image && (
+        <div className="card-photo-media" aria-hidden="true">
+          <img src={image} alt="" loading="lazy" decoding="async" />
+        </div>
+      )}
       {children}
     </div>
   );
